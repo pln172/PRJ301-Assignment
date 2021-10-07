@@ -1,0 +1,45 @@
+
+span {
+    color: red;
+}
+
+table {
+    border: 2px hidden white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    border-radius: 15px;
+    background-color: #D3DAE8;
+}
+
+input {
+    border: 1px solid gray;
+    background-color: #E8F0FE;
+    padding: 10px 5px;
+    width: 200px;
+    border-radius: 5px;
+}
+
+td {
+    padding: 10px 10px;
+}
+
+#caption {
+    padding-bottom: 40px;
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bold; 
+    color: #2A2835;
+}
+
+tr #save {
+    width: 150px;
+    margin: 60px 30px 10px 82px;
+    padding-top: 15px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+    background-color: #2A2835;
+    cursor: pointer;
+}

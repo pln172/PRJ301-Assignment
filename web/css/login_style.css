@@ -1,0 +1,54 @@
+
+body {
+    background-color: #54CC96;
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBFCK7cs8or6jExQySeefuygg1xxs1A7Ksg&usqp=CAU");
+}
+
+span {
+    color: red;
+}
+
+table {
+    border: 2px hidden white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+    padding: 70px 50px 150px 35px;
+    border-radius: 15px;
+    background-color: #D3DAE8;
+}
+
+input {
+    border: 1px solid gray;
+    background-color: #E8F0FE;
+    padding: 10px 5px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+td {
+    padding-top: 12px;
+}
+
+#caption {
+    padding-bottom: 70px;
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bold; 
+    color: #2A2835;
+}
+
+tr #login {
+    width: 150px;
+    margin-top: 60px;
+    margin-left: 82px;
+    padding-top: 15px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: white;
+    background-color: #2A2835;
+    cursor: pointer;
+}
+
+

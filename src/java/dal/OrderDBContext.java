@@ -1,0 +1,90 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dal;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Order;
+import model.OrderDetail;
+
+/**
+ *
+ * @author ASUS
+ */
+public class OrderDBContext extends DBContext {
+
+    public void insert(Order o) {
+        try {
+            connection.setAutoCommit(false);
+            String sql = "INSERT INTO [Order]\n"
+                    + "           ([eid]\n"
+                    + "           ,[cid]\n"
+                    + "           ,[date]\n"
+                    + "           ,[total])\n"
+                    + "     VALUES(\n"
+                    + "           ?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, o.getEid().getId());
+            stm.setInt(2, o.getCid().getId());
+            stm.setTimestamp(3, o.getDate());
+            stm.setInt(4, o.getTotal());
+            stm.executeUpdate();
+
+            String sql_get_oid = "select @@identity as oid";
+            PreparedStatement stm_get_oid = connection.prepareStatement(sql_get_oid);
+            ResultSet rs = stm_get_oid.executeQuery();
+
+            if (rs.next()) {
+                o.setId(rs.getInt("oid"));
+            }
+
+            for (OrderDetail od : o.getOrderDetails()) {
+                String sql_add_detail = "INSERT INTO [OrderDetails]\n"
+                        + "           ([oid]\n"
+                        + "           ,[pid]\n"
+                        + "           ,[quantity]\n"
+                        + "           ,[price]\n"
+                        + "           ,[total])\n"
+                        + "     VALUES\n"
+                        + "           (?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?)";
+
+                PreparedStatement stm_add_detail = connection.prepareStatement(sql_add_detail);
+                stm_add_detail.setInt(1, od.getOid().getId());
+                stm_add_detail.setInt(2, od.getPid().getId());
+                stm_add_detail.setInt(3, od.getQuantity());
+                stm_add_detail.setInt(4, od.getPid().getPriceExport());
+                stm_add_detail.setInt(5, od.getTotal());
+                
+                stm_add_detail.executeUpdate();
+            }
+            connection.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+}
