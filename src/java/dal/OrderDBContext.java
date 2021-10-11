@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Customer;
+import model.Employee;
 import model.Order;
 import model.OrderDetail;
 
@@ -26,7 +28,7 @@ public class OrderDBContext extends DBContext {
                     + "           ([eid]\n"
                     + "           ,[cid]\n"
                     + "           ,[date]\n"
-                    + "           ,[total])\n"
+                    + "           ,[ototal])\n"
                     + "     VALUES(\n"
                     + "           ?\n"
                     + "           ,?\n"
@@ -68,7 +70,7 @@ public class OrderDBContext extends DBContext {
                 stm_add_detail.setInt(3, od.getQuantity());
                 stm_add_detail.setInt(4, od.getPid().getPriceExport());
                 stm_add_detail.setInt(5, od.getTotal());
-                
+
                 stm_add_detail.executeUpdate();
             }
             connection.commit();
@@ -86,5 +88,78 @@ public class OrderDBContext extends DBContext {
                 Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public Order getOrder(int id) {
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[orderNo]\n"
+                    + "      ,[eid]\n"
+                    + "      ,[cid]\n"
+                    + "      ,[date]\n"
+                    + "      ,[ototal]\n"
+                    + "  FROM [Order]\n"
+                    + "  where id = ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                Order o = new Order();
+                o.setId(rs.getInt("id"));
+                o.setOrderNo(rs.getString("orderNo"));
+
+                Employee e = new Employee();
+                e.setId(rs.getInt("eid"));
+                o.setEid(e);
+
+                Customer c = new Customer();
+                c.setId(rs.getInt("cid"));
+                o.setCid(c);
+
+                o.setDate(rs.getTimestamp("date"));
+                o.setTotal(rs.getInt("ototal"));
+                return o;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public Order getOrderDetail() {
+        int id = 0;
+        try {
+            String sql = "select @@identity as oid";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt("oid");
+            }
+
+            String sql_search = "select orderNo, date, ototal, Employee.ename, Customer.cname, Product.pname, \n"
+                    + "		OrderDetails.quantity, price, total\n"
+                    + "from [Order]\n"
+                    + "	inner join Employee on [Order].eid = Employee.id\n"
+                    + "	inner join Customer on [Order].cid = Customer.id\n"
+                    + "	inner join OrderDetails on [Order].id = OrderDetails.oid\n"
+                    + "	inner join Product on OrderDetails.pid = Product.id\n"
+                    + "where [Order].id = ?";
+            PreparedStatement stm_search = connection.prepareStatement(sql_search);
+            stm_search.setInt(1, id);
+            ResultSet rs_search = stm_search.executeQuery();
+            
+            while (rs_search.next()) {
+                
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

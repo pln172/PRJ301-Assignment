@@ -24,7 +24,7 @@ public class CustomerDBContext extends DBContext {
         try {
             String sql = "SELECT [id]\n"
                     + "      ,[customerNo]\n"
-                    + "      ,[name]\n"
+                    + "      ,[cname]\n"
                     + "      ,[gender]\n"
                     + "      ,[dob]\n"
                     + "      ,[phone]\n"
@@ -39,7 +39,7 @@ public class CustomerDBContext extends DBContext {
                 Customer c = new Customer();
                 c.setId(rs.getInt("id"));
                 c.setCustomerNo(rs.getString("customerNo"));
-                c.setName(rs.getString("name"));
+                c.setName(rs.getString("cname"));
                 c.setGender(rs.getBoolean("gender"));
                 c.setDob(rs.getDate("dob"));
                 c.setPhone(rs.getString("phone"));
@@ -58,7 +58,7 @@ public class CustomerDBContext extends DBContext {
         try {
             String sql = "SELECT [id]\n"
                     + "      ,[customerNo]\n"
-                    + "      ,[name]\n"
+                    + "      ,[cname]\n"
                     + "      ,[gender]\n"
                     + "      ,[dob]\n"
                     + "      ,[phone]\n"
@@ -75,7 +75,7 @@ public class CustomerDBContext extends DBContext {
                 Customer c = new Customer();
                 c.setId(rs.getInt("id"));
                 c.setCustomerNo(rs.getString("customerNo"));
-                c.setName(rs.getString("name"));
+                c.setName(rs.getString("cname"));
                 c.setGender(rs.getBoolean("gender"));
                 c.setDob(rs.getDate("dob"));
                 c.setPhone(rs.getString("phone"));
@@ -94,7 +94,7 @@ public class CustomerDBContext extends DBContext {
     public void insert(Customer c) {
         try {
             String sql = "INSERT INTO [Customer]\n"
-                    + "           ([name]\n"
+                    + "           ([cname]\n"
                     + "           ,[gender]\n"
                     + "           ,[dob]\n"
                     + "           ,[phone]\n"
@@ -125,7 +125,7 @@ public class CustomerDBContext extends DBContext {
     public void update(Customer c) {
         try {
             String sql = "UPDATE [Customer]\n"
-                    + "   SET [name] = ?\n"
+                    + "   SET [cname] = ?\n"
                     + "      ,[gender] = ?\n"
                     + "      ,[dob] = ?\n"
                     + "      ,[phone] = ?\n"

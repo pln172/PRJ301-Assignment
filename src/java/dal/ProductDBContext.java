@@ -24,7 +24,7 @@ public class ProductDBContext extends DBContext {
         try {
             String sql = "SELECT [id]\n"
                     + "      ,[productNo]\n"
-                    + "      ,[name]\n"
+                    + "      ,[pname]\n"
                     + "      ,[quantity]\n"
                     + "      ,[priceImport]\n"
                     + "      ,[priceExport]\n"
@@ -37,7 +37,7 @@ public class ProductDBContext extends DBContext {
                 Product p = new Product();
                 p.setId(rs.getInt("id"));
                 p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("name"));
+                p.setName(rs.getString("pname"));
                 p.setQuantity(rs.getInt("quantity"));
                 p.setPriceImport(rs.getInt("priceImport"));
                 p.setPriceExport(rs.getInt("priceExport"));
@@ -55,7 +55,7 @@ public class ProductDBContext extends DBContext {
         try {
             String sql = "SELECT [id]\n"
                     + "      ,[productNo]\n"
-                    + "      ,[name]\n"
+                    + "      ,[pname]\n"
                     + "      ,[quantity]\n"
                     + "      ,[priceImport]\n"
                     + "      ,[priceExport]\n"
@@ -70,7 +70,7 @@ public class ProductDBContext extends DBContext {
                 Product p = new Product();
                 p.setId(rs.getInt("id"));
                 p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("name"));
+                p.setName(rs.getString("pname"));
                 p.setQuantity(rs.getInt("quantity"));
                 p.setPriceImport(rs.getInt("priceImport"));
                 p.setPriceExport(rs.getInt("priceExport"));
@@ -86,7 +86,7 @@ public class ProductDBContext extends DBContext {
     public void insert(Product p) {
         try {
             String sql = "INSERT INTO [Product]\n"
-                    + "           ([name]\n"
+                    + "           ([pname]\n"
                     + "           ,[quantity]\n"
                     + "           ,[priceImport]\n"
                     + "           ,[priceExport])\n"
@@ -112,7 +112,7 @@ public class ProductDBContext extends DBContext {
     public void update(Product p) {
         try {
             String sql = "UPDATE [Product]\n"
-                    + "   SET [name] = ?\n"
+                    + "   SET [pname] = ?\n"
                     + "      ,[quantity] = ?\n"
                     + "      ,[priceImport] = ?\n"
                     + "      ,[priceExport] = ?\n"

@@ -20,11 +20,11 @@ import model.Product;
  */
 public class ImportDBContext extends DBContext {
 
-    public ArrayList<Import> getiImports() {
+    public ArrayList<Import> getImports() {
         ArrayList<Import> imports = new ArrayList<>();
 
         try {
-            String sql = "SELECT [pid], Product.productNo, Product.[name], [date], Import.[quantity]\n"
+            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date], Import.[quantity]\n"
                     + "  FROM [Import] inner join Product \n"
                     + "  ON Import.pid = Product.id"
                     + "  ORDER BY date desc";
@@ -36,7 +36,7 @@ public class ImportDBContext extends DBContext {
                 Product p = new Product();
                 p.setId(rs.getInt("pid"));
                 p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("name"));
+                p.setName(rs.getString("pname"));
 
                 Import i = new Import();
                 i.setPid(p);

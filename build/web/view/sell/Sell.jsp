@@ -85,7 +85,7 @@
                                     <td>Employee <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="emp" required>
-                                            <option value=""></option>
+                                            <option></option>
                                             <option value="0">Admin</option>
                                             <c:forEach items="${requestScope.employees}" var="e">
                                                 <option value="${e.id}"
@@ -93,11 +93,10 @@
                                             </c:forEach>
                                         </select>
                                     </td>
-                                    <td></td>
                                     <td>Customer <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="cus" required>
-                                            <option value=""></option>
+                                            <option value="0"></option>
                                             <c:forEach items="${requestScope.customers}" var="c">
                                                 <option value="${c.id}"
                                                         >${c.name} - ${c.phone}</option>
@@ -109,17 +108,17 @@
                                 <tr>
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
-                                        <select name="pro">
+                                        <select name="pro" required>
+                                            <option value="0"></option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} - SL: ${p.quantity}</option>
                                             </c:forEach>
                                         </select>
                                     </td>
-                                    <td></td>
                                     <td>Quantity <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="number" name="${p.name}" min="1" required/>
+                                        <input type="number" name="quantity" min="1" required/>
                                     </td>
                                 </tr>
 
@@ -127,13 +126,13 @@
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro">
+                                            <option value="0"></option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} - SL: ${p.quantity}</option>
                                             </c:forEach>
                                         </select>
                                     </td>
-                                    <td></td>
                                     <td>Quantity <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="number" name="quantity" min="0" 
@@ -142,7 +141,7 @@
                                 </tr>
                             </table>
                             <div>
-                                <button onclick="addRow();">Add</button>
+                                <input type="button" onclick="addRow();" value="Add"/>
                                 <input type="submit" value="Next"/>
                             </div>
                         </form>

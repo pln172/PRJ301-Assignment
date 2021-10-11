@@ -23,7 +23,7 @@ public class EmployeeDBContext extends DBContext {
         ArrayList<Employee> employees = new ArrayList<>();
 
         try {
-            String sql = "select id, [name], gender, dob, \n"
+            String sql = "select id, [ename], gender, dob, \n"
                     + "phone, email, [address], active\n"
                     + "from Employee";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -32,7 +32,7 @@ public class EmployeeDBContext extends DBContext {
             while (rs.next()) {
                 Employee e = new Employee();
                 e.setId(rs.getInt("id"));
-                e.setName(rs.getString("name"));
+                e.setName(rs.getString("ename"));
                 e.setGender(rs.getBoolean("gender"));
                 e.setDob(rs.getDate("dob"));
                 e.setPhone(rs.getString("phone"));
@@ -51,7 +51,7 @@ public class EmployeeDBContext extends DBContext {
 
     public Employee getEmployee(int id) {
         try {
-            String sql = "select id, [name], gender, dob, \n"
+            String sql = "select id, [ename], gender, dob, \n"
                     + "phone, email, [address], active\n"
                     + "from Employee "
                     + "where id = ?";
@@ -63,7 +63,7 @@ public class EmployeeDBContext extends DBContext {
             if (rs.next()) {
                 Employee e = new Employee();
                 e.setId(rs.getInt("id"));
-                e.setName(rs.getString("name"));
+                e.setName(rs.getString("ename"));
                 e.setGender(rs.getBoolean("gender"));
                 e.setDob(rs.getDate("dob"));
                 e.setPhone(rs.getString("phone"));
@@ -84,7 +84,7 @@ public class EmployeeDBContext extends DBContext {
     public void insert(Employee e) {
         try {
             String sql = "INSERT INTO [Employee]\n"
-                    + "           ([name]\n"
+                    + "           ([ename]\n"
                     + "           ,[gender]\n"
                     + "           ,[dob]\n"
                     + "           ,[phone]\n"
@@ -119,7 +119,7 @@ public class EmployeeDBContext extends DBContext {
     public void update(Employee e) {
         try {
             String sql = "UPDATE [Employee]\n"
-                    + "   SET [name] = ?\n"
+                    + "   SET [ename] = ?\n"
                     + "      ,[gender] = ?\n"
                     + "      ,[dob] = ?\n"
                     + "      ,[phone] = ?\n"

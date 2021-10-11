@@ -8,9 +8,13 @@ package controller.sell;
 import controller.BaseRequiredAuthController;
 import dal.CustomerDBContext;
 import dal.EmployeeDBContext;
+import dal.OrderDBContext;
 import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Customer;
 import model.Employee;
+import model.Order;
+import model.OrderDetail;
 import model.Product;
 
 /**
@@ -25,6 +31,7 @@ import model.Product;
  * @author ASUS
  */
 public class SellController extends BaseRequiredAuthController {
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -48,7 +55,7 @@ public class SellController extends BaseRequiredAuthController {
         ProductDBContext pdb = new ProductDBContext();
         ArrayList<Product> products = pdb.getProducts();
         request.setAttribute("products", products);
-        
+
         request.getRequestDispatcher("view/sell/Sell.jsp").forward(request, response);
     }
 
@@ -63,21 +70,54 @@ public class SellController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Employee e = new Employee();
-        e.setId(Integer.parseInt(request.getParameter("emp")));
+        EmployeeDBContext edb = new EmployeeDBContext();
+        Employee e = edb.getEmployee(Integer.parseInt(request.getParameter("emp")));
 
-        Customer c = new Customer();
-        c.setId(Integer.parseInt(request.getParameter("cus")));
-        
+        CustomerDBContext cdb = new CustomerDBContext();
+        Customer c = cdb.getCus(Integer.parseInt(request.getParameter("cus")));
+
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSSSSSSS");
+        String formattedDate = myDateObj.format(dtf);
+        Timestamp ts = Timestamp.valueOf(formattedDate);
+
+        Order o = new Order();
+        o.setEid(e);
+        o.setCid(c);
+        o.setDate(ts);
+
         String[] pros = request.getParameterValues("pro");
+        String[] quantity = request.getParameterValues("quantity");
+
+        ProductDBContext pdb = new ProductDBContext();
         if (pros != null) {
-            for (String pro : pros) {
-                Product p = new Product();
-                
+            for (int i = 0; i < pros.length; i++) {
+                if (Integer.parseInt(pros[i]) != 0) {
+                    Product p = pdb.getPro(Integer.parseInt(pros[i]));
+                    OrderDetail od = new OrderDetail();
+                    od.setOid(o);
+                    od.setPid(p);
+                    od.setQuantity(Integer.parseInt(quantity[i]));
+                    od.setPrice(p);
+                    od.setTotal(od.getPrice().getPriceExport() * od.getQuantity());
+                    o.getOrderDetails().add(od);
+                    p.setQuantity(p.getQuantity() - od.getQuantity());
+                    pdb.update(p);
+                }
             }
         }
+
+        int total = 0;
+        for (OrderDetail od : o.getOrderDetails()) {
+            total += od.getTotal();
+        }
+
+        o.setTotal(total);
+        OrderDBContext odb = new OrderDBContext();
+        odb.insert(o);
         
-        
+        request.setAttribute("orderId", o.getId());
+//        request.getRequestDispatcher("/detail").forward(request, response);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/sell/detail");
     }
 

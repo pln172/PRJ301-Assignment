@@ -61,7 +61,7 @@ public class ImportController extends BaseRequiredAuthController {
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ImportDBContext idb = new ImportDBContext();
-        ArrayList<Import> imports = idb.getiImports();
+        ArrayList<Import> imports = idb.getImports();
         
         request.setAttribute("imports", imports);
         request.getRequestDispatcher("../view/history/import.jsp").forward(request, response);

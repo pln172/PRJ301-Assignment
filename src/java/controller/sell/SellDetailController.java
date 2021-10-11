@@ -32,6 +32,9 @@ public class SellDetailController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int id = (Integer) request.getAttribute("orderId");
+        
+        request.setAttribute("id", id);
         request.getRequestDispatcher("../view/sell/detail.jsp").forward(request, response);
     }
 
