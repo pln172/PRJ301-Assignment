@@ -62,7 +62,7 @@ public class ImportController extends BaseRequiredAuthController {
         Product pro = pdb.getPro(id);
 
         LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSSSSSSS");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS");
         String formattedDate = myDateObj.format(dtf);
         Timestamp ts = Timestamp.valueOf(formattedDate);
 

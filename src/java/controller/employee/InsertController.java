@@ -6,12 +6,14 @@
 package controller.employee;
 
 import controller.BaseRequiredAuthController;
+import dal.AccountDBContext;
 import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Employee;
 
 /**
@@ -55,8 +57,15 @@ public class InsertController extends BaseRequiredAuthController {
         e.setAddress(request.getParameter("address"));
         e.setActive(request.getParameter("active").equals("yes"));
         
+        Account a = new Account();
+        a.setUsername(request.getParameter("username"));
+        a.setPassword(request.getParameter("password"));
+        
         EmployeeDBContext edb = new EmployeeDBContext();
         edb.insert(e);
+        
+        AccountDBContext adb = new AccountDBContext();
+        adb.insert(a);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
     }
 

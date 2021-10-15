@@ -48,19 +48,21 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         String user = request.getParameter("user");
         String pass = request.getParameter("pass");
-        
+
         AccountDBContext adb = new AccountDBContext();
         Account acc = adb.getAccount(user, pass);
-        
+
         if (acc != null) {
             request.getSession().setAttribute("account", acc);
-//            response.getWriter().println("Login successful!");
-            response.sendRedirect("statistic");
+            if (acc.getUsername().equals("loandp")) {
+                response.sendRedirect("statistic");
+            } else {
+                response.sendRedirect("sell");
+            }
         } else {
             request.getSession().setAttribute("account", null);
             response.getWriter().println("Login fail! Check username or password!");
         }
-        
     }
 
     /**

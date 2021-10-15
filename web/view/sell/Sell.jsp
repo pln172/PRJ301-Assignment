@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -84,19 +85,12 @@
                                 <tr>
                                     <td>Employee <span style="color: red;">*</span></td>
                                     <td>
-                                        <select name="emp" required>
-                                            <option></option>
-                                            <option value="0">Admin</option>
-                                            <c:forEach items="${requestScope.employees}" var="e">
-                                                <option value="${e.id}"
-                                                        >${e.name} - ${e.phone}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <input type="hidden" name="emp" value="${requestScope.employee.id}"/>${requestScope.employee.name}
                                     </td>
                                     <td>Customer <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="cus" required>
-                                            <option value="0"></option>
+                                            <option value="0" disabled selected hidden>Customer</option>
                                             <c:forEach items="${requestScope.customers}" var="c">
                                                 <option value="${c.id}"
                                                         >${c.name} - ${c.phone}</option>
@@ -109,16 +103,19 @@
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro" required>
-                                            <option value="0"></option>
+                                            <option value="0" disabled selected hidden>Product</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
-                                                        >${p.name} - SL: ${p.quantity}</option>
+                                                        >${p.name} - 
+                                                    <fmt:formatNumber type = "number" 
+                                                      value = "${p.priceExport}"/>
+                                                    - SL: ${p.quantity}</option>
                                             </c:forEach>
                                         </select>
                                     </td>
                                     <td>Quantity <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="number" name="quantity" min="1" required/>
+                                        <input id="quantity" type="number" name="quantity" min="1" required/>
                                     </td>
                                 </tr>
 
@@ -126,10 +123,13 @@
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro">
-                                            <option value="0"></option>
+                                            <option value="0" disabled selected hidden>Product</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
-                                                        >${p.name} - SL: ${p.quantity}</option>
+                                                        >${p.name} - 
+                                                    <fmt:formatNumber type = "number" 
+                                                      value = "${p.priceExport}"/>
+                                                    - SL: ${p.quantity}</option>
                                             </c:forEach>
                                         </select>
                                     </td>
@@ -141,8 +141,10 @@
                                 </tr>
                             </table>
                             <div>
-                                <input type="button" onclick="addRow();" value="Add"/>
-                                <input type="submit" value="Next"/>
+                                <input type="button" onclick="addRow();" value="Add" 
+                                       style="margin-right: 950px; padding: 7px 15px;"/>
+                                <input type="submit" value="Sell"
+                                       style="padding: 7px 15px;"/>
                             </div>
                         </form>
                     </div>

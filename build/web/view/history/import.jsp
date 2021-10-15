@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -72,6 +73,7 @@
                                 <td>Code</td>
                                 <td>Name</td>
                                 <td>Quantity</td>
+                                <td>Price</td>
                                 <td>Date</td>
                             </tr>
                             
@@ -80,6 +82,10 @@
                                     <td>${i.pid.productNo}</td>
                                     <td>${i.pid.name}</td>
                                     <td>${i.quantity}</td>
+                                    <td>
+                                        <fmt:formatNumber type = "number" 
+                                                      value = "${i.pid.priceImport}"/>
+                                    </td>
                                     <td>${i.date}</td>
                                 </tr>
                             </c:forEach>

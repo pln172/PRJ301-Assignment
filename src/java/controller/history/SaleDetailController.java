@@ -3,23 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.sell;
+package controller.history;
 
 import controller.BaseRequiredAuthController;
+import dal.OrderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Order;
 
 /**
  *
  * @author ASUS
  */
-public class SellDetailController extends BaseRequiredAuthController {
+public class SaleDetailController extends BaseRequiredAuthController {
 
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        OrderDBContext odb = new OrderDBContext();
+        Order order = odb.getOrder(id);
+        
+        request.setAttribute("order", order);
+        request.getRequestDispatcher("../../view/history/sale_detail.jsp").forward(request, response);
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -32,10 +51,7 @@ public class SellDetailController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = (Integer) request.getAttribute("orderId");
-        
-        request.setAttribute("id", id);
-        request.getRequestDispatcher("../view/sell/detail.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -49,6 +65,7 @@ public class SellDetailController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

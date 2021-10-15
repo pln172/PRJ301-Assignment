@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ASUS
@@ -12,6 +14,9 @@ package model;
 public class Account {
     private String username;
     private String password;
+    private Employee employee;
+    
+    private ArrayList<Feature> features = new ArrayList<>();
 
     public Account() {
     }
@@ -35,6 +40,22 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public ArrayList<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(ArrayList<Feature> features) {
+        this.features = features;
     }
     
     

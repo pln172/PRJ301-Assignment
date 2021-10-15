@@ -66,7 +66,7 @@
                             <h4 onclick="changeurl('history/import')">Import History</h4>
                         </div>
                         <div class="col-md-5">
-                            <h4>Sale History</h4>
+                            <h4 onclick="changeurl('history/sale')">Sale History</h4>
                         </div>
                     </div>
                 </div>

@@ -85,8 +85,12 @@
         <servlet-class>controller.sell.SellController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SellDetailController</servlet-name>
-        <servlet-class>controller.sell.SellDetailController</servlet-class>
+        <servlet-name>SaleController</servlet-name>
+        <servlet-class>controller.history.SaleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaleDetailController</servlet-name>
+        <servlet-class>controller.history.SaleDetailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -173,8 +177,12 @@
         <url-pattern>/sell</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SellDetailController</servlet-name>
-        <url-pattern>/sell/detail</url-pattern>
+        <servlet-name>SaleController</servlet-name>
+        <url-pattern>/history/sale</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleDetailController</servlet-name>
+        <url-pattern>/history/sale/detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

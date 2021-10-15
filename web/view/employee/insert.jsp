@@ -68,6 +68,18 @@
                             <table>
                                 <caption>Insert new employee</caption>
                                 <tr>
+                                    <td>Username <span style="color: red;">*</span></td>
+                                    <td>
+                                        <input type="text" name="username" required/>
+                                    </td>
+                                    <td></td>
+                                    <td>Password <span style="color: red;">*</span></td>
+                                    <td>
+                                        <input type="text" name="password" required/>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="text" name="name" required/>

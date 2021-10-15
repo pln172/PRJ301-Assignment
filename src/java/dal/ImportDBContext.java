@@ -24,7 +24,8 @@ public class ImportDBContext extends DBContext {
         ArrayList<Import> imports = new ArrayList<>();
 
         try {
-            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date], Import.[quantity]\n"
+            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date]\n"
+                    + ",priceImport, Import.[quantity]\n"
                     + "  FROM [Import] inner join Product \n"
                     + "  ON Import.pid = Product.id"
                     + "  ORDER BY date desc";
@@ -37,6 +38,8 @@ public class ImportDBContext extends DBContext {
                 p.setId(rs.getInt("pid"));
                 p.setProductNo(rs.getString("productNo"));
                 p.setName(rs.getString("pname"));
+                p.setPriceImport(rs.getInt("priceImport"));
+                
 
                 Import i = new Import();
                 i.setPid(p);

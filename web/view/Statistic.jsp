@@ -3,7 +3,7 @@
     Created on : Sep 29, 2021, 10:52:25 PM
     Author     : ASUS
 --%>
-
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -66,27 +66,36 @@
                     <div class="right">
                         <div class="row">
                             <div class="col-md-3">
-                                <h4>Total Revenue</h4> //Doanh thu
-                                <h6>1000</h6>
+                                <h4>Total Revenue</h4>
+                                <h5>
+                                    <fmt:formatNumber type = "number" 
+                                                      value = "${requestScope.revenue}" />
+                                </h5>
                             </div>
                             <div class="col-md-3">
-                                <h4>Total Invoice</h4> //Hoa don
-                                <h6>1000</h6>
+                                <h4>Total Invoice</h4>
+                                <h5>${requestScope.invoice}</5>
                             </div>
                             <div class="col-md-3">
-                                <h4>Total Capital</h4> //Tong von
-                                <h6>1000</h6>
+                                <h4>Total Capital</h4> 
+                                <h5>
+                                    <fmt:formatNumber type = "number" 
+                                                      value = "${requestScope.capital}"/>
+                                </h5>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-3">
-                                <h4>Total Interest</h4> //Tong lai
-                                <h6>1000</h6>
+                                <h4>Total Interest</h4>
+                                <h5>
+                                    <fmt:formatNumber type = "number" 
+                                                      value = "${requestScope.interest}"/>
+                                </h5>
                             </div>
                             <div class="col-md-3">
-                                <h4>Inventory</h4> //Hang ton
-                                <h6>${requestScope.inventory}</h6>
+                                <h4>Inventory</h4>
+                                <h5>${requestScope.inventory}</h5>
                             </div>
                         </div>
                     </div>

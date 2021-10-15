@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Customer;
 import model.Employee;
 import model.Order;
@@ -44,9 +45,16 @@ public class SellController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        EmployeeDBContext edb = new EmployeeDBContext();
+//        ArrayList<Employee> employees = edb.getEmployees();
+//        request.setAttribute("employees", employees);
+
+        Account acc = (Account) request.getSession().getAttribute("account");
         EmployeeDBContext edb = new EmployeeDBContext();
-        ArrayList<Employee> employees = edb.getEmployees();
-        request.setAttribute("employees", employees);
+        Employee employee = edb.getEmployee(acc.getEmployee().getId());
+        if (employee != null) {
+            request.setAttribute("employee", employee);
+        }
 
         CustomerDBContext cdb = new CustomerDBContext();
         ArrayList<Customer> customers = cdb.getCustomers();
@@ -70,14 +78,19 @@ public class SellController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EmployeeDBContext edb = new EmployeeDBContext();
-        Employee e = edb.getEmployee(Integer.parseInt(request.getParameter("emp")));
+        Employee e = new Employee();
+        if (!request.getParameter("emp").isEmpty()) {
+            EmployeeDBContext edb = new EmployeeDBContext();
+            e = edb.getEmployee(Integer.parseInt(request.getParameter("emp")));
+        } else {
+            e.setId(-1);
+        }
 
         CustomerDBContext cdb = new CustomerDBContext();
         Customer c = cdb.getCus(Integer.parseInt(request.getParameter("cus")));
 
         LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSSSSSSS");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS");
         String formattedDate = myDateObj.format(dtf);
         Timestamp ts = Timestamp.valueOf(formattedDate);
 
@@ -92,7 +105,7 @@ public class SellController extends BaseRequiredAuthController {
         ProductDBContext pdb = new ProductDBContext();
         if (pros != null) {
             for (int i = 0; i < pros.length; i++) {
-                if (Integer.parseInt(pros[i]) != 0) {
+                if (Integer.parseInt(pros[i]) != 0 && Integer.parseInt(quantity[i]) != 0) {
                     Product p = pdb.getPro(Integer.parseInt(pros[i]));
                     OrderDetail od = new OrderDetail();
                     od.setOid(o);
@@ -115,10 +128,13 @@ public class SellController extends BaseRequiredAuthController {
         o.setTotal(total);
         OrderDBContext odb = new OrderDBContext();
         odb.insert(o);
-        
-        request.setAttribute("orderId", o.getId());
-//        request.getRequestDispatcher("/detail").forward(request, response);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/sell/detail");
+
+        Account acc = (Account) request.getSession().getAttribute("account");
+        if (acc.getUsername().equals("loandp")) {
+            response.sendRedirect("http://localhost:8080/ASSIGNMENT/history/sale");
+        } else {
+            response.sendRedirect("http://localhost:8080/ASSIGNMENT/sell");
+        }
     }
 
     /**

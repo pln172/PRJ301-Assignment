@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Account;
+import model.Feature;
 
 /**
  *
@@ -21,8 +22,19 @@ public abstract class BaseRequiredAuthController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request) {
         Account acc = (Account) request.getSession().getAttribute("account");
-//        return acc != null;
-        return true;
+        boolean isAuthorized = false;
+        if (acc == null) return false;
+        
+        else {
+            String url = request.getServletPath();
+            for (Feature f : acc.getFeatures()) {
+                if (f.getUrl().equals(url)) {
+                    isAuthorized = true;
+                    break;
+                }
+            }
+        }
+        return isAuthorized;
     }
 
     protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
