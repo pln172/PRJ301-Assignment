@@ -92,6 +92,10 @@
         <servlet-name>SaleDetailController</servlet-name>
         <servlet-class>controller.history.SaleDetailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailEmployeeController</servlet-name>
+        <servlet-class>controller.employee.DetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -183,6 +187,10 @@
     <servlet-mapping>
         <servlet-name>SaleDetailController</servlet-name>
         <url-pattern>/history/sale/detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailEmployeeController</servlet-name>
+        <url-pattern>/employee/detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -6,14 +6,16 @@
 package controller.employee;
 
 import controller.BaseRequiredAuthController;
+import dal.AccountDBContext;
 import dal.EmployeeDBContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Account;
 import model.Employee;
 
 /**
@@ -21,6 +23,7 @@ import model.Employee;
  * @author ASUS
  */
 public class UpdateController extends BaseRequiredAuthController {
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -34,10 +37,10 @@ public class UpdateController extends BaseRequiredAuthController {
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        
+
         EmployeeDBContext edb = new EmployeeDBContext();
         Employee e = edb.getEmployee(id);
-        
+
         request.setAttribute("employee", e);
         request.getRequestDispatcher("../view/employee/update.jsp").forward(request, response);
     }
@@ -62,7 +65,17 @@ public class UpdateController extends BaseRequiredAuthController {
         e.setEmail(request.getParameter("email"));
         e.setAddress(request.getParameter("address"));
         e.setActive(request.getParameter("active").equals("yes"));
-        
+
+        if (request.getParameter("active").equals("no")) {
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = myDateObj.format(dtf);
+            e.setLeaving_date(Date.valueOf(formattedDate));
+
+            AccountDBContext adb = new AccountDBContext();
+            Account acc = adb.getAccountEmp(Integer.parseInt(request.getParameter("id")));
+            adb.delete(acc);
+        }
         EmployeeDBContext edb = new EmployeeDBContext();
         edb.update(e);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");

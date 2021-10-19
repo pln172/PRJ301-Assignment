@@ -5,9 +5,11 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,9 +25,17 @@ public class EmployeeDBContext extends DBContext {
         ArrayList<Employee> employees = new ArrayList<>();
 
         try {
-            String sql = "select id, [ename], gender, dob, \n"
-                    + "phone, email, [address], active\n"
-                    + "from Employee";
+            String sql = "SELECT [id]\n"
+                    + "      ,[ename]\n"
+                    + "      ,[gender]\n"
+                    + "      ,[dob]\n"
+                    + "      ,[phone]\n"
+                    + "      ,[email]\n"
+                    + "      ,[address]\n"
+                    + "      ,[starting_date]\n"
+                    + "      ,[leaving_date]\n"
+                    + "      ,[active]\n"
+                    + "  FROM [Employee]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
@@ -38,6 +48,8 @@ public class EmployeeDBContext extends DBContext {
                 e.setPhone(rs.getString("phone"));
                 e.setEmail(rs.getString("email"));
                 e.setAddress(rs.getString("address"));
+                e.setStarting_date(rs.getDate("starting_date"));
+                e.setLeaving_date(rs.getDate("leaving_date"));
                 e.setActive(rs.getBoolean("active"));
 
                 employees.add(e);
@@ -51,9 +63,17 @@ public class EmployeeDBContext extends DBContext {
 
     public Employee getEmployee(int id) {
         try {
-            String sql = "select id, [ename], gender, dob, \n"
-                    + "phone, email, [address], active\n"
-                    + "from Employee "
+            String sql = "SELECT [id]\n"
+                    + "      ,[ename]\n"
+                    + "      ,[gender]\n"
+                    + "      ,[dob]\n"
+                    + "      ,[phone]\n"
+                    + "      ,[email]\n"
+                    + "      ,[address]\n"
+                    + "      ,[starting_date]\n"
+                    + "      ,[leaving_date]\n"
+                    + "      ,[active]\n"
+                    + "  FROM [Employee]"
                     + "where id = ?";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -69,6 +89,8 @@ public class EmployeeDBContext extends DBContext {
                 e.setPhone(rs.getString("phone"));
                 e.setEmail(rs.getString("email"));
                 e.setAddress(rs.getString("address"));
+                e.setStarting_date(rs.getDate("starting_date"));
+                e.setLeaving_date(rs.getDate("leaving_date"));
                 e.setActive(rs.getBoolean("active"));
 
                 return e;
@@ -90,9 +112,11 @@ public class EmployeeDBContext extends DBContext {
                     + "           ,[phone]\n"
                     + "           ,[email]\n"
                     + "           ,[address]\n"
+                    + "           ,[starting_date]\n"
                     + "           ,[active])\n"
                     + "     VALUES\n"
                     + "           (?\n"
+                    + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
@@ -107,7 +131,8 @@ public class EmployeeDBContext extends DBContext {
             stm.setString(4, e.getPhone());
             stm.setString(5, e.getEmail());
             stm.setString(6, e.getAddress());
-            stm.setBoolean(7, e.isActive());
+            stm.setDate(7, e.getStarting_date());
+            stm.setBoolean(8, e.isActive());
             stm.executeUpdate();
 
         } catch (SQLException ex) {
@@ -125,6 +150,7 @@ public class EmployeeDBContext extends DBContext {
                     + "      ,[phone] = ?\n"
                     + "      ,[email] = ?\n"
                     + "      ,[address] = ?\n"
+                    + "      ,[leaving_date] = ?\n"
                     + "      ,[active] = ?\n"
                     + " WHERE id = ?";
 
@@ -135,8 +161,13 @@ public class EmployeeDBContext extends DBContext {
             stm.setString(4, e.getPhone());
             stm.setString(5, e.getEmail());
             stm.setString(6, e.getAddress());
-            stm.setBoolean(7, e.isActive());
-            stm.setInt(8, e.getId());
+            if (e.isActive()) {
+                stm.setNull(7, Types.NULL);
+            } else {
+                stm.setDate(7, e.getLeaving_date());
+            }
+            stm.setBoolean(8, e.isActive());
+            stm.setInt(9, e.getId());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);

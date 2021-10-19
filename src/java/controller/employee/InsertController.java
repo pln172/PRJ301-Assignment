@@ -10,6 +10,9 @@ import dal.AccountDBContext;
 import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,17 +59,36 @@ public class InsertController extends BaseRequiredAuthController {
         e.setEmail(request.getParameter("email"));
         e.setAddress(request.getParameter("address"));
         e.setActive(request.getParameter("active").equals("yes"));
-        
-        Account a = new Account();
-        a.setUsername(request.getParameter("username"));
-        a.setPassword(request.getParameter("password"));
-        
-        EmployeeDBContext edb = new EmployeeDBContext();
-        edb.insert(e);
-        
+
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = myDateObj.format(dtf);
+        e.setStarting_date(Date.valueOf(formattedDate));
+
         AccountDBContext adb = new AccountDBContext();
-        adb.insert(a);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
+        ArrayList<Account> accounts = adb.getAccounts();
+
+        boolean isExist = false;
+        for (Account a : accounts) {
+            if (request.getParameter("username").equals(a.getUsername())) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (!isExist) {
+            Account a = new Account();
+            a.setUsername(request.getParameter("username"));
+            a.setPassword(request.getParameter("password"));
+
+            EmployeeDBContext edb = new EmployeeDBContext();
+            edb.insert(e);
+
+            adb.insert(a);
+            response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
+        } else {
+            response.getWriter().println("Account does exist. Please re-insert!");
+        }
     }
 
     /**

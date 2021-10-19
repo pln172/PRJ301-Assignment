@@ -8,6 +8,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
@@ -19,6 +20,28 @@ import model.Feature;
  * @author ASUS
  */
 public class AccountDBContext extends DBContext {
+
+    public ArrayList<Account> getAccounts() {
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            String sql = "SELECT [username]\n"
+                    + "      ,[password]\n"
+                    + "  FROM [Account]";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                Account a = new Account();
+                a.setUsername(rs.getString("username"));
+                a.setPassword(rs.getString("password"));
+                
+                accounts.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return accounts;
+    }
 
     public Account getAccount(String user, String pass) {
         try {
@@ -101,6 +124,53 @@ public class AccountDBContext extends DBContext {
                 stm_feature.setInt(2, i);
                 stm_feature.executeUpdate();
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Account getAccountEmp(int empId) {
+        try {
+            String sql = "SELECT [username]\n"
+                    + "      ,[password]\n"
+                    + "      ,[employeeid]\n"
+                    + "  FROM [Account]\n"
+                    + "  where employeeid = ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, empId);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                Account acc = new Account();
+                acc.setUsername(rs.getString("username"));
+                acc.setPassword(rs.getString("password"));
+
+                Employee e = new Employee();
+                e.setId(rs.getInt("employeeid"));
+                acc.setEmployee(e);
+
+                return acc;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void delete(Account a) {
+        try {
+            String sql_accfeture = "DELETE FROM [AccountFeature]\n"
+                    + "      WHERE username = ?";
+            PreparedStatement stm_accfeature = connection.prepareStatement(sql_accfeture);
+            stm_accfeature.setString(1, a.getUsername());
+            stm_accfeature.executeUpdate();
+
+            String sql_account = "DELETE FROM [Account]\n"
+                    + "      WHERE username = ?";
+            PreparedStatement stm_account = connection.prepareStatement(sql_account);
+            stm_account.setString(1, a.getUsername());
+            stm_account.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }

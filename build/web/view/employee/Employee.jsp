@@ -22,9 +22,13 @@
                 var host = "http://localhost:8080/ASSIGNMENT/";
                 window.location.href = host + url;
             }
-            
+
             function insert() {
                 window.location.href += "/insert";
+            }
+            
+            function detail(id) {
+                window.location.href = "http://localhost:8080/ASSIGNMENT/employee/detail?id=" + id;
             }
 
             function doUpdate(id) {
@@ -83,7 +87,6 @@
                                 <td>Gender</td>
                                 <td>DOB</td>
                                 <td>Phone</td>
-                                <td>Email</td>
                                 <td>Address</td>
                                 <td>Active</td>
                                 <td>Action</td>
@@ -91,29 +94,31 @@
                             <c:set var="i" value="0"/>
                             <c:forEach items="${requestScope.employees}" var="e">
                                 <c:set var="i" value="${i+1}"/>
-                            <tr>
-                                <td>${i}</td>
-                                <td>${e.name}</td>
-                                <td>
-                                    <i ${e.gender ? "class=\"fas fa-mars\"" 
-                                        : "class=\"fas fa-venus\""}</i>
-                                </td>
-                                <td>${e.dob}</td>
-                                <td>${e.phone}</td>
-                                <td>${e.email}</td>
-                                <td>${e.address}</td>
-                                <c:choose>
-                                    <c:when test="${e.active}">
-                                        <td>YES</td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <td style="color: red;">NO</td>
-                                    </c:otherwise>
-                                </c:choose>
-                                <td>
-                                    <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${e.id})"></i></abbr>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>${i}</td>
+                                    <td>${e.name}</td>
+                                    <td>
+                                        <i ${e.gender ? "class=\"fas fa-mars\"" 
+                                             : "class=\"fas fa-venus\""}</i>
+                                    </td>
+                                    <td>${e.dob}</td>
+                                    <td>${e.phone}</td>
+                                    <td>${e.address}</td>
+                                    <c:choose>
+                                        <c:when test="${e.active}">
+                                            <td>YES</td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td style="color: red;">NO</td>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <td>
+                                        <a onclick="detail(${e.id})"
+                                           style="text-decoration: none; cursor: pointer; margin-right: 7px;"
+                                           >Detail</a>
+                                        <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${e.id})"></i></abbr>
+                                    </td>
+                                </tr>
                             </c:forEach>
                         </table>
                     </div>

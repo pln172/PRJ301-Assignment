@@ -20,6 +20,8 @@ public class Employee {
     private String phone;
     private String email;
     private String address;
+    private Date starting_date;
+    private Date leaving_date;
     private boolean active;
 
     public Employee() {
@@ -79,6 +81,22 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getStarting_date() {
+        return starting_date;
+    }
+
+    public void setStarting_date(Date starting_date) {
+        this.starting_date = starting_date;
+    }
+
+    public Date getLeaving_date() {
+        return leaving_date;
+    }
+
+    public void setLeaving_date(Date leaving_date) {
+        this.leaving_date = leaving_date;
     }
 
     public boolean isActive() {

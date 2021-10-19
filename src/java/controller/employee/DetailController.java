@@ -3,46 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.employee;
 
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Account;
-import model.Feature;
+import model.Employee;
 
 /**
  *
  * @author ASUS
  */
-public abstract class BaseRequiredAuthController extends HttpServlet {
+public class DetailController extends HttpServlet {
 
-    private boolean isAuthenticated(HttpServletRequest request) {
-        Account acc = (Account) request.getSession().getAttribute("account");
-//        boolean isAuthorized = false;
-//        if (acc == null) return false;
-//        
-//        else {
-//            String url = request.getServletPath();
-//            for (Feature f : acc.getFeatures()) {
-//                if (f.getUrl().equals(url)) {
-//                    isAuthorized = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return isAuthorized;
-return true;
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        EmployeeDBContext edb = new EmployeeDBContext();
+        Employee employee = edb.getEmployee(Integer.parseInt(request.getParameter("id")));
+        
+        request.setAttribute("employee", employee);
+        request.getRequestDispatcher("../view/employee/detail.jsp").forward(request, response);
+        
     }
-
-    protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException;
-
-    protected abstract void processPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -56,11 +51,7 @@ return true;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (isAuthenticated(request)) {
-            processGet(request, response);
-        } else {
-            response.getWriter().println("access denied!");
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -74,11 +65,7 @@ return true;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (isAuthenticated(request)) {
-            processPost(request, response);
-        } else {
-            response.getWriter().println("access denied!");
-        }
+        processRequest(request, response);
     }
 
     /**

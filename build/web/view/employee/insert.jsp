@@ -120,7 +120,7 @@
                                     <td>Active <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="radio" checked="checked" name="active" value="yes"/> YES
-                                        <input type="radio" name="active" value="no"/> NO
+                                        <input type="radio" name="active" value="no"  onclick="return false"/> NO
                                     </td>
                                     <td></td>
                                     <td></td>
