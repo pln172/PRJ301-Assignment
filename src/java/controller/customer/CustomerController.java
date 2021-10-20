@@ -52,6 +52,14 @@ public class CustomerController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String name = request.getParameter("name");
+        
+        CustomerDBContext cdb = new CustomerDBContext();
+        ArrayList<Customer> customers = cdb.searchByName(name);
+        
+        request.setAttribute("name", name);
+        request.setAttribute("customers", customers);
+        request.getRequestDispatcher("view/customer/Customer.jsp").forward(request, response);
     }
 
     /**

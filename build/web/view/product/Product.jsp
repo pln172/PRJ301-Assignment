@@ -82,6 +82,10 @@
 
                 <div class="col-md-9">
                     <div class="right">
+                        <form action="product" method="POST">
+                            <input type="text" name="name" value="${requestScope.name}"/>
+                            <input type="submit" value="Search"/>
+                        </form>
                         <input id="insert" type="button" onclick="insert()" value="Insert"/>
                         <table border="2px">
                             <tr class="th">

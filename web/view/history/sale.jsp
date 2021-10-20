@@ -25,6 +25,10 @@
             function detail(id) {
                 window.location.href = "http://localhost:8080/ASSIGNMENT/history/sale/detail?id=" + id;
             }
+
+            function search() {
+                document.getElementById("form").submit();
+            }
         </script>
     </head>
 
@@ -69,9 +73,14 @@
 
                 <div class="col-md-9">
                     <div class="right">
-                        <div>
-                            Choose date <input type="date" name="date"/>
-                        </div>
+                        <form id="form" action="sale" method="POST">
+                            <div>
+                                Choose date <input type="date" name="date" 
+                                                   onchange="search()"
+                                                   value="${requestScope.date}"/>
+                            </div>
+                        </form>
+
                         <table border="2px;">
                             <tr>
                                 <td>Code</td>

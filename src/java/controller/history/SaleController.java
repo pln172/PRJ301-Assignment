@@ -9,6 +9,7 @@ import controller.BaseRequiredAuthController;
 import dal.OrderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,37 +23,14 @@ import model.Order;
  */
 public class SaleController extends BaseRequiredAuthController {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         OrderDBContext odb = new OrderDBContext();
         ArrayList<Order> orders = odb.getOrders();
         
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
@@ -66,7 +44,14 @@ public class SaleController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Date date = Date.valueOf(request.getParameter("date"));
+        
+        OrderDBContext odb = new OrderDBContext();
+        ArrayList<Order> orders = odb.searchByDate(date);
+        
+        request.setAttribute("date", date);
+        request.setAttribute("orders", orders);
+        request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);
     }
 
     /**

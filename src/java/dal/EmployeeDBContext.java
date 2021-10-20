@@ -61,6 +61,48 @@ public class EmployeeDBContext extends DBContext {
         return employees;
     }
 
+    public ArrayList<Employee> searchByName(String name) {
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[ename]\n"
+                    + "      ,[gender]\n"
+                    + "      ,[dob]\n"
+                    + "      ,[phone]\n"
+                    + "      ,[email]\n"
+                    + "      ,[address]\n"
+                    + "      ,[starting_date]\n"
+                    + "      ,[leaving_date]\n"
+                    + "      ,[active]\n"
+                    + "  FROM [Employee]\n"
+                    + "WHERE ename like '%' + ? + '%'";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, name);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Employee e = new Employee();
+                e.setId(rs.getInt("id"));
+                e.setName(rs.getString("ename"));
+                e.setGender(rs.getBoolean("gender"));
+                e.setDob(rs.getDate("dob"));
+                e.setPhone(rs.getString("phone"));
+                e.setEmail(rs.getString("email"));
+                e.setAddress(rs.getString("address"));
+                e.setStarting_date(rs.getDate("starting_date"));
+                e.setLeaving_date(rs.getDate("leaving_date"));
+                e.setActive(rs.getBoolean("active"));
+
+                employees.add(e);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return employees;
+    }
+
     public Employee getEmployee(int id) {
         try {
             String sql = "SELECT [id]\n"

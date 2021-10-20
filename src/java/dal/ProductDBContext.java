@@ -50,6 +50,40 @@ public class ProductDBContext extends DBContext {
         }
         return products;
     }
+    
+    public ArrayList<Product> searchByName(String name) {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[productNo]\n"
+                    + "      ,[pname]\n"
+                    + "      ,[quantity]\n"
+                    + "      ,[priceImport]\n"
+                    + "      ,[priceExport]\n"
+                    + "  FROM [Product]"
+                    + "WHERE pname like '%' + ? + '%'";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, name);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setProductNo(rs.getString("productNo"));
+                p.setName(rs.getString("pname"));
+                p.setQuantity(rs.getInt("quantity"));
+                p.setPriceImport(rs.getInt("priceImport"));
+                p.setPriceExport(rs.getInt("priceExport"));
+
+                products.add(p);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
 
     public Product getPro(int id) {
         try {

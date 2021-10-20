@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +48,33 @@ public class OrderDBContext extends DBContext {
             }
 
         } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
+    
+    public ArrayList<Order> searchByDate(Date date) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            String sql = "SELECT [id]\n"
+                    + "	  ,[orderNo]\n"
+                    + "      ,[date]\n"
+                    + "      ,[ototal]\n"
+                    + "  FROM [Order]\n"
+                    + "  WHERE Cast([date] as date) = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, date);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setId(rs.getInt("id"));
+                o.setOrderNo(rs.getString("orderNo"));
+                o.setDate(rs.getTimestamp("date"));
+                o.setTotal(rs.getInt("ototal"));
+                
+                orders.add(o);
+            }
+        } catch (SQLException ex) { 
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return orders;
@@ -250,4 +278,5 @@ public class OrderDBContext extends DBContext {
         }
 
     }
+    
 }

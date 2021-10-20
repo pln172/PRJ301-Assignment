@@ -21,11 +21,15 @@
                 var host = "http://localhost:8080/ASSIGNMENT/";
                 window.location.href = host + url;
             }
+            
+            function search() {
+                document.getElementById("form").submit();
+            }
         </script>
     </head>
-    
+
     <body>
-       <header>
+        <header>
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
@@ -65,9 +69,15 @@
 
                 <div class="col-md-9">
                     <div class="right">
-                        <div>
-                        Choose date <input type="date" name="date"/>
-                        </div>
+                        <form id="form" action="import" method="POST">
+                            <div>
+                                Choose date <input type="date" name="date" 
+                                                   onchange="search()"
+                                                   value="${requestScope.date}"/>
+                            </div>
+                            <!--<input type="submit" value="Search"/>-->
+                        </form>
+                        
                         <table border="2px;">
                             <tr>
                                 <td>Code</td>
@@ -76,7 +86,7 @@
                                 <td>Price</td>
                                 <td>Date</td>
                             </tr>
-                            
+
                             <c:forEach items="${requestScope.imports}" var="i">
                                 <tr>
                                     <td>${i.pid.productNo}</td>
@@ -84,7 +94,7 @@
                                     <td>${i.quantity}</td>
                                     <td>
                                         <fmt:formatNumber type = "number" 
-                                                      value = "${i.pid.priceImport}"/>
+                                                          value = "${i.pid.priceImport}"/>
                                     </td>
                                     <td>${i.date}</td>
                                 </tr>

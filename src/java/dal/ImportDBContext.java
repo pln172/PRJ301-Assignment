@@ -5,6 +5,7 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,8 +27,8 @@ public class ImportDBContext extends DBContext {
         try {
             String sql = "SELECT [pid], Product.productNo, Product.[pname], [date]\n"
                     + ",priceImport, Import.[quantity]\n"
-                    + "  FROM [Import] inner join Product \n"
-                    + "  ON Import.pid = Product.id"
+                    + "  FROM [Import] inner join Product\n"
+                    + "  ON Import.pid = Product.id\n"
                     + "  ORDER BY date desc";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -39,7 +40,6 @@ public class ImportDBContext extends DBContext {
                 p.setProductNo(rs.getString("productNo"));
                 p.setName(rs.getString("pname"));
                 p.setPriceImport(rs.getInt("priceImport"));
-                
 
                 Import i = new Import();
                 i.setPid(p);
@@ -74,5 +74,36 @@ public class ImportDBContext extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public ArrayList<Import> searchByDate(Date date) {
+        ArrayList<Import> imports = new ArrayList<>();
+        try {
+            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date]\n"
+                    + ",priceImport, Import.[quantity]\n"
+                    + "  FROM [Import] inner join Product\n"
+                    + "  ON Import.pid = Product.id\n"
+                    + "  WHERE Cast([date] as date) = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, date);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("pid"));
+                p.setProductNo(rs.getString("productNo"));
+                p.setName(rs.getString("pname"));
+                p.setPriceImport(rs.getInt("priceImport"));
+                
+                Import i = new Import();
+                i.setPid(p);
+                i.setDate(rs.getTimestamp("date"));
+                i.setQuantity(rs.getInt("quantity"));
+                
+                imports.add(i);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return imports;
     }
 }

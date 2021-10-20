@@ -53,6 +53,43 @@ public class CustomerDBContext extends DBContext {
         }
         return customers;
     }
+    
+    public ArrayList<Customer> searchByName(String name) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[customerNo]\n"
+                    + "      ,[cname]\n"
+                    + "      ,[gender]\n"
+                    + "      ,[dob]\n"
+                    + "      ,[phone]\n"
+                    + "      ,[email]\n"
+                    + "      ,[address]\n"
+                    + "  FROM [Customer]"
+                    + "WHERE cname like '%' + ? + '%'";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, name);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Customer c = new Customer();
+                c.setId(rs.getInt("id"));
+                c.setCustomerNo(rs.getString("customerNo"));
+                c.setName(rs.getString("cname"));
+                c.setGender(rs.getBoolean("gender"));
+                c.setDob(rs.getDate("dob"));
+                c.setPhone(rs.getString("phone"));
+                c.setEmail(rs.getString("email"));
+                c.setAddress(rs.getString("address"));
+
+                customers.add(c);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return customers;
+    }
 
     public Customer getCus(int id) {
         try {
