@@ -25,10 +25,23 @@ public class ProductController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String raw_page = request.getParameter("page");
+        if (raw_page == null || raw_page.length() == 0) {
+            raw_page = "1";
+        }
+
+        int page = Integer.parseInt(raw_page);
+        int pageSize = 7;
+
         ProductDBContext pdb = new ProductDBContext();
-        ArrayList<Product> products = pdb.getProducts();
+        ArrayList<Product> products = pdb.pagging(pageSize, page);
+
+        int count = pdb.numberRecord();
+        int totalPage = (count % pageSize == 0) ? count / pageSize : (count / pageSize) + 1;
 
         request.setAttribute("products", products);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("pageIndex", page);
         request.getRequestDispatcher("view/product/Product.jsp").forward(request, response);
     }
 
@@ -48,9 +61,13 @@ public class ProductController extends BaseRequiredAuthController {
         ProductDBContext pdb = new ProductDBContext();
         ArrayList<Product> products = pdb.searchByName(name);
 
-        request.setAttribute("name", name);
-        request.setAttribute("products", products);
-        request.getRequestDispatcher("view/product/Product.jsp").forward(request, response);
+        if (name.isEmpty()) {
+            response.sendRedirect("product");
+        } else {
+            request.setAttribute("name", name);
+            request.setAttribute("products", products);
+            request.getRequestDispatcher("view/product/Product.jsp").forward(request, response);
+        }
     }
 
     /**

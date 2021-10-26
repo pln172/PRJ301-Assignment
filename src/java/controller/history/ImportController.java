@@ -22,6 +22,7 @@ import model.Import;
  * @author ASUS
  */
 public class ImportController extends BaseRequiredAuthController {
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -34,10 +35,23 @@ public class ImportController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String raw_page = request.getParameter("page");
+        if (raw_page == null || raw_page.length() == 0) {
+            raw_page = "1";
+        }
+
+        int page = Integer.parseInt(raw_page);
+        int pageSize = 8;
+
         ImportDBContext idb = new ImportDBContext();
-        ArrayList<Import> imports = idb.getImports();
+        ArrayList<Import> imports = idb.pagging(pageSize, page);
+        
+        int count = idb.numberRecord();
+        int totalPage = (count % pageSize==0)?count / pageSize:(count / pageSize)+1;
         
         request.setAttribute("imports", imports);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("pageIndex", page);
         request.getRequestDispatcher("../view/history/import.jsp").forward(request, response);
     }
 
@@ -52,14 +66,18 @@ public class ImportController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Date date = Date.valueOf(request.getParameter("date"));
-        
-        ImportDBContext idb = new ImportDBContext();
-        ArrayList<Import> imports = idb.searchByDate(date);
-        
-        request.setAttribute("date", date);
-        request.setAttribute("imports", imports);
-        request.getRequestDispatcher("../view/history/import.jsp").forward(request, response);
+        try {
+            Date date = Date.valueOf(request.getParameter("date"));
+
+            ImportDBContext idb = new ImportDBContext();
+            ArrayList<Import> imports = idb.searchByDate(date);
+
+            request.setAttribute("date", date);
+            request.setAttribute("imports", imports);
+            request.getRequestDispatcher("../view/history/import.jsp").forward(request, response);
+        } catch (IllegalArgumentException iae) {
+            response.sendRedirect("import");
+        }
     }
 
     /**

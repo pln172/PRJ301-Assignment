@@ -196,4 +196,60 @@ public class CustomerDBContext extends DBContext {
             Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public int numberRecord() {
+        int num = 0;
+        try {
+            String sql = "select count(id) as NumberOfRecord\n"
+                    + "from Customer";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt("NumberOfRecord");
+            }
+        } catch (SQLException ex) { 
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+    
+    public ArrayList<Customer> pagging(int pagesize, int pageindex) {
+        ArrayList<Customer> customers = new ArrayList<>();
+        try {
+            String sql = "WITH Cus AS\n"
+                    + "(\n"
+                    + "    SELECT id, [customerNo], [cname],\n"
+                    + "    [gender], [dob], [phone], [email], [address],\n"
+                    + "    ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber'\n"
+                    + "    FROM Customer\n"
+                    + ") \n"
+                    + "SELECT id, [customerNo], [cname],\n"
+                    + "    [gender], [dob], [phone], [email], [address]\n"
+                    + "FROM Cus\n"
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pagesize);
+            stm.setInt(3, pageindex);
+            stm.setInt(4, pagesize);
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                Customer c = new Customer();
+                c.setId(rs.getInt("id"));
+                c.setCustomerNo(rs.getString("customerNo"));
+                c.setName(rs.getString("cname"));
+                c.setGender(rs.getBoolean("gender"));
+                c.setDob(rs.getDate("dob"));
+                c.setPhone(rs.getString("phone"));
+                c.setEmail(rs.getString("email"));
+                c.setAddress(rs.getString("address"));
+
+                customers.add(c);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return customers;
+    }
 }

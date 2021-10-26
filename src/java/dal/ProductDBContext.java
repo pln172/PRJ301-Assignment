@@ -50,7 +50,7 @@ public class ProductDBContext extends DBContext {
         }
         return products;
     }
-    
+
     public ArrayList<Product> searchByName(String name) {
         ArrayList<Product> products = new ArrayList<>();
         try {
@@ -175,5 +175,58 @@ public class ProductDBContext extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public int numberRecord() {
+        int num = 0;
+        try {
+            String sql = "select count(id) as NumberOfRecord\n"
+                    + "from Product";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt("NumberOfRecord");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public ArrayList<Product> pagging(int pagesize, int pageindex) {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            String sql = "WITH Pro AS (\n"
+                    + "     SELECT id, [productNo], [pname],\n"
+                    + "     [quantity], [priceImport], [priceExport],\n"
+                    + "     ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber'\n"
+                    + "     FROM Product\n"
+                    + ") \n"
+                    + " SELECT id, [productNo], [pname],\n"
+                    + "     [quantity], [priceImport], [priceExport]\n"
+                    + " FROM Pro\n"
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pagesize);
+            stm.setInt(3, pageindex);
+            stm.setInt(4, pagesize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setProductNo(rs.getString("productNo"));
+                p.setName(rs.getString("pname"));
+                p.setQuantity(rs.getInt("quantity"));
+                p.setPriceImport(rs.getInt("priceImport"));
+                p.setPriceExport(rs.getInt("priceExport"));
+
+                products.add(p);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
     }
 }

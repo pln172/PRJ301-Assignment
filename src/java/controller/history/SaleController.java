@@ -26,10 +26,23 @@ public class SaleController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String raw_page = request.getParameter("page");
+        if (raw_page == null || raw_page.length() == 0) {
+            raw_page = "1";
+        }
+
+        int page = Integer.parseInt(raw_page);
+        int pageSize = 8;
+
         OrderDBContext odb = new OrderDBContext();
-        ArrayList<Order> orders = odb.getOrders();
-        
+        ArrayList<Order> orders = odb.pagging(pageSize, page);
+
+        int count = odb.numberRecord();
+        int totalPage = (count % pageSize == 0) ? count / pageSize : (count / pageSize) + 1;
+
         request.setAttribute("orders", orders);
+        request.setAttribute("totalPage", totalPage);
+        request.setAttribute("pageIndex", page);
         request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);
     }
 
@@ -44,14 +57,19 @@ public class SaleController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Date date = Date.valueOf(request.getParameter("date"));
-        
-        OrderDBContext odb = new OrderDBContext();
-        ArrayList<Order> orders = odb.searchByDate(date);
-        
-        request.setAttribute("date", date);
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);
+        try {
+            Date date = Date.valueOf(request.getParameter("date"));
+
+            OrderDBContext odb = new OrderDBContext();
+            ArrayList<Order> orders = odb.searchByDate(date);
+
+            request.setAttribute("date", date);
+            request.setAttribute("orders", orders);
+            request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);
+
+        } catch (IllegalArgumentException iae) {
+            response.sendRedirect("sale");
+        }
     }
 
     /**

@@ -228,4 +228,63 @@ public class EmployeeDBContext extends DBContext {
             Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public int numberRecord() {
+        int num = 0;
+        try {
+            String sql = "select count(id) as NumberOfRecord\n"
+                    + "from Employee";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt("NumberOfRecord");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public ArrayList<Employee> pagging(int pagesize, int pageindex) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            String sql = "WITH Emp AS (\n"
+                    + "     SELECT id, ename, [gender],\n"
+                    + "     [dob], [phone], [email], [address],\n"
+                    + "	 [starting_date], [leaving_date], [active],\n"
+                    + "     ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber'\n"
+                    + "     FROM Employee\n"
+                    + ") \n"
+                    + " SELECT id, ename, [gender],\n"
+                    + " [dob], [phone], [email], [address],\n"
+                    + " [starting_date], [leaving_date], [active]\n"
+                    + " FROM Emp\n"
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pagesize);
+            stm.setInt(3, pageindex);
+            stm.setInt(4, pagesize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Employee e = new Employee();
+                e.setId(rs.getInt("id"));
+                e.setName(rs.getString("ename"));
+                e.setGender(rs.getBoolean("gender"));
+                e.setDob(rs.getDate("dob"));
+                e.setPhone(rs.getString("phone"));
+                e.setEmail(rs.getString("email"));
+                e.setAddress(rs.getString("address"));
+                e.setStarting_date(rs.getDate("starting_date"));
+                e.setLeaving_date(rs.getDate("leaving_date"));
+                e.setActive(rs.getBoolean("active"));
+
+                employees.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return employees;
+    }
 }

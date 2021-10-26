@@ -19,7 +19,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="css/base_style.css" rel="stylesheet" type="text/css"/>
         <link href="css/list_style.css" rel="stylesheet" type="text/css"/>
-
+        <script src="js/pagger.js" type="text/javascript"></script>
+        <link href="css/pagger.css" rel="stylesheet" type="text/css"/>
+        
         <script>
             function changeurl(url) {
                 var host = "http://localhost:8080/ASSIGNMENT/";
@@ -113,6 +115,11 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <div id="paggerBottom">     
+                        </div>
+                        <script>
+                            createPagger('product', 'paggerBottom', ${requestScope.pageIndex-1}, ${requestScope.pageIndex}, ${requestScope.pageIndex+1}, 2, ${requestScope.totalPage});
+                        </script> 
                     </div>
                 </div>
         </section>

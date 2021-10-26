@@ -93,12 +93,70 @@ public class ImportDBContext extends DBContext {
                 p.setProductNo(rs.getString("productNo"));
                 p.setName(rs.getString("pname"));
                 p.setPriceImport(rs.getInt("priceImport"));
-                
+
                 Import i = new Import();
                 i.setPid(p);
                 i.setDate(rs.getTimestamp("date"));
                 i.setQuantity(rs.getInt("quantity"));
-                
+
+                imports.add(i);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return imports;
+    }
+
+    public int numberRecord() {
+        int num = 0;
+        try {
+            String sql = "select count(pid) as NumberOfRecord\n"
+                    + "from Import";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt("NumberOfRecord");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public ArrayList<Import> pagging(int pagesize, int pageindex) {
+        ArrayList<Import> imports = new ArrayList<>();
+        try {
+            String sql = "WITH Imp AS (\n"
+                    + "     SELECT pid, Product.[productNo], Product.[pname],\n"
+                    + "     [date], [priceImport], Import.[quantity],\n"
+                    + "     ROW_NUMBER() OVER (ORDER BY pid) AS 'RowNumber'\n"
+                    + "     FROM Import inner join Product\n"
+                    + "	 ON Import.pid = Product.id\n"
+                    + ") \n"
+                    + " SELECT pid, [productNo], [pname],\n"
+                    + "     [date], [priceImport], [quantity]\n"
+                    + " FROM Imp\n"
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
+                    + " ORDER BY date desc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pagesize);
+            stm.setInt(3, pageindex);
+            stm.setInt(4, pagesize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("pid"));
+                p.setProductNo(rs.getString("productNo"));
+                p.setName(rs.getString("pname"));
+                p.setPriceImport(rs.getInt("priceImport"));
+
+                Import i = new Import();
+                i.setPid(p);
+                i.setDate(rs.getTimestamp("date"));
+                i.setQuantity(rs.getInt("quantity"));
+
                 imports.add(i);
             }
         } catch (SQLException ex) {

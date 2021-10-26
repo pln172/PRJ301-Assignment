@@ -52,7 +52,7 @@ public class OrderDBContext extends DBContext {
         }
         return orders;
     }
-    
+
     public ArrayList<Order> searchByDate(Date date) {
         ArrayList<Order> orders = new ArrayList<>();
         try {
@@ -71,10 +71,10 @@ public class OrderDBContext extends DBContext {
                 o.setOrderNo(rs.getString("orderNo"));
                 o.setDate(rs.getTimestamp("date"));
                 o.setTotal(rs.getInt("ototal"));
-                
+
                 orders.add(o);
             }
-        } catch (SQLException ex) { 
+        } catch (SQLException ex) {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return orders;
@@ -276,7 +276,55 @@ public class OrderDBContext extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(OrderDetailDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-    
+
+    public int numberRecord() {
+        int num = 0;
+        try {
+            String sql = "select count(id) as NumberOfRecord\n"
+                    + "from [Order]";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                num = rs.getInt("NumberOfRecord");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
+    }
+
+    public ArrayList<Order> pagging(int pagesize, int pageindex) {
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
+            String sql = "WITH Ord AS (\n"
+                    + "     SELECT id, orderNo, date, ototal,\n"
+                    + "     ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber'\n"
+                    + "     FROM [Order]\n"
+                    + ") \n"
+                    + " SELECT id, orderNo, date, ototal\n"
+                    + " FROM Ord\n"
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
+                    + "ORDER BY date desc";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, pageindex);
+            stm.setInt(2, pagesize);
+            stm.setInt(3, pageindex);
+            stm.setInt(4, pagesize);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order();
+                o.setId(rs.getInt("id"));
+                o.setOrderNo(rs.getString("orderNo"));
+                o.setDate(rs.getTimestamp("date"));
+                o.setTotal(rs.getInt("ototal"));
+
+                orders.add(o);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return orders;
+    }
 }
