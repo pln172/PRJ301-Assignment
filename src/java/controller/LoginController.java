@@ -32,7 +32,16 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+        Account acc = (Account) request.getSession().getAttribute("account");
+
+        String err = request.getParameter("err");
+
+        if (acc == null) {
+            request.setAttribute("err", err);
+            request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("statistic");
+        }
     }
 
     /**
@@ -61,7 +70,7 @@ public class LoginController extends HttpServlet {
             }
         } else {
             request.getSession().setAttribute("account", null);
-            response.getWriter().println("Login fail! Check username or password!");
+            response.sendRedirect("login?err=1");
         }
     }
 

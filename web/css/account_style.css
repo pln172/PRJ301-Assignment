@@ -21,7 +21,7 @@ input {
 }
 
 td {
-    padding: 10px 10px;
+    padding: 20px 10px;
 }
 
 #caption {
@@ -33,9 +33,10 @@ td {
     color: #2A2835;
 }
 
-tr #save {
+form #save {
     width: 150px;
-    margin: 60px 30px 10px 82px;
+    margin-top: 60px;
+    margin-left: 500px;
     padding-top: 15px;
     border-radius: 25px;
     font-weight: bold;

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -33,7 +34,10 @@ public class AccountController extends BaseRequiredAuthController {
             throws ServletException, IOException {
         Account acc = (Account) request.getSession().getAttribute("account");
         
+        String err = request.getParameter("err");
+        
         request.setAttribute("account", acc);
+        request.setAttribute("err", err);
         request.getRequestDispatcher("view/Account.jsp").forward(request, response);
     }
 
@@ -48,6 +52,23 @@ public class AccountController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String user = request.getParameter("user");
+        String pass1 = request.getParameter("pass1");
+        String pass2 = request.getParameter("pass2");
+        
+        if (pass1.equals(pass2)) {
+            Account a = new Account();
+            a.setUsername(user);
+            a.setPassword(pass1);
+            
+            AccountDBContext acc = new AccountDBContext();
+            acc.update(a);
+            Account account = acc.getAccount(user, pass1);
+            request.getSession().setAttribute("account", account);
+            response.sendRedirect("account");
+        } else {
+            response.sendRedirect("account?err=1");
+        }
     }
 
     /**

@@ -10,34 +10,55 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link href="css/login_style.css" rel="stylesheet" type="text/css"/>
+
+        <script>
+            function show() {
+                var type = document.getElementById("pass").type;
+                
+                if(type === "text") {
+                    document.getElementById("pass").type = "password";
+                } else {
+                    document.getElementById("pass").type = "text";
+                }
+            }
+        </script>
     </head>
-    
+
     <body>
         <form action="login" method="POST">
             <table>
                 <tr>
                     <td id="caption">SALE MANAGEMENT</td>
                 </tr>
-                
+
                 <tr>
                     <td>Username <span>*</span></td>
                 </tr>
-                
+
                 <tr>
-                    <td><input type="text" name="user" required/></td>
+                    <td><input type="text" name="user"required/></td>
                 </tr>
 
                 <tr>
                     <td>Password <span>*</span></td>
                 </tr>
-                
+
                 <tr>
-                    <td><input type="password" name="pass" required/></td>
+                    <td>
+                        <input id="pass" type="password" name="pass" required/>
+                        <span onclick="show()" style="cursor: pointer;"><i class="fas fa-eye"></i></span></td>
                 </tr>
 
                 <tr>
                     <td><input id="login" type="submit" value="LOGIN"/></td>
+                </tr>
+
+                <tr>
+                    <td style="color: red; text-align: center; font-weight: bold;">
+                        ${requestScope.err == 1 ? "Please check username or password!" : ""}
+                    </td>
                 </tr>
             </table>
         </form>

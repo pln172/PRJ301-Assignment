@@ -29,12 +29,12 @@ public class AccountDBContext extends DBContext {
                     + "  FROM [Account]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
-            
-            while(rs.next()) {
+
+            while (rs.next()) {
                 Account a = new Account();
                 a.setUsername(rs.getString("username"));
                 a.setPassword(rs.getString("password"));
-                
+
                 accounts.add(a);
             }
         } catch (SQLException ex) {
@@ -156,6 +156,20 @@ public class AccountDBContext extends DBContext {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public void update(Account a) {
+        try {
+            String sql = "UPDATE [Account]\n"
+                    + "   SET [password] = ?\n"
+                    + " WHERE username = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, a.getPassword());
+            stm.setString(2, a.getUsername());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void delete(Account a) {

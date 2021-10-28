@@ -68,30 +68,26 @@
                     <div class="right">
                         <form action="account" method="POST">
                             <table>
-                                <tr>
-                                    <td id="caption">User Information</td>
-                                </tr>
+                                <caption id="caption">User Information</caption>
 
                                 <tr>
                                     <td>Username</td>
-                                </tr>
-
-                                <tr>
-                                    <td><input style="cursor: not-allowed" type="text" value="${ac.username}" readonly/></td>
-                                </tr>
-
-                                <tr>
+                                    <td><input style="cursor: not-allowed" type="text" name="user" value="${ac.username}" readonly/></td>
                                     <td>Password</td>
+                                    <td><input style="cursor: not-allowed" type="text" value="${ac.password}" readonly/></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input style="cursor: not-allowed" type="password" value="${ac.password}" readonly/></td>
-                                </tr>
-
-                                <tr>
-                                    <td><input id="save" type="submit" value="SAVE"/></td>
+                                    <td>New password</td>
+                                    <td><input type="password" name="pass1" required/></td>
+                                    <td>Re-input new password</td>
+                                    <td><input type="password" name="pass2" required/></td>
                                 </tr>
                             </table>
+                            <input id="save" type="submit" value="SAVE"/>
+                            <p style="color: red; text-align: center; margin-top: 10px;">
+                                ${requestScope.err == 1 ? "Re-enter new password correctly!" : ""}
+                            </p>
                         </form>
                     </div>
                 </div>
