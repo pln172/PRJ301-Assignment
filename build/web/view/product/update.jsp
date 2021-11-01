@@ -75,7 +75,7 @@
                                 <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" value="${p.name}" required/>
+                                        <input type="text" name="name" value="${p.name}" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                     <td></td>
                                     <td>Quantity <span style="color: red;">*</span></td>
@@ -97,6 +97,9 @@
                                 </tr>
                             </table>
                             <input id="save" type="submit" style="margin-left: 42%;" value="Save"/>
+                            <p style="color: red; margin-top: 15px; text-align: center; font-weight: bold;">
+                                ${requestScope.err == 1 ? "Import price > Export price. Re-enter!" : ""}
+                            </p>
                         </form>
                     </div>
                 </div>

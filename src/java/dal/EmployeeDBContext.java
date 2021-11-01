@@ -5,11 +5,9 @@
  */
 package dal;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -185,32 +183,51 @@ public class EmployeeDBContext extends DBContext {
 
     public void update(Employee e) {
         try {
-            String sql = "UPDATE [Employee]\n"
-                    + "   SET [ename] = ?\n"
-                    + "      ,[gender] = ?\n"
-                    + "      ,[dob] = ?\n"
-                    + "      ,[phone] = ?\n"
-                    + "      ,[email] = ?\n"
-                    + "      ,[address] = ?\n"
-                    + "      ,[leaving_date] = ?\n"
-                    + "      ,[active] = ?\n"
-                    + " WHERE id = ?";
+            if (!e.isActive()) {
+                String sql = "UPDATE [Employee]\n"
+                        + "   SET [ename] = ?\n"
+                        + "      ,[gender] = ?\n"
+                        + "      ,[dob] = ?\n"
+                        + "      ,[phone] = ?\n"
+                        + "      ,[email] = ?\n"
+                        + "      ,[address] = ?\n"
+                        + "      ,[leaving_date] = ?\n"
+                        + "      ,[active] = ?\n"
+                        + " WHERE id = ?";
 
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, e.getName());
-            stm.setBoolean(2, e.isGender());
-            stm.setDate(3, e.getDob());
-            stm.setString(4, e.getPhone());
-            stm.setString(5, e.getEmail());
-            stm.setString(6, e.getAddress());
-            if (e.isActive()) {
-                stm.setNull(7, Types.NULL);
-            } else {
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setString(1, e.getName());
+                stm.setBoolean(2, e.isGender());
+                stm.setDate(3, e.getDob());
+                stm.setString(4, e.getPhone());
+                stm.setString(5, e.getEmail());
+                stm.setString(6, e.getAddress());
                 stm.setDate(7, e.getLeaving_date());
+                stm.setBoolean(8, e.isActive());
+                stm.setInt(9, e.getId());
+                stm.executeUpdate();
+            } else {
+                String sql = "UPDATE [Employee]\n"
+                        + "   SET [ename] = ?\n"
+                        + "      ,[gender] = ?\n"
+                        + "      ,[dob] = ?\n"
+                        + "      ,[phone] = ?\n"
+                        + "      ,[email] = ?\n"
+                        + "      ,[address] = ?\n"
+                        + "      ,[active] = ?\n"
+                        + " WHERE id = ?";
+
+                PreparedStatement stm = connection.prepareStatement(sql);
+                stm.setString(1, e.getName());
+                stm.setBoolean(2, e.isGender());
+                stm.setDate(3, e.getDob());
+                stm.setString(4, e.getPhone());
+                stm.setString(5, e.getEmail());
+                stm.setString(6, e.getAddress());
+                stm.setBoolean(7, e.isActive());
+                stm.setInt(8, e.getId());
+                stm.executeUpdate();
             }
-            stm.setBoolean(8, e.isActive());
-            stm.setInt(9, e.getId());
-            stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }

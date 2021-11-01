@@ -21,7 +21,7 @@
             }
         </script>
     </head>
-    
+
     <body>
         <header>
             <div class="row">
@@ -70,7 +70,8 @@
                                 <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" required/>
+                                        <input type="text" name="name" value="${requestScope.name}"
+                                               pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                     <td></td>
                                     <td>Quantity <span style="color: red;">*</span></td>
@@ -82,17 +83,23 @@
                                 <tr>
                                     <td>Price import <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="number" name="priceImport" min="1" required/>
+                                        <input type="number" name="priceImport" 
+                                               value="${requestScope.priceImport}"
+                                               min="1" max="2000000" required/>
                                     </td>
                                     <td></td>
                                     <td>Price export <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="number" name="priceExport" min="1" required/>
+                                        <input type="number" name="priceExport" 
+                                               value="${requestScope.priceExport}"
+                                               min="1" max="2500000" required/>
                                     </td>
                                 </tr>
                             </table>
                             <input id="save" style="margin-left: 42%;" type="submit" value="Save"/>
-
+                            <p style="color: red; margin-top: 15px; text-align: center; font-weight: bold;">
+                                ${requestScope.err}
+                            </p>
                         </form>
                     </div>
                 </div>

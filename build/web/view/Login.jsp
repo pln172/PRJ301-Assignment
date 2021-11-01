@@ -38,7 +38,8 @@
                 </tr>
 
                 <tr>
-                    <td><input type="text" name="user"required/></td>
+                    <td><input type="text" name="user" pattern="[a-zA-Z0-9]+"
+                               value="${requestScope.user}" required/></td>
                 </tr>
 
                 <tr>
@@ -47,8 +48,12 @@
 
                 <tr>
                     <td>
-                        <input id="pass" type="password" name="pass" required/>
-                        <span onclick="show()" style="cursor: pointer;"><i class="fas fa-eye"></i></span></td>
+                        <input id="pass" type="password" name="pass" 
+                               value="${requestScope.pass}" 
+                               pattern="[a-zA-Z0-9]+" required/>
+                        <span onclick="show()" style="cursor: pointer;">
+                            <i class="fas fa-eye"></i></span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -57,7 +62,7 @@
 
                 <tr>
                     <td style="color: red; text-align: center; font-weight: bold;">
-                        ${requestScope.err == 1 ? "Please check username or password!" : ""}
+                        ${requestScope.err}
                     </td>
                 </tr>
             </table>

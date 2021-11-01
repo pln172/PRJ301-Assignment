@@ -10,6 +10,7 @@ import dal.AccountDBContext;
 import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
@@ -36,12 +37,21 @@ public class UpdateController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LocalDate d = java.time.LocalDate.now();
+        int day = d.getDayOfMonth();
+        int month = d.getMonth().getValue();
+        int year = d.getYear();
+        String dateMax = (year-18) + "-" + month + "-" + day;
+        String dateMin = (year-65) + "-" + month + "-" + day;
+        
         int id = Integer.parseInt(request.getParameter("id"));
 
         EmployeeDBContext edb = new EmployeeDBContext();
         Employee e = edb.getEmployee(id);
 
         request.setAttribute("employee", e);
+        request.setAttribute("dateMax", dateMax);
+        request.setAttribute("dateMin", dateMin);
         request.getRequestDispatcher("../view/employee/update.jsp").forward(request, response);
     }
 
@@ -58,25 +68,26 @@ public class UpdateController extends BaseRequiredAuthController {
             throws ServletException, IOException {
         Employee e = new Employee();
         e.setId(Integer.parseInt(request.getParameter("id")));
-        e.setName(request.getParameter("name"));
+        e.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
         e.setGender(request.getParameter("gender").equals("male"));
         e.setDob(Date.valueOf(request.getParameter("dob")));
         e.setPhone(request.getParameter("phone"));
-        e.setEmail(request.getParameter("email"));
-        e.setAddress(request.getParameter("address"));
+        e.setEmail(request.getParameter("email").trim());
+        e.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
         e.setActive(request.getParameter("active").equals("yes"));
 
+        EmployeeDBContext edb = new EmployeeDBContext();
         if (request.getParameter("active").equals("no")) {
             LocalDateTime myDateObj = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = myDateObj.format(dtf);
             e.setLeaving_date(Date.valueOf(formattedDate));
-
+            
             AccountDBContext adb = new AccountDBContext();
             Account acc = adb.getAccountEmp(Integer.parseInt(request.getParameter("id")));
             adb.delete(acc);
-        }
-        EmployeeDBContext edb = new EmployeeDBContext();
+        } 
+        
         edb.update(e);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
     }

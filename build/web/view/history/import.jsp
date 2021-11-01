@@ -74,7 +74,7 @@
                     <div class="right">
                         <form id="form" action="import" method="POST">
                             <div>
-                                Choose date <input type="date" name="date" 
+                                Choose date <input type="date" name="date" max="${requestScope.today}"
                                                    onchange="search()"
                                                    value="${requestScope.date}"/>
                             </div>

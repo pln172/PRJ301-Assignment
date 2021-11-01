@@ -10,6 +10,7 @@ import dal.CustomerDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +35,21 @@ public class UpdateController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LocalDate d = java.time.LocalDate.now();
+        int day = d.getDayOfMonth();
+        int month = d.getMonth().getValue();
+        int year = d.getYear();
+        String dateMax = (year-5) + "-" + month + "-" + day;
+        String dateMin = (year-120) + "-" + month + "-" + day;
+
         int id = Integer.parseInt(request.getParameter("id"));
         
         CustomerDBContext cdb = new CustomerDBContext();
         Customer cus = cdb.getCus(id);
         
         request.setAttribute("customer", cus);
+        request.setAttribute("dateMax", dateMax);
+        request.setAttribute("dateMin", dateMin);
         request.getRequestDispatcher("../view/customer/update.jsp").forward(request, response);
     }
 
@@ -56,12 +66,12 @@ public class UpdateController extends BaseRequiredAuthController {
             throws ServletException, IOException {
         Customer c = new Customer();
         c.setId(Integer.parseInt(request.getParameter("id")));
-        c.setName(request.getParameter("name"));
+        c.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
         c.setGender(request.getParameter("gender").equals("male"));
         c.setDob(Date.valueOf(request.getParameter("dob")));
         c.setPhone(request.getParameter("phone"));
-        c.setEmail(request.getParameter("email"));
-        c.setAddress(request.getParameter("address"));
+        c.setEmail(request.getParameter("email").trim());
+        c.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
         
         CustomerDBContext cdb = new CustomerDBContext();
         cdb.update(c);

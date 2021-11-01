@@ -34,11 +34,12 @@ public class UpdateController extends BaseRequiredAuthController {
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        
+
         ProductDBContext pdb = new ProductDBContext();
         Product product = pdb.getPro(id);
-        
+
         request.setAttribute("product", product);
+        request.setAttribute("err", request.getParameter("err"));
         request.getRequestDispatcher("../view/product/update.jsp").forward(request, response);
     }
 
@@ -54,16 +55,22 @@ public class UpdateController extends BaseRequiredAuthController {
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        
-        ProductDBContext pdb = new ProductDBContext();
-        Product pro = pdb.getPro(id);
-        pro.setName(request.getParameter("name"));
-        pro.setQuantity(pro.getQuantity());
-        pro.setPriceImport(Integer.parseInt(request.getParameter("priceImport")));
-        pro.setPriceExport(Integer.parseInt(request.getParameter("priceExport")));
-        
-        pdb.update(pro);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+        int im = Integer.parseInt(request.getParameter("priceImport"));
+        int ex = Integer.parseInt(request.getParameter("priceExport"));
+
+        if (im < ex) {
+            ProductDBContext pdb = new ProductDBContext();
+            Product pro = pdb.getPro(id);
+            pro.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
+            pro.setQuantity(pro.getQuantity());
+            pro.setPriceImport(im);
+            pro.setPriceExport(ex);
+
+            pdb.update(pro);
+            response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+        } else {
+            response.sendRedirect("update?id=" + id + "&err=1");
+        }
     }
 
     /**

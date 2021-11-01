@@ -10,9 +10,11 @@ import dal.AccountDBContext;
 import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +39,16 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LocalDate d = java.time.LocalDate.now();
+        int day = d.getDayOfMonth();
+        int month = d.getMonth().getValue();
+        int year = d.getYear();
+        
+        String dateMax = (year-18) + "-" + month + "-" + day;
+        String dateMin = (year-65) + "-" + month + "-" + day;
+        
+        request.setAttribute("dateMin", dateMin);
+        request.setAttribute("dateMax", dateMax);
         request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
     }
 
@@ -52,12 +64,12 @@ public class InsertController extends BaseRequiredAuthController {
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Employee e = new Employee();
-        e.setName(request.getParameter("name"));
+        e.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
         e.setGender(request.getParameter("gender").equals("male"));
         e.setDob(Date.valueOf(request.getParameter("dob")));
         e.setPhone(request.getParameter("phone"));
-        e.setEmail(request.getParameter("email"));
-        e.setAddress(request.getParameter("address"));
+        e.setEmail(request.getParameter("email").trim());
+        e.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
         e.setActive(request.getParameter("active").equals("yes"));
 
         LocalDateTime myDateObj = LocalDateTime.now();

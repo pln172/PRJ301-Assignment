@@ -65,7 +65,7 @@ public class CustomerController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
+        String name = request.getParameter("name").trim();
 
         CustomerDBContext cdb = new CustomerDBContext();
         ArrayList<Customer> customers = cdb.searchByName(name);

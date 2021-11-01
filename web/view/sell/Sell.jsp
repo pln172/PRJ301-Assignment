@@ -80,6 +80,23 @@
                 <div class="col-md-9">
                     <div class="right">
                         <form action="sell" method="POST">
+                            <p style="color: red; font-weight: bold;">
+                                <c:choose>
+                                    <c:when test="${requestScope.err == 1}">
+                                        Duplicate product. Check again!
+                                    </c:when>
+                                    <c:when test="${requestScope.err == 2}">
+                                        Quantity sell > inventory. Check again!
+                                    </c:when>
+                                    <c:when test="${requestScope.err == 3}">
+                                        Product empty. Check again!
+                                    </c:when>
+                                    <c:when test="${requestScope.err == 4}">
+                                        Duplicate product, Quantity sell > inventory,
+                                        Product empty. Check again!
+                                    </c:when>
+                                </c:choose>
+                            </p>
                             <table id="theTable">
                                 <caption>Order</caption>
                                 <tr>
@@ -90,7 +107,6 @@
                                     <td>Customer <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="cus" required>
-                                            <option value="0" disabled selected hidden>Customer</option>
                                             <c:forEach items="${requestScope.customers}" var="c">
                                                 <option value="${c.id}"
                                                         >${c.name} - ${c.phone}</option>
@@ -103,14 +119,14 @@
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro" required>
-                                            <option value="0" disabled selected hidden>Product</option>
+                                            <option value="0" hidden>Product</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} - 
                                                     <fmt:formatNumber type = "number" 
-                                                      value = "${p.priceExport}"/>
+                                                                      value = "${p.priceExport}"/>
                                                     - SL: ${p.quantity}</option>
-                                            </c:forEach>
+                                                </c:forEach>
                                         </select>
                                     </td>
                                     <td>Quantity <span style="color: red;">*</span></td>
@@ -123,14 +139,14 @@
                                     <td>Product <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro">
-                                            <option value="0" disabled selected hidden>Product</option>
+                                            <option value="0" hidden>Product</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} - 
                                                     <fmt:formatNumber type = "number" 
-                                                      value = "${p.priceExport}"/>
+                                                                      value = "${p.priceExport}"/>
                                                     - SL: ${p.quantity}</option>
-                                            </c:forEach>
+                                                </c:forEach>
                                         </select>
                                     </td>
                                     <td>Quantity <span style="color: red;">*</span></td>

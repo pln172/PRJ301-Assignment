@@ -74,7 +74,7 @@
                                 <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" value="${c.name}" required/>
+                                        <input type="text" name="name" value="${c.name}" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                     <td></td>
                                     <td>Gender <span style="color: red;">*</span></td>
@@ -91,12 +91,13 @@
                                 <tr>
                                     <td>Date of birth <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="date" name="dob" value="${c.dob}" required/>
+                                        <input type="date" name="dob" value="${c.dob}"
+                                               min="${requestScope.dateMin}" max="${requestScope.dateMax}" required/>
                                     </td>
                                     <td></td>
                                     <td>Phone <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" length="10" name="phone" value="${c.phone}" required/>
+                                        <input type="tel" name="phone" value="${c.phone}" pattern="[0]{1}[0-9]{9}" required/>
                                     </td>
                                 </tr>
 
@@ -108,7 +109,7 @@
                                     <td></td>
                                     <td>Address <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="address" length="100" value="${c.address}" required/>
+                                        <input type="text" name="address" length="100" value="${c.address}" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                 </tr>
                             </table>

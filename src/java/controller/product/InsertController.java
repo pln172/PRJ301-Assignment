@@ -21,7 +21,6 @@ import model.Product;
  */
 public class InsertController extends BaseRequiredAuthController {
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -48,15 +47,27 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Product p = new Product();
-        p.setName(request.getParameter("name"));
-        p.setQuantity(0);
-        p.setPriceImport(Integer.parseInt(request.getParameter("priceImport")));
-        p.setPriceExport(Integer.parseInt(request.getParameter("priceExport")));
-        
-        ProductDBContext pdb = new ProductDBContext();
-        pdb.insert(p);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+        String name = request.getParameter("name").replaceAll("\\s\\s+", " ").trim();
+        int im = Integer.parseInt(request.getParameter("priceImport"));
+        int ex = Integer.parseInt(request.getParameter("priceExport"));
+
+        if (im < ex) {
+            Product p = new Product();
+            p.setName(name);
+            p.setQuantity(0);
+            p.setPriceImport(im);
+            p.setPriceExport(ex);
+
+            ProductDBContext pdb = new ProductDBContext();
+            pdb.insert(p);
+            response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+        } else {
+            request.setAttribute("name", name);
+            request.setAttribute("priceImport", im);
+            request.setAttribute("priceExport", ex);
+            request.setAttribute("err", "Import price > Export price. Re-enter!");
+            request.getRequestDispatcher("../view/product/insert.jsp").forward(request, response);
+        }
     }
 
     /**

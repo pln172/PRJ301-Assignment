@@ -57,7 +57,7 @@ public class EmployeeController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
+        String name = request.getParameter("name").trim();
 
         EmployeeDBContext edb = new EmployeeDBContext();
         ArrayList<Employee> employees = edb.searchByName(name);

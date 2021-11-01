@@ -26,8 +26,9 @@
                 window.location.href = host + url;
             }
 
-            function insert() {
-                window.location.href += "/insert";
+            function insert(url) {
+                var host = "http://localhost:8080/ASSIGNMENT/";
+                window.location.href = host + url + "/insert";
             }
 
             function detail(id) {
@@ -86,7 +87,7 @@
                             <input type="text" name="name" value="${requestScope.name}"/>
                             <input type="submit" value="Search"/>
                         </form>
-                        <input id="insert" type="button" onclick="insert()" value="Insert"/>
+                        <input id="insert" type="button" onclick="insert('employee')" value="Insert"/>
                         <table border="2px">
                             <tr class="th">
                                 <td>STT</td>

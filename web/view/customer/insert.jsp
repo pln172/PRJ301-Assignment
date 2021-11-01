@@ -70,7 +70,7 @@
                                 <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" required/>
+                                        <input type="text" name="name" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                     <td></td>
                                     <td>Gender <span style="color: red;">*</span></td>
@@ -83,12 +83,13 @@
                                 <tr>
                                     <td>Date of birth <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="date" name="dob" required/>
+                                        <input type="date" name="dob"
+                                               min="${requestScope.dateMin}" max="${requestScope.dateMax}" required/>
                                     </td>
                                     <td></td>
                                     <td>Phone <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" length="10" name="phone" required/>
+                                        <input type="tel" name="phone" pattern="[0]{1}[0-9]{9}" required/>
                                     </td>
                                 </tr>
 
@@ -100,7 +101,7 @@
                                     <td></td>
                                     <td>Address <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="address" length="100" required/>
+                                        <input type="text" name="address" length="100" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                 </tr>
                             </table>

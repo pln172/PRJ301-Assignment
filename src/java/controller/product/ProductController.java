@@ -56,7 +56,7 @@ public class ProductController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
+        String name = request.getParameter("name").trim();
 
         ProductDBContext pdb = new ProductDBContext();
         ArrayList<Product> products = pdb.searchByName(name);

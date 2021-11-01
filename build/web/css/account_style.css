@@ -12,7 +12,7 @@ table {
     background-color: #D3DAE8;
 }
 
-input {
+.col-md-9 .right input {
     border: 1px solid gray;
     background-color: #E8F0FE;
     padding: 10px 5px;

@@ -34,10 +34,7 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         Account acc = (Account) request.getSession().getAttribute("account");
 
-        String err = request.getParameter("err");
-
         if (acc == null) {
-            request.setAttribute("err", err);
             request.getRequestDispatcher("view/Login.jsp").forward(request, response);
         } else {
             response.sendRedirect("statistic");
@@ -70,7 +67,10 @@ public class LoginController extends HttpServlet {
             }
         } else {
             request.getSession().setAttribute("account", null);
-            response.sendRedirect("login?err=1");
+            request.setAttribute("user", user);
+            request.setAttribute("pass", pass);
+            request.setAttribute("err", "Please check username or password!");
+            request.getRequestDispatcher("view/Login.jsp").forward(request, response);
         }
     }
 
