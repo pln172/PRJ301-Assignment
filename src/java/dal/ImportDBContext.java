@@ -164,4 +164,26 @@ public class ImportDBContext extends DBContext {
         }
         return imports;
     }
+
+    public int getCapital(Date from, Date to) {
+        int capital = 0;
+        try {
+            String sql = "SELECT sum(Import.[quantity] * Product.priceImport) as Capital\n"
+                    + "  FROM [Import] inner join Product \n"
+                    + "  on Import.pid = Product.id\n"
+                    + "  WHERE Cast([date] as date) between ? and ?";
+            
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, from);
+            stm.setDate(2, to);
+            ResultSet rs = stm.executeQuery();
+            
+            if (rs.next()) {
+                capital = rs.getInt("Capital");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return capital;
+    }
 }

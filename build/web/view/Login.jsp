@@ -16,8 +16,8 @@
         <script>
             function show() {
                 var type = document.getElementById("pass").type;
-                
-                if(type === "text") {
+
+                if (type === "text") {
                     document.getElementById("pass").type = "password";
                 } else {
                     document.getElementById("pass").type = "text";
@@ -64,6 +64,10 @@
                     <td style="color: red; text-align: center; font-weight: bold;">
                         ${requestScope.err}
                     </td>
+                </tr>
+
+                <tr style="text-align: center;">
+                    <td><a href="forgetPass">Forget password?</a></td>
                 </tr>
             </table>
         </form>

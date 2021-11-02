@@ -5,8 +5,13 @@
  */
 package controller;
 
+import dal.ImportDBContext;
+import dal.OrderDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +40,7 @@ public class ReportController extends BaseRequiredAuthController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ReportController</title>");            
+            out.println("<title>Servlet ReportController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ReportController at " + request.getContextPath() + "</h1>");
@@ -56,6 +61,22 @@ public class ReportController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LocalDate now = java.time.LocalDate.now();
+        Date date = Date.valueOf(now.toString());
+
+        OrderDBContext odb = new OrderDBContext();
+        int revenue = odb.getTotal(date, date);
+        int invoice = odb.getNumOrder(date, date);
+
+        ImportDBContext idb = new ImportDBContext();
+        int capital = idb.getCapital(date, date);
+
+        int interest = revenue - capital;
+        request.setAttribute("revenue", revenue);
+        request.setAttribute("invoice", invoice);
+        request.setAttribute("capital", capital);
+        request.setAttribute("interest", interest);
+        request.setAttribute("today", now);
         request.getRequestDispatcher("view/Report.jsp").forward(request, response);
     }
 
@@ -70,7 +91,66 @@ public class ReportController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String dateFrom = request.getParameter("dateFrom");
+        String dateTo = request.getParameter("dateTo");
+
+        if (dateFrom.length() != 0 && dateTo.length() != 0) {
+            Date from = Date.valueOf(dateFrom);
+            Date to = Date.valueOf(dateTo);
+            if (from.compareTo(to) <= 0) {
+                OrderDBContext odb = new OrderDBContext();
+                int revenue = odb.getTotal(from, to);
+                int invoice = odb.getNumOrder(from, to);
+
+                ImportDBContext idb = new ImportDBContext();
+                int capital = idb.getCapital(from, to);
+
+                int interest = revenue - capital;
+                request.setAttribute("dateFrom", from);
+                request.setAttribute("dateTo", to);
+                request.setAttribute("revenue", revenue);
+                request.setAttribute("invoice", invoice);
+                request.setAttribute("capital", capital);
+                request.setAttribute("interest", interest);
+            } else {
+                request.setAttribute("dateFrom", from);
+                request.setAttribute("dateTo", to);
+                request.setAttribute("err", "DateTo must after DateFrom!");
+            }
+        } else if (dateFrom.length()== 0 && dateTo.length() != 0) {
+            Date to = Date.valueOf(dateTo);
+            OrderDBContext odb = new OrderDBContext();
+            int revenue = odb.getTotal(to, to);
+            int invoice = odb.getNumOrder(to, to);
+
+            ImportDBContext idb = new ImportDBContext();
+            int capital = idb.getCapital(to, to);
+
+            int interest = revenue - capital;
+            request.setAttribute("dateTo", to);
+            request.setAttribute("revenue", revenue);
+            request.setAttribute("invoice", invoice);
+            request.setAttribute("capital", capital);
+            request.setAttribute("interest", interest);
+        } else if (dateTo.length() == 0 && dateFrom.length() != 0) {
+            Date from = Date.valueOf(dateFrom);
+            OrderDBContext odb = new OrderDBContext();
+            int revenue = odb.getTotal(from, from);
+            int invoice = odb.getNumOrder(from, from);
+
+            ImportDBContext idb = new ImportDBContext();
+            int capital = idb.getCapital(from, from);
+
+            int interest = revenue - capital;
+            request.setAttribute("dateFrom", from);
+            request.setAttribute("revenue", revenue);
+            request.setAttribute("invoice", invoice);
+            request.setAttribute("capital", capital);
+            request.setAttribute("interest", interest);
+        }
+        LocalDate now = java.time.LocalDate.now();
+        request.setAttribute("today", now);
+        request.getRequestDispatcher("view/Report.jsp").forward(request, response);
     }
 
     /**

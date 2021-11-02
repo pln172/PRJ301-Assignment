@@ -204,6 +204,7 @@ public class OrderDBContext extends DBContext {
         return null;
     }
 
+    /*
     public Order getOrderDetail() {
         int id = 0;
         try {
@@ -261,8 +262,7 @@ public class OrderDBContext extends DBContext {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
+    }*/
     public void delete(int id) {
         OrderDetailDBContext oddb = new OrderDetailDBContext();
         oddb.delete(id);
@@ -326,5 +326,47 @@ public class OrderDBContext extends DBContext {
             Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return orders;
+    }
+
+    public int getTotal(Date from, Date to) {
+        int total = 0;
+        try {
+            String sql = "SELECT sum([ototal]) as Total\n"
+                    + "  FROM [Order]\n"
+                    + "  WHERE Cast([date] as date) between ? and ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, from);
+            stm.setDate(2, to);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getInt("Total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
+    }
+
+    public int getNumOrder(Date from, Date to) {
+        int num = 0;
+        try {
+            String sql = "SELECT count(id) as Num\n"
+                    + "  FROM [Order]\n"
+                    + "  WHERE Cast([date] as date) between ? and ?";
+            
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, from);
+            stm.setDate(2, to);
+            ResultSet rs = stm.executeQuery();
+            
+            if(rs.next()) {
+                num = rs.getInt("Num");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return num;
     }
 }
