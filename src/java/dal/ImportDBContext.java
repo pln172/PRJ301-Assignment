@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Import;
+import model.ImportDetail;
 import model.Product;
 
 /**
@@ -23,28 +24,51 @@ public class ImportDBContext extends DBContext {
 
     public ArrayList<Import> getImports() {
         ArrayList<Import> imports = new ArrayList<>();
-
         try {
-            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date]\n"
-                    + ",priceImport, Import.[quantity]\n"
-                    + "  FROM [Import] inner join Product\n"
-                    + "  ON Import.pid = Product.id\n"
+            String sql = "SELECT [id]\n"
+                    + "      ,[importNo]\n"
+                    + "      ,[date]\n"
+                    + "      ,[itotal]\n"
+                    + "  FROM [Import]"
                     + "  ORDER BY date desc";
-
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("pid"));
-                p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("pname"));
-                p.setPriceImport(rs.getInt("priceImport"));
-
                 Import i = new Import();
-                i.setPid(p);
+                i.setId(rs.getInt("id"));
+                i.setImportNo(rs.getString("importNo"));
                 i.setDate(rs.getTimestamp("date"));
-                i.setQuantity(rs.getInt("quantity"));
+                i.setTotal(rs.getInt("itotal"));
+
+                imports.add(i);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return imports;
+    }
+
+    public ArrayList<Import> searchByDate(Date date) {
+        ArrayList<Import> imports = new ArrayList<>();
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[importNo]\n"
+                    + "      ,[date]\n"
+                    + "      ,[itotal]\n"
+                    + "  FROM [Import]"
+                    + "  WHERE Cast([date] as date) = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, date);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Import i = new Import();
+                i.setId(rs.getInt("id"));
+                i.setImportNo(rs.getString("importNo"));
+                i.setDate(rs.getTimestamp("date"));
+                i.setTotal(rs.getInt("itotal"));
+
                 imports.add(i);
             }
         } catch (SQLException ex) {
@@ -55,62 +79,112 @@ public class ImportDBContext extends DBContext {
 
     public void insert(Import i) {
         try {
+            connection.setAutoCommit(false);
             String sql = "INSERT INTO [Import]\n"
-                    + "           ([pid]\n"
-                    + "           ,[date]\n"
-                    + "           ,[quantity])\n"
+                    + "           ([date]\n"
+                    + "           ,[itotal])\n"
                     + "     VALUES\n"
                     + "           (?\n"
-                    + "           ,?\n"
                     + "           ,?)";
 
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, i.getPid().getId());
-            stm.setTimestamp(2, i.getDate());
-            stm.setInt(3, i.getQuantity());
-
+            stm.setTimestamp(1, i.getDate());
+            stm.setInt(2, i.getTotal());
             stm.executeUpdate();
 
+            String sql_get_iid = "select @@identity as iid";
+            PreparedStatement stm_get_iid = connection.prepareStatement(sql_get_iid);
+            ResultSet rs = stm_get_iid.executeQuery();
+
+            if (rs.next()) {
+                i.setId(rs.getInt("iid"));
+            }
+
+            for (ImportDetail id : i.getImportDetails()) {
+                String sql_add_detail = "INSERT INTO [ImportDetails]\n"
+                        + "           ([iid]\n"
+                        + "           ,[pid]\n"
+                        + "           ,[quantity]\n"
+                        + "           ,[price]\n"
+                        + "           ,[total])\n"
+                        + "     VALUES\n"
+                        + "           (?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?\n"
+                        + "           ,?)";
+
+                PreparedStatement stm_add_detail = connection.prepareStatement(sql_add_detail);
+                stm_add_detail.setInt(1, i.getId());
+                stm_add_detail.setInt(2, id.getPid().getId());
+                stm_add_detail.setInt(3, id.getQuantity());
+                stm_add_detail.setInt(4, id.getPid().getPriceImport());
+                stm_add_detail.setInt(5, id.getTotal());
+
+                stm_add_detail.executeUpdate();
+            }
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                connection.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    public ArrayList<Import> searchByDate(Date date) {
-        ArrayList<Import> imports = new ArrayList<>();
+    public Import getImport(int id) {
         try {
-            String sql = "SELECT [pid], Product.productNo, Product.[pname], [date]\n"
-                    + ",priceImport, Import.[quantity]\n"
-                    + "  FROM [Import] inner join Product\n"
-                    + "  ON Import.pid = Product.id\n"
-                    + "  WHERE Cast([date] as date) = ?";
+            String sql = "select Import.id, importNo, [date], itotal, \n"
+                    + "     Product.pname,\n"
+                    + "     ImportDetails.quantity, price, total\n"
+                    + "     from Import\n"
+                    + "     inner join ImportDetails on Import.id = ImportDetails.iid\n"
+                    + "     inner join Product on ImportDetails.pid = Product.id\n"
+                    + "     where Import.id = ?";
+
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setDate(1, date);
+            stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
+            Import i = new Import();
+
             while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("pid"));
-                p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("pname"));
-                p.setPriceImport(rs.getInt("priceImport"));
-
-                Import i = new Import();
-                i.setPid(p);
+                i.setId(rs.getInt("id"));
+                i.setImportNo(rs.getString("importNo"));
                 i.setDate(rs.getTimestamp("date"));
-                i.setQuantity(rs.getInt("quantity"));
+                i.setTotal(rs.getInt("itotal"));
 
-                imports.add(i);
+                Product p = new Product();
+                p.setName(rs.getString("pname"));
+                p.setPriceImport(rs.getInt("price"));
+
+                ImportDetail idl = new ImportDetail();
+                idl.setPid(p);
+                idl.setQuantity(rs.getInt("quantity"));
+                idl.setPrice(p);
+                idl.setTotal(rs.getInt("total"));
+
+                i.getImportDetails().add(idl);
             }
+            return i;
         } catch (SQLException ex) {
             Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return imports;
+
+        return null;
     }
 
     public int numberRecord() {
         int num = 0;
         try {
-            String sql = "select count(pid) as NumberOfRecord\n"
+            String sql = "select count(id) as NumberOfRecord\n"
                     + "from Import";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -127,17 +201,14 @@ public class ImportDBContext extends DBContext {
         ArrayList<Import> imports = new ArrayList<>();
         try {
             String sql = "WITH Imp AS (\n"
-                    + "     SELECT pid, Product.[productNo], Product.[pname],\n"
-                    + "     [date], [priceImport], Import.[quantity],\n"
-                    + "     ROW_NUMBER() OVER (ORDER BY pid) AS 'RowNumber'\n"
-                    + "     FROM Import inner join Product\n"
-                    + "	 ON Import.pid = Product.id\n"
-                    + ") \n"
-                    + " SELECT pid, [productNo], [pname],\n"
-                    + "     [date], [priceImport], [quantity]\n"
-                    + " FROM Imp\n"
-                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
-                    + " ORDER BY date desc";
+                    + "              SELECT id, importNo, date, itotal,\n"
+                    + "              ROW_NUMBER() OVER (ORDER BY id) AS 'RowNumber'\n"
+                    + "              FROM Import\n"
+                    + "             ) \n"
+                    + "     SELECT id, importNo, date, itotal\n"
+                    + "     FROM Imp\n"
+                    + "     WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
+                    + "     ORDER BY date desc";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageindex);
             stm.setInt(2, pagesize);
@@ -146,16 +217,11 @@ public class ImportDBContext extends DBContext {
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("pid"));
-                p.setProductNo(rs.getString("productNo"));
-                p.setName(rs.getString("pname"));
-                p.setPriceImport(rs.getInt("priceImport"));
-
                 Import i = new Import();
-                i.setPid(p);
+                i.setId(rs.getInt("id"));
+                i.setImportNo(rs.getString("importNo"));
                 i.setDate(rs.getTimestamp("date"));
-                i.setQuantity(rs.getInt("quantity"));
+                i.setTotal(rs.getInt("itotal"));
 
                 imports.add(i);
             }
@@ -165,25 +231,25 @@ public class ImportDBContext extends DBContext {
         return imports;
     }
 
+
     public int getCapital(Date from, Date to) {
-        int capital = 0;
+        int total = 0;
         try {
-            String sql = "SELECT sum(Import.[quantity] * Product.priceImport) as Capital\n"
-                    + "  FROM [Import] inner join Product \n"
-                    + "  on Import.pid = Product.id\n"
+            String sql = "SELECT sum([itotal]) as Total\n"
+                    + "  FROM [Import]\n"
                     + "  WHERE Cast([date] as date) between ? and ?";
-            
+
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setDate(1, from);
             stm.setDate(2, to);
             ResultSet rs = stm.executeQuery();
-            
+
             if (rs.next()) {
-                capital = rs.getInt("Capital");
+                total = rs.getInt("Total");
             }
         } catch (SQLException ex) {
             Logger.getLogger(ImportDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return capital;
+        return total;
     }
 }

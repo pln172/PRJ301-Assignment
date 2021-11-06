@@ -49,7 +49,7 @@ public class StatisticController extends BaseRequiredAuthController {
         int capital = 0;
         
         for (Import i : imports) {
-            capital += (i.getQuantity() * i.getPid().getPriceImport());
+            capital += i.getTotal();
         }
 
         request.setAttribute("inventory", inventory);

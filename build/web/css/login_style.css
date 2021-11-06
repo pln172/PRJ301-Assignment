@@ -1,28 +1,33 @@
 
 body {
-    background-color: #54CC96;
-    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBFCK7cs8or6jExQySeefuygg1xxs1A7Ksg&usqp=CAU");
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    
 }
 
 span {
     color: red;
 }
 
-table {
-    border: 2px hidden white;
+form {
+    width: 400px;
+    border: 4px solid #4593A2;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 70px;
-    padding: 70px 50px 150px 35px;
-    border-radius: 15px;
+    margin-top: 150px;
+    border-radius: 5px;
     background-color: #D3DAE8;
 }
 
-input {
+form table {
+    padding: 50px 55px 50px 35px;
+}
+
+table input {
     border: 1px solid gray;
     background-color: #E8F0FE;
     padding: 10px 5px;
-    width: 300px;
+    width: 190px;
     border-radius: 5px;
 }
 
@@ -31,19 +36,27 @@ td {
 }
 
 #caption {
-    padding-bottom: 70px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     text-align: center;
     font-size: 30px;
-    font-family: sans-serif;
+    font-family: cursive;
     font-weight: bold; 
-    color: #2A2835;
+    border-bottom: 4px solid #4593A2;
+    background-color: #5aa5d6;
 }
 
-tr #login {
-    width: 150px;
-    margin-top: 60px;
-    margin-left: 82px;
+div {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+div #login {
+    width: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding-top: 15px;
+    padding-bottom: 10px;
     border-radius: 25px;
     font-weight: bold;
     color: white;

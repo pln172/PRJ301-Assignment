@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="css/base_style.css" rel="stylesheet" type="text/css"/>
@@ -20,7 +21,7 @@
         <script src="js/pagger.js" type="text/javascript"></script>
         <link href="css/pagger.css" rel="stylesheet" type="text/css"/>
 
-        <script>      
+        <script>
             function changeurl(url) {
                 var host = "http://localhost:8080/ASSIGNMENT/";
                 window.location.href = host + url;
@@ -48,6 +49,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
@@ -84,36 +86,54 @@
                             <input type="submit" value="Search"/>
                         </form>
                         <input id="insert" type="button" onclick="insert('customer')" value="Insert"/>
-                        <table border="2px">
-                            <tr class="th">
-                                <td>Code</td>
-                                <td>Name</td>
-                                <td>Gender</td>
-                                <td>DOB</td>
-                                <td>Phone</td>
-                                <td>Email</td>
-                                <td>Address</td>
-                                <td>Action</td>
-                            </tr>
-
-                            <c:forEach items="${requestScope.customers}" var="c">
-                                <tr>
-                                    <td>${c.customerNo}</td>
-                                    <td>${c.name}</td>
-                                    <td>
-                                        <i ${c.gender ? "class=\"fas fa-mars\""
-                                             : "class=\"fas fa-venus\""}></i>
-                                    </td>
-                                    <td>${c.dob}</td>
-                                    <td>${c.phone}</td>
-                                    <td>${c.email}</td>  
-                                    <td>${c.address}</td>
-                                    <td>
-                                        <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${c.id})"></i></abbr>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
+                        <div class="wrapper">
+                            <div class="table">
+                                <div class="r green">
+                                    <div class="cell th">
+                                        Code
+                                    </div>
+                                    <div class="cell th">
+                                        Name
+                                    </div>
+                                    <div class="cell th">
+                                        Gender
+                                    </div>
+                                    <div class="cell th">
+                                        DOB
+                                    </div>
+                                    <div class="cell th">
+                                        Phone
+                                    </div>
+                                    <div class="cell th">
+                                        Email
+                                    </div>
+                                    <div class="cell th">
+                                        Address
+                                    </div>
+                                    <div class="cell th">
+                                        Action
+                                    </div>
+                                </div>
+                                
+                                <c:forEach items="${requestScope.customers}" var="c">
+                                    <div class="r"> 
+                                        <div class="cell">${c.customerNo}</div>
+                                        <div class="cell">${c.name}</div>
+                                        <div class="cell">
+                                            <i ${c.gender ? "class=\"fas fa-mars\"" : "class=\"fas fa-venus\""}></i>
+                                        </div>
+                                        <div class="cell">${c.dob}</div>
+                                        <div class="cell">${c.phone}</div>
+                                        <div class="cell">${c.email}</div>
+                                        <div class="cell">${c.address}</div>
+                                        <div class="cell">
+                                            <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${c.id})"></i></abbr>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        
                         <div id="paggerBottom">     
                         </div>
                         <script>

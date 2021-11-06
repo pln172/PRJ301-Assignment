@@ -12,6 +12,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="../img/favicon.png" type="image/png" sizes="16x16">
+        <link rel="icon" href="../img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="../css/base_style.css" rel="stylesheet" type="text/css"/>
@@ -25,10 +27,20 @@
                 window.location.href = host + url;
             }
 
+            function detail(id) {
+                window.location.href = "http://localhost:8080/ASSIGNMENT/history/import/detail?id=" + id;
+            }
+
             function search() {
                 document.getElementById("form").submit();
             }
         </script>
+
+        <style>
+            .wrapper {
+                padding: 50px 150px 0 150px;
+            }
+        </style>
     </head>
 
     <body>
@@ -42,6 +54,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x"
                            onclick="changeurl('history')" style="color: white;"></i>
@@ -81,28 +94,44 @@
                             <!--<input type="submit" value="Search"/>-->
                         </form>
 
-                        <table border="2px;">
-                            <tr>
-                                <td>Code</td>
-                                <td>Name</td>
-                                <td>Quantity</td>
-                                <td>Price</td>
-                                <td>Date</td>
-                            </tr>
+                        <div class="wrapper">
+                            <div class="table">
+                                <div class="r green">
+                                    <div class="cell th">
+                                        Code
+                                    </div>
+                                    <div class="cell th">
+                                        Date
+                                    </div>
+                                    <div class="cell th">
+                                        Total
+                                    </div>
+                                    <div class="cell th">
+                                        Action
+                                    </div>                                  
+                                </div>
 
-                            <c:forEach items="${requestScope.imports}" var="i">
-                                <tr>
-                                    <td>${i.pid.productNo}</td>
-                                    <td>${i.pid.name}</td>
-                                    <td>${i.quantity}</td>
-                                    <td>
-                                        <fmt:formatNumber type = "number" 
-                                                          value = "${i.pid.priceImport}"/>
-                                    </td>
-                                    <td>${i.date}</td>
-                                </tr>
-                            </c:forEach>
-                        </table>
+                                <c:forEach items="${requestScope.imports}" var="i">
+                                    <div class="r"> 
+                                        <div class="cell">${i.importNo}</div>
+                                        <div class="cell">
+                                            <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" 
+                                                            value = "${i.date}" />
+                                        </div>
+                                        <div class="cell">
+                                            <fmt:formatNumber type = "number" 
+                                                              value = "${i.total}"/>
+                                        </div>
+                                        <div class="cell">
+                                            <a onclick="detail(${i.id})"
+                                               style="text-decoration: none; cursor: pointer;"
+                                               >Detail</a>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>    
+
                         <div id="paggerBottom">     
                         </div>
                         <script>

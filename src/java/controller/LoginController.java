@@ -9,6 +9,7 @@ import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,17 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Cookie arr[] = request.getCookies();
+        for (Cookie c : arr) {
+            if (c.getName().equals("userC")) {
+                request.setAttribute("user", c.getValue());
+            }
+            if (c.getName().equals("passC")) {
+                request.setAttribute("pass", c.getValue());
+                request.setAttribute("remember", "yes");
+            }
+        }
+
         Account acc = (Account) request.getSession().getAttribute("account");
 
         if (acc == null) {
@@ -52,6 +64,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String remember = request.getParameter("remember");
+        if (remember == null) {
+            remember = "no";
+        }
+
         String user = request.getParameter("user");
         String pass = request.getParameter("pass");
 
@@ -60,6 +77,29 @@ public class LoginController extends HttpServlet {
 
         if (acc != null) {
             request.getSession().setAttribute("account", acc);
+
+            if (remember.equals("yes")) {
+                Cookie u = new Cookie("userC", user);
+                Cookie p = new Cookie("passC", pass);
+                u.setMaxAge(43200);
+                p.setMaxAge(43200);
+                response.addCookie(u);
+                response.addCookie(p);
+            } else {
+                Cookie arr[] = request.getCookies();
+                for (Cookie c : arr) {
+                    if (c.getName().equals("userC")) {
+                        c.setMaxAge(-1);
+                        response.addCookie(c);
+                    }
+                    if (c.getName().equals("passC")) {
+                        request.setAttribute("pass", c.getValue());
+                        c.setMaxAge(-1);
+                        response.addCookie(c);
+                    }
+                }
+            }
+
             if (acc.getUsername().equals("loandp")) {
                 response.sendRedirect("statistic");
             } else {

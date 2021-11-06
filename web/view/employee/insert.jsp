@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="../img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="../css/base_style.css" rel="stylesheet" type="text/css"/>
@@ -33,6 +34,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
@@ -64,31 +66,40 @@
 
                 <div class="col-md-9">
                     <div class="right">
+                        <p style="color: red; font-weight: bold;">${requestScope.mess}</p>
                         <form action="insert" method="POST">
                             <table>
                                 <caption>Insert new employee</caption>
                                 <tr>
                                     <td>Username <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="username" pattern="[a-zA-Z0-9]+" required/>
+                                        <input type="text" name="username" 
+                                               value="${requestScope.user}"
+                                               pattern="[a-zA-Z0-9]+" required/>
                                     </td>
                                     <td></td>
                                     <td>Password <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="password" pattern="[a-zA-Z0-9]+" required/>
+                                        <input type="text" name="password" 
+                                               value="${requestScope.pass}"
+                                               pattern="[a-zA-Z0-9]+" required/>
                                     </td>
                                 </tr>
                                 
                                 <tr>
                                     <td>Name <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
+                                        <input type="text" name="name" 
+                                               value="${requestScope.name}"
+                                               pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                     <td></td>
                                     <td>Gender <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="radio" checked="checked" name="gender" value="male"/> Male
-                                        <input type="radio" name="gender" value="female"/> Female
+                                        <input type="radio" name="gender" 
+                                               ${requestScope.gender == "female" ? "selected=\"selected\"":""}
+                                               value="female"/> Female
                                     </td>
                                 </tr>
 
@@ -97,24 +108,29 @@
                                     <td>
                                         <input type="date" name="dob" 
                                                min="${requestScope.dateMin}" max="${requestScope.dateMax}"
-                                               required/>
+                                               value="${requestScope.dob}" required/>
                                     </td>
                                     <td></td>
                                     <td>Phone <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="tel" name="phone" pattern="[0]{1}[0-9]{9}" required/>
+                                        <input type="tel" name="phone" 
+                                               value="${requestScope.phone}"
+                                               pattern="[0]{1}[0-9]{9}" required/>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>Email</td>
                                     <td>
-                                        <input type="email" name="email"/>
+                                        <input type="email" name="email"
+                                               value="${requestScope.email}"/>
                                     </td>
                                     <td></td>
                                     <td>Address <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="address" length="100" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
+                                        <input type="text" name="address" 
+                                               value="${requestScope.address}"
+                                               length="100" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
                                     </td>
                                 </tr>
 

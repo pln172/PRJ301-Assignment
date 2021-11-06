@@ -12,6 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="../img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="../css/base_style.css" rel="stylesheet" type="text/css"/>
@@ -36,6 +37,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>

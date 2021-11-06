@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="css/base_style.css" rel="stylesheet" type="text/css"/>
@@ -52,6 +53,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
@@ -88,47 +90,65 @@
                             <input type="submit" value="Search"/>
                         </form>
                         <input id="insert" type="button" onclick="insert('employee')" value="Insert"/>
-                        <table border="2px">
-                            <tr class="th">
-                                <td>STT</td>
-                                <td>Name</td>
-                                <td>Gender</td>
-                                <td>DOB</td>
-                                <td>Phone</td>
-                                <td>Address</td>
-                                <td>Active</td>
-                                <td>Action</td>
-                            </tr>
-                            <c:set var="i" value="0"/>
-                            <c:forEach items="${requestScope.employees}" var="e">
-                                <c:set var="i" value="${i+1}"/>
-                                <tr>
-                                    <td>${i}</td>
-                                    <td>${e.name}</td>
-                                    <td>
-                                        <i ${e.gender ? "class=\"fas fa-mars\"" 
-                                             : "class=\"fas fa-venus\""}</i>
-                                    </td>
-                                    <td>${e.dob}</td>
-                                    <td>${e.phone}</td>
-                                    <td>${e.address}</td>
-                                    <c:choose>
-                                        <c:when test="${e.active}">
-                                            <td>YES</td>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <td style="color: red;">NO</td>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <td>
-                                        <a onclick="detail(${e.id})"
-                                           style="text-decoration: none; cursor: pointer; margin-right: 7px;"
-                                           >Detail</a>
-                                        <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${e.id})"></i></abbr>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
+                        <div class="wrapper">
+                            <div class="table">
+                                <div class="r green">
+                                    <div class="cell th">
+                                        STT
+                                    </div>
+                                    <div class="cell th">
+                                        Name
+                                    </div>
+                                    <div class="cell th">
+                                        Gender
+                                    </div>
+                                    <div class="cell th">
+                                        DOB
+                                    </div>
+                                    <div class="cell th">
+                                        Phone
+                                    </div>
+                                    <div class="cell th">
+                                        Address
+                                    </div>
+                                    <div class="cell th">
+                                        Active
+                                    </div>
+                                    <div class="cell th">
+                                        Action
+                                    </div>
+                                </div>
+
+                                <c:set var="i" value="0"/>
+                                <c:forEach items="${requestScope.employees}" var="e">
+                                    <c:set var="i" value="${i+1}"/>
+                                    <div class="r"> 
+                                        <div class="cell">${i}</div>
+                                        <div class="cell">${e.name}</div>
+                                        <div class="cell">
+                                            <i ${e.gender ? "class=\"fas fa-mars\"" : "class=\"fas fa-venus\""}></i>
+                                        </div>
+                                        <div class="cell">${e.dob}</div>
+                                        <div class="cell">${e.phone}</div>
+                                        <div class="cell">${e.address}</div>
+                                        <c:choose>
+                                            <c:when test="${e.active}">
+                                                <div class="cell">YES</div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="cell" style="color: red;">NO</div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <div class="cell"><a onclick="detail(${e.id})">Detail</a>
+                                            <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${e.id})"></i></abbr>
+                                        </div>
+
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        
                         <div id="paggerBottom">     
                         </div>
                         <script>

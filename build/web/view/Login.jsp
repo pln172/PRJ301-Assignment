@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link href="css/login_style.css" rel="stylesheet" type="text/css"/>
 
@@ -29,24 +30,16 @@
     <body>
         <form action="login" method="POST">
             <table>
-                <tr>
-                    <td id="caption">SALE MANAGEMENT</td>
-                </tr>
+                <caption id="caption">SALE MANAGEMENT</caption>
 
                 <tr>
                     <td>Username <span>*</span></td>
-                </tr>
-
-                <tr>
                     <td><input type="text" name="user" pattern="[a-zA-Z0-9]+"
                                value="${requestScope.user}" required/></td>
                 </tr>
 
                 <tr>
                     <td>Password <span>*</span></td>
-                </tr>
-
-                <tr>
                     <td>
                         <input id="pass" type="password" name="pass" 
                                value="${requestScope.pass}" 
@@ -55,21 +48,16 @@
                             <i class="fas fa-eye"></i></span>
                     </td>
                 </tr>
-
-                <tr>
-                    <td><input id="login" type="submit" value="LOGIN"/></td>
-                </tr>
-
-                <tr>
-                    <td style="color: red; text-align: center; font-weight: bold;">
-                        ${requestScope.err}
-                    </td>
-                </tr>
-
-                <tr style="text-align: center;">
-                    <td><a href="forgetPass">Forget password?</a></td>
-                </tr>
             </table>
+            <div>
+                <input type="checkbox" name="remember" value="yes"
+                       ${requestScope.remember == "yes" ? "checked=\"checked\"" : ""}/>Remember me<br/>
+                <input id="login" type="submit" value="LOGIN"/><br/>
+                <p"><a href="forgetPass">Forgot password?</a></p>
+                <p style="color: red; font-weight: bold;">
+                    ${requestScope.err}
+                </p>
+            </div>
         </form>
     </body>
 </html>

@@ -6,25 +6,36 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  *
  * @author ASUS
  */
 public class Import {
-    private Product pid;
+    private int id;
+    private String importNo;
     private Timestamp date;
-    private int quantity;
+    private int total;
+    private ArrayList<ImportDetail> importDetails = new ArrayList<>();
 
     public Import() {
     }
 
-    public Product getPid() {
-        return pid;
+    public int getId() {
+        return id;
     }
 
-    public void setPid(Product pid) {
-        this.pid = pid;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImportNo() {
+        return importNo;
+    }
+
+    public void setImportNo(String importNo) {
+        this.importNo = importNo;
     }
 
     public Timestamp getDate() {
@@ -35,12 +46,20 @@ public class Import {
         this.date = date;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getTotal() {
+        return total;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public ArrayList<ImportDetail> getImportDetails() {
+        return importDetails;
+    }
+
+    public void setImportDetails(ArrayList<ImportDetail> importDetails) {
+        this.importDetails = importDetails;
     }
     
 }

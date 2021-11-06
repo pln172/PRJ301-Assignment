@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16">
 
         <style>
             body {
@@ -36,7 +37,7 @@
     </head>
     <body>
         <form action="forgetPass" method="POST">
-            <img src="https://lh3.googleusercontent.com/proxy/eC6yud6lVJutSjpYdG-kRjfoRVTe2PqRzIBzABvRzeBSVyKi07FfxKqr-4deHCGjSnZVYM5hWbcIAUAwZQgKM4aBmT_eipviX41M6FDYvkgH8lfKd_3DysQMlGx_6v7D14k"/>
+            <img src="img/mail.png" alt="Email"/>
 
             <table>
                 <tr>
@@ -47,11 +48,13 @@
                 </tr>
             </table>
             <input style="margin: 20px 90px; padding: 10px 10px; border-radius: 5px; 
-                   font-weight: bold; font-size: 16px;" 
+                   font-weight: bold; font-size: 16px; cursor: pointer;" 
                    type="submit" value="Send"/>
         </form>
         <p style="color: yellow; margin: 10px 650px; font-weight: bold;">
             ${requestScope.message}
         </p>
+        
+        <a href="login" style="color: white; margin-left: 700px; font-size: 17px;">Login</a>
     </body>
 </html>

@@ -177,8 +177,7 @@ public class SellController extends BaseRequiredAuthController {
         } else if (!check_quan && !check_noquan && !check_dup) {
             response.sendRedirect("sell?err=4");
         }
-        
-        
+          
     }
 
     /**

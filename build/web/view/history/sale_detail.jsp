@@ -12,18 +12,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
-        
+        <link rel="icon" href="../../img/favicon.png" type="image/png" sizes="16x16">
+
         <style>
             div table {
                 margin: 0 auto;
             }
-            
+
             td {
                 padding: 5px;
                 text-align: center;
             }
         </style>
-        
+
         <c:set var="o" value="${requestScope.order}"/>
     </head>
     <body>
@@ -36,7 +37,10 @@
 
                 <tr>
                     <td><h3>Date:</h3></td>
-                    <td>${o.date}</td>
+                    <td>
+                        <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" 
+                                        value = "${o.date}" />
+                    </td>
                 </tr>
 
                 <tr>
@@ -73,10 +77,10 @@
                     </tr>
                 </c:forEach>
             </table>
-                <h3 style="margin-left: 800px;">Total: 
-                    <fmt:formatNumber type = "number" 
-                                      value = "${o.total}"/>
-                </h3>
+            <h3 style="margin-left: 800px;">Total: 
+                <fmt:formatNumber type = "number" 
+                                  value = "${o.total}"/>
+            </h3>
         </div>
     </body>
 </html>

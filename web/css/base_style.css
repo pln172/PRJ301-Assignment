@@ -33,7 +33,7 @@ section {
     cursor: pointer;
 }
 
-.row .col-md-9 .hright #sell {
+.row .col-md-9 .hright #sell, #import {
     cursor: pointer;
     margin-right: 15px;
     padding: 5px 25px;
@@ -43,7 +43,7 @@ section {
     font-weight: bold;
 }
 
-.row .col-md-9 .hright #sell:hover {
+.row .col-md-9 .hright #sell:hover, #import:hover {
     background-color: yellow;
     border: 2px solid yellow;
 }

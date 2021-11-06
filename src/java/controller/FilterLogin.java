@@ -113,7 +113,11 @@ public class FilterLogin implements Filter {
         String servletPath = req.getServletPath();
         Account a = (Account) req.getSession().getAttribute("account");
 
-        if (servletPath.equals("/login") || servletPath.equals("/forgetPass")) {
+        if (servletPath.equals("/login") || servletPath.equals("/forgetPass") 
+                || servletPath.equals("/css/login_style.css")
+                || servletPath.equals("/img/mail.png")
+                || servletPath.equals("/img/favicon.png")
+                || servletPath.equals("/img/background.jpg")) {
             chain.doFilter(request, response);
             return;
         }
@@ -124,30 +128,31 @@ public class FilterLogin implements Filter {
             chain.doFilter(request, response);
         }
         
-        Throwable problem = null;
-        try {
-            chain.doFilter(request, response);
-        } catch (Throwable t) {
+//        Throwable problem = null;
+//        try {
+//            chain.doFilter(request, response);
+//        } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
-        }
-        
-        doAfterProcessing(request, response);
+//            problem = t;
+//            t.printStackTrace();
 
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
-        if (problem != null) {
-            if (problem instanceof ServletException) {
-                throw (ServletException) problem;
-            }
-            if (problem instanceof IOException) {
-                throw (IOException) problem;
-            }
-            sendProcessingError(problem, response);
-        }
+//        }
+//        
+        doAfterProcessing(request, response);
+//
+//        // If there was a problem, we want to rethrow it if it is
+//        // a known type, otherwise log it.
+//        if (problem != null) {
+//            if (problem instanceof ServletException) {
+//                throw (ServletException) problem;
+//            }
+//            if (problem instanceof IOException) {
+//                throw (IOException) problem;
+//            }
+//            sendProcessingError(problem, response);
+//        }
     }
 
     /**

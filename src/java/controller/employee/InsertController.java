@@ -99,7 +99,16 @@ public class InsertController extends BaseRequiredAuthController {
             adb.insert(a);
             response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
         } else {
-            response.getWriter().println("Account does exist. Please re-insert!");
+            request.setAttribute("user", request.getParameter("username"));
+            request.setAttribute("pass", request.getParameter("password"));
+            request.setAttribute("name", request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
+            request.setAttribute("gender", request.getParameter("gender"));
+            request.setAttribute("dob", request.getParameter("dob"));
+            request.setAttribute("phone", request.getParameter("phone"));
+            request.setAttribute("email", request.getParameter("email").trim());
+            request.setAttribute("address", request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
+            request.setAttribute("mess", "Username does exist. Please re-insert!");
+            request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
         }
     }
 

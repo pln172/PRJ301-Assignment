@@ -99,7 +99,7 @@ public class ForgetPassController extends HttpServlet {
         if (!check) {
             request.setAttribute("message", "Email is not accepted!");
         } else {
-            String subject = "SALE MANAGEMENT PASSWORD";
+            String subject = "SALE MANAGEMENT ACCOUNT";
             String message = "<!DOCTYPE html>\n"
                     + "<html lang=\"en\">\n"
                     + "\n"
@@ -108,6 +108,8 @@ public class ForgetPassController extends HttpServlet {
                     + "\n"
                     + "<body>\n"
                     + "    <h3 style=\"color: blue;\">Please change password after receive this mail!</h3>\n"
+                    + "    <div style=\"font-weight: bold;\">Username: " + acc.getUsername()
+                    + "</div>\n"
                     + "    <div style=\"font-weight: bold;\">Password: " + acc.getPassword()
                     + "</div>\n"
                     + "\n"

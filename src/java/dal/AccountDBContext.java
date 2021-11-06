@@ -112,7 +112,7 @@ public class AccountDBContext extends DBContext {
             stm.setInt(3, id);
             stm.executeUpdate();
 
-            for (int i = 1; i <= 3; i++) {
+            for (int i = 1; i <= 5; i++) {
                 String sql_feature = "INSERT INTO [AccountFeature]\n"
                         + "           ([username]\n"
                         + "           ,[fid])\n"

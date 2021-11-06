@@ -15,13 +15,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16">
         <Link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="css/base_style.css" rel="stylesheet" type="text/css"/>
         <link href="css/list_style.css" rel="stylesheet" type="text/css"/>
         <script src="js/pagger.js" type="text/javascript"></script>
         <link href="css/pagger.css" rel="stylesheet" type="text/css"/>
-        
+
         <script>
             function changeurl(url) {
                 var host = "http://localhost:8080/ASSIGNMENT/";
@@ -37,9 +38,6 @@
                 window.location.href = "product/update?id=" + id;
             }
 
-            function doImport(id) {
-                window.location.href = "product/import?id=" + id;
-            }
         </script>
     </head>
 
@@ -54,6 +52,7 @@
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
                         <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
@@ -90,32 +89,51 @@
                             <input type="submit" value="Search"/>
                         </form>
                         <input id="insert" type="button" onclick="insert('product')" value="Insert"/>
-                        <table border="2px">
-                            <tr class="th">
-                                <td>Code</td>
-                                <td>Name</td>
-                                <td>Quantity</td>
-                                <td>Price Import</td>
-                                <td>Price Export</td>
-                                <td>Action</td>
-                            </tr>
+                        <div class="wrapper">
+                            <div class="table">
+                                <div class="r green">
+                                    <div class="cell th">
+                                        Code
+                                    </div>
+                                    <div class="cell th">
+                                        Name
+                                    </div>
+                                    <div class="cell th">
+                                        Quantity
+                                    </div>
+                                    <div class="cell th">
+                                        Price Import
+                                    </div>
+                                    <div class="cell th">
+                                        Price Export
+                                    </div>
+                                    <div class="cell th">
+                                        Action
+                                    </div>
+                                </div>
 
-                            <c:forEach items="${requestScope.products}" var="p">
-                                <tr>
-                                    <td>${p.productNo}</td>
-                                    <td>${p.name}</td>
-                                    <td>${p.quantity}</td>
-                                    <td><fmt:formatNumber type = "number" 
-                                                      value = "${p.priceImport}" /></td>
-                                    <td><fmt:formatNumber type = "number" 
-                                                      value = "${p.priceExport}" /></td>  
-                                    <td>
-                                        <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${p.id})"></i></abbr>
-                                        <abbr title="import"><i class="far fa-plus-square" onclick="doImport(${p.id})"></i></abbr>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
+                                <c:forEach items="${requestScope.products}" var="p">
+                                    <div class="r"> 
+                                        <div class="cell">${p.productNo}</div>
+                                        <div class="cell">${p.name}</div>
+                                        <div class="cell">${p.quantity}</div>
+                                        <div class="cell">
+                                            <fmt:formatNumber type = "number" 
+                                                              value = "${p.priceImport}" />
+                                        </div>
+                                        <div class="cell">
+                                            <fmt:formatNumber type = "number" 
+                                                              value = "${p.priceExport}" />
+                                        </div>
+                                        <div class="cell"><a onclick="detail(${e.id})">Detail</a>
+                                            <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${p.id})"></i></abbr>
+                                        </div>
+
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+
                         <div id="paggerBottom">     
                         </div>
                         <script>

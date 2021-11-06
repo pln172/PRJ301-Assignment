@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>SALE MANAGEMENT</title>
+        <link rel="icon" href="../img/favicon.png" type="image/png" sizes="16x16">
         <style>
             div table {
                 margin: 0 auto;
