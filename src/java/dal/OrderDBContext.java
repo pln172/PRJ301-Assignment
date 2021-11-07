@@ -156,7 +156,7 @@ public class OrderDBContext extends DBContext {
     public Order getOrder(int id) {
         try {
             String sql = "select [Order].id, orderNo, [date], ototal, \n"
-                    + "		Employee.ename, Customer.cname,\n"
+                    + "		Employee.ename, Employee.phone, Customer.cname,\n"
                     + "		Product.pname,\n"
                     + "		OrderDetails.quantity, price, total\n"
                     + "from [Order]\n"
@@ -178,6 +178,7 @@ public class OrderDBContext extends DBContext {
 
                 Employee e = new Employee();
                 e.setName(rs.getString("ename"));
+                e.setPhone(rs.getString("phone"));
                 o.setEid(e);
 
                 Customer c = new Customer();
@@ -304,8 +305,8 @@ public class OrderDBContext extends DBContext {
                     + ") \n"
                     + " SELECT id, orderNo, date, ototal\n"
                     + " FROM Ord\n"
-                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
-                    + "ORDER BY date desc";
+                    + "WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n";
+//                    + "ORDER BY RowNumber desc";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageindex);
             stm.setInt(2, pagesize);

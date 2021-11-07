@@ -82,6 +82,8 @@
                 <div class="col-md-9">
                     <div class="right">
                         <form action="sell" method="POST">
+                            <p style="color: green; font-weight: bold;">
+                                ${requestScope.mess}</p>
                             <p style="color: red; font-weight: bold;">
                                 <c:choose>
                                     <c:when test="${requestScope.err == 1}">
@@ -104,7 +106,9 @@
                                 <tr>
                                     <td>Employee <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="hidden" name="emp" value="${requestScope.employee.id}"/>${requestScope.employee.name}
+                                        <c:set var="e" value="${requestScope.employee}"/>
+                                        <input type="hidden" name="emp" value="${e.id}"/>
+                                        ${e.name} - ${e.phone}
                                     </td>
                                     <td>Customer <span style="color: red;">*</span></td>
                                     <td>

@@ -47,8 +47,8 @@ public class InsertController extends BaseRequiredAuthController {
         String dateMax = (year-18) + "-" + month + "-" + day;
         String dateMin = (year-65) + "-" + month + "-" + day;
         
-        request.setAttribute("dateMin", dateMin);
-        request.setAttribute("dateMax", dateMax);
+        request.setAttribute("dateMin", Date.valueOf(dateMin));
+        request.setAttribute("dateMax", Date.valueOf(dateMax));
         request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
     }
 
@@ -63,14 +63,24 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String name = request.getParameter("name").replaceAll("\\s\\s+", " ").trim();
+        Boolean gender = request.getParameter("gender").equals("male");
+        Date dob = Date.valueOf(request.getParameter("dob"));
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email").trim();
+        String address = request.getParameter("address").replaceAll("\\s\\s+", " ").trim();
+        Boolean active = request.getParameter("active").equals("yes");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
         Employee e = new Employee();
-        e.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
-        e.setGender(request.getParameter("gender").equals("male"));
-        e.setDob(Date.valueOf(request.getParameter("dob")));
-        e.setPhone(request.getParameter("phone"));
-        e.setEmail(request.getParameter("email").trim());
-        e.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
-        e.setActive(request.getParameter("active").equals("yes"));
+        e.setName(name);
+        e.setGender(gender);
+        e.setDob(dob);
+        e.setPhone(phone);
+        e.setEmail(email);
+        e.setAddress(address);
+        e.setActive(active);
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -80,34 +90,51 @@ public class InsertController extends BaseRequiredAuthController {
         AccountDBContext adb = new AccountDBContext();
         ArrayList<Account> accounts = adb.getAccounts();
 
-        boolean isExist = false;
+        boolean isExistA = false;
         for (Account a : accounts) {
-            if (request.getParameter("username").equals(a.getUsername())) {
-                isExist = true;
+            if (username.equals(a.getUsername())) {
+                isExistA = true;
+                break;
+            }
+        }
+        
+        boolean isExistE = false;
+        EmployeeDBContext edb = new EmployeeDBContext();
+        ArrayList<Employee> employees = edb.getEmployees();
+        for (Employee emp : employees) {
+            if(emp.getEmail().equals(e.getEmail()) || e.getEmail().equals("phuongloan517@gmail.com")) {
+                isExistE = true;
                 break;
             }
         }
 
-        if (!isExist) {
+        String mess = "";
+        if (!isExistA && !isExistE) {
             Account a = new Account();
-            a.setUsername(request.getParameter("username"));
-            a.setPassword(request.getParameter("password"));
+            a.setUsername(username);
+            a.setPassword(password);
 
-            EmployeeDBContext edb = new EmployeeDBContext();
             edb.insert(e);
-
             adb.insert(a);
             response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
-        } else {
-            request.setAttribute("user", request.getParameter("username"));
-            request.setAttribute("pass", request.getParameter("password"));
-            request.setAttribute("name", request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
+        } else if (!isExistE && isExistA){
+            mess = "Username does exist. Please re-insert!";
+        } else if (!isExistA && isExistE) {
+            mess = "Email does exist. Please re-insert!";
+        } else if (isExistA && isExistE) {
+            mess = "User name and email exist. Please re-insert!";
+        }
+        
+        if (isExistA || isExistE) {
+            request.setAttribute("user", username);
+            request.setAttribute("pass", password);
+            request.setAttribute("name", name);
             request.setAttribute("gender", request.getParameter("gender"));
-            request.setAttribute("dob", request.getParameter("dob"));
-            request.setAttribute("phone", request.getParameter("phone"));
-            request.setAttribute("email", request.getParameter("email").trim());
-            request.setAttribute("address", request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
-            request.setAttribute("mess", "Username does exist. Please re-insert!");
+            request.setAttribute("dob", dob);
+            request.setAttribute("phone", phone);
+            request.setAttribute("email", email);
+            request.setAttribute("address", address);
+            request.setAttribute("mess", mess);
             request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
         }
     }

@@ -108,7 +108,7 @@
                                     <div class="cell th">
                                         Phone
                                     </div>
-                                    <div class="cell th">
+                                    <div class="cell th wi">
                                         Address
                                     </div>
                                     <div class="cell th">
@@ -130,7 +130,7 @@
                                         </div>
                                         <div class="cell">${e.dob}</div>
                                         <div class="cell">${e.phone}</div>
-                                        <div class="cell">${e.address}</div>
+                                        <div class="cell wi">${e.address}</div>
                                         <c:choose>
                                             <c:when test="${e.active}">
                                                 <div class="cell">YES</div>
@@ -140,7 +140,7 @@
                                             </c:otherwise>
                                         </c:choose>
 
-                                        <div class="cell"><a onclick="detail(${e.id})">Detail</a>
+                                                <div class="cell"><a style="cursor: pointer;" onclick="detail(${e.id})">Detail</a>
                                             <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${e.id})"></i></abbr>
                                         </div>
 

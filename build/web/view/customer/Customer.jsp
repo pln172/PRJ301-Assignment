@@ -107,7 +107,7 @@
                                     <div class="cell th">
                                         Email
                                     </div>
-                                    <div class="cell th">
+                                    <div class="cell th wi">
                                         Address
                                     </div>
                                     <div class="cell th">
@@ -125,7 +125,7 @@
                                         <div class="cell">${c.dob}</div>
                                         <div class="cell">${c.phone}</div>
                                         <div class="cell">${c.email}</div>
-                                        <div class="cell">${c.address}</div>
+                                        <div class="cell wi">${c.address}</div>
                                         <div class="cell">
                                             <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${c.id})"></i></abbr>
                                         </div>

@@ -120,7 +120,8 @@
                                     <td>
                                         <input type="radio" 
                                                ${e.active ? "checked=\"checked\"" : ""}
-                                               name="active" value="yes" onclick="return false"/> YES
+                                               name="active" value="yes" 
+                                               ${!e.active ? "onclick=\"return false\"" : ""}/> YES
                                         <input type="radio" 
                                                ${!e.active ? "checked=\"checked\"" : ""}
                                                name="active" value="no"/> NO

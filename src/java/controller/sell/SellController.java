@@ -134,7 +134,7 @@ public class SellController extends BaseRequiredAuthController {
                 check_noquan = false;
             }
         }
-        
+
         if (check_dup && check_quan && check_noquan) {
             if (pros != null) {
                 for (int i = 0; i < pros.length; i++) {
@@ -162,12 +162,28 @@ public class SellController extends BaseRequiredAuthController {
             OrderDBContext odb = new OrderDBContext();
             odb.insert(o);
 
+//            Account acc = (Account) request.getSession().getAttribute("account");
+//            if (acc.getUsername().equals("loandp")) {
+//                response.sendRedirect("http://localhost:8080/ASSIGNMENT/history/sale");
+//            } else {
+//                response.sendRedirect("http://localhost:8080/ASSIGNMENT/sell");
+//            }
             Account acc = (Account) request.getSession().getAttribute("account");
-            if (acc.getUsername().equals("loandp")) {
-                response.sendRedirect("http://localhost:8080/ASSIGNMENT/history/sale");
-            } else {
-                response.sendRedirect("http://localhost:8080/ASSIGNMENT/sell");
+            EmployeeDBContext edb = new EmployeeDBContext();
+            Employee employee = edb.getEmployee(acc.getEmployee().getId());
+            if (employee != null) {
+                request.setAttribute("employee", employee);
             }
+
+            ArrayList<Customer> customers = cdb.getCustomers();
+            request.setAttribute("customers", customers);
+
+            ArrayList<Product> products = pdb.getProducts();
+            request.setAttribute("products", products);
+
+            request.setAttribute("err", request.getParameter("err"));
+            request.setAttribute("mess", "Sell successfully!");
+            request.getRequestDispatcher("view/sell/Sell.jsp").forward(request, response);
         } else if (!check_dup && check_quan && check_noquan) {
             response.sendRedirect("sell?err=1");
         } else if (!check_quan && check_dup && check_noquan) {
@@ -177,7 +193,7 @@ public class SellController extends BaseRequiredAuthController {
         } else if (!check_quan && !check_noquan && !check_dup) {
             response.sendRedirect("sell?err=4");
         }
-          
+
     }
 
     /**

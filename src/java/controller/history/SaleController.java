@@ -66,7 +66,9 @@ public class SaleController extends BaseRequiredAuthController {
 
             OrderDBContext odb = new OrderDBContext();
             ArrayList<Order> orders = odb.searchByDate(date);
-
+            
+            LocalDate now = java.time.LocalDate.now();
+            request.setAttribute("today", now);
             request.setAttribute("date", date);
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("../view/history/sale.jsp").forward(request, response);

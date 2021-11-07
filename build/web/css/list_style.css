@@ -61,4 +61,6 @@
     display: table-cell;
 }
 
-
+.wi {
+    max-width: 120px;
+}

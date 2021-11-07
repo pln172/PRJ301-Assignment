@@ -125,7 +125,7 @@
                                             <fmt:formatNumber type = "number" 
                                                               value = "${p.priceExport}" />
                                         </div>
-                                        <div class="cell"><a onclick="detail(${e.id})">Detail</a>
+                                        <div class="cell">
                                             <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${p.id})"></i></abbr>
                                         </div>
 

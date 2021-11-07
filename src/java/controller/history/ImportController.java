@@ -78,6 +78,10 @@ public class ImportController extends BaseRequiredAuthController {
 
             request.setAttribute("date", date);
             request.setAttribute("imports", imports);
+            
+            LocalDate now = java.time.LocalDate.now();
+            request.setAttribute("today", now);
+            
             request.getRequestDispatcher("../view/history/import.jsp").forward(request, response);
         } catch (IllegalArgumentException iae) {
             response.sendRedirect("import");

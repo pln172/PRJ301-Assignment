@@ -48,8 +48,8 @@ public class UpdateController extends BaseRequiredAuthController {
         Customer cus = cdb.getCus(id);
         
         request.setAttribute("customer", cus);
-        request.setAttribute("dateMax", dateMax);
-        request.setAttribute("dateMin", dateMin);
+        request.setAttribute("dateMax", Date.valueOf(dateMax));
+        request.setAttribute("dateMin", Date.valueOf(dateMin));
         request.getRequestDispatcher("../view/customer/update.jsp").forward(request, response);
     }
 

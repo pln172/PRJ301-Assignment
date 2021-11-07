@@ -45,7 +45,7 @@
 
                 <tr>
                     <td><h3>Employee:</h3></td>
-                    <td>${o.eid.name}</td>
+                    <td>${o.eid.name} - ${o.eid.phone}</td>
                 </tr>
 
                 <tr>

@@ -207,8 +207,8 @@ public class ImportDBContext extends DBContext {
                     + "             ) \n"
                     + "     SELECT id, importNo, date, itotal\n"
                     + "     FROM Imp\n"
-                    + "     WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n"
-                    + "     ORDER BY date desc";
+                    + "     WHERE RowNumber >= (? - 1)*? + 1 AND RowNumber <= ? * ?\n";
+//                    + "     ORDER BY date desc";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, pageindex);
             stm.setInt(2, pagesize);

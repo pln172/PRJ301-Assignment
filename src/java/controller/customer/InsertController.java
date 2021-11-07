@@ -42,8 +42,8 @@ public class InsertController extends BaseRequiredAuthController {
         
         String dateMax = (year-5) + "-" + month + "-" + day;
         String dateMin = (year-120) + "-" + month + "-" + day;
-        request.setAttribute("dateMax", dateMax);
-        request.setAttribute("dateMin", dateMin);
+        request.setAttribute("dateMax", Date.valueOf(dateMax));
+        request.setAttribute("dateMin", Date.valueOf(dateMin));
         request.getRequestDispatcher("../view/customer/insert.jsp").forward(request, response);
     }
 

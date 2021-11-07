@@ -49,7 +49,8 @@ public class AccountDBContext extends DBContext {
                     + "     FROM Account a LEFT JOIN AccountFeature af\n"
                     + "     ON a.username = af.username\n"
                     + "     LEFT JOIN [Feature] f ON f.fid = af.fid\n"
-                    + "  WHERE a.username = ? AND [password] = ?";
+                    + "  WHERE BINARY_CHECKSUM(a.username) = BINARY_CHECKSUM(?)\n"
+                    + "      AND BINARY_CHECKSUM(a.password) = BINARY_CHECKSUM(?)";
 
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, user);
