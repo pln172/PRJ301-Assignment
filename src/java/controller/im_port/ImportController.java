@@ -29,7 +29,6 @@ import model.Product;
  */
 public class ImportController extends BaseRequiredAuthController {
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -65,7 +64,7 @@ public class ImportController extends BaseRequiredAuthController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSS");
         String formattedDate = myDateObj.format(dtf);
         Timestamp ts = Timestamp.valueOf(formattedDate);
-        
+
         Import im = new Import();
         im.setDate(ts);
 
@@ -92,7 +91,7 @@ public class ImportController extends BaseRequiredAuthController {
                 check_noquan = false;
             }
         }
-        
+
         if (check_dup && check_noquan) {
             if (pros != null) {
                 for (int i = 0; i < pros.length; i++) {
@@ -122,7 +121,9 @@ public class ImportController extends BaseRequiredAuthController {
 
             Account acc = (Account) request.getSession().getAttribute("account");
             if (acc.getRight().equals("admin")) {
-                response.sendRedirect("http://localhost:8080/ASSIGNMENT/history/import");
+                String servletPath = request.getContextPath();
+                servletPath += "/history/import";
+                response.sendRedirect(servletPath);
             }
         } else if (!check_dup && check_noquan) {
             response.sendRedirect("import?err=1");
@@ -130,7 +131,7 @@ public class ImportController extends BaseRequiredAuthController {
             response.sendRedirect("import?err=2");
         } else if (!check_noquan && !check_dup) {
             response.sendRedirect("import?err=3");
-        } 
+        }
     }
 
     /**

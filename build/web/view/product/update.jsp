@@ -81,9 +81,14 @@
                                         <input type="text" name="name" value="${p.name}" required/>
                                     </td>
                                     <td></td>
-                                    <td>Số lượng <span style="color: red;">*</span></td>
+                                    <td>Nhóm hàng <span style="color: red;">*</span></td>
                                     <td>
-                                        ${p.quantity}
+                                        <select name="group" required>
+                                            <c:forEach items="${requestScope.groups}" var="g">
+                                                <option value="${g.id}" ${p.group.id==g.id?"selected":""}
+                                                        >${g.name} </option>
+                                            </c:forEach>
+                                        </select>
                                     </td>
                                 </tr>
 

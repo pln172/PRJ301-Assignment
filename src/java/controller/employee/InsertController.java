@@ -118,7 +118,10 @@ public class InsertController extends BaseRequiredAuthController {
 
             edb.insert(e);
             adb.insert(a);
-            response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
+            
+            String servletPath = request.getContextPath();
+            servletPath += "/employee";
+            response.sendRedirect(servletPath);
         } else if (!isExistE && isExistA) {
             mess = "Username does exist. Please re-insert!";
         } else if (!isExistA && isExistE) {

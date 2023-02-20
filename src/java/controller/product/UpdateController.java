@@ -9,10 +9,12 @@ import controller.BaseRequiredAuthController;
 import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Group;
 import model.Product;
 
 /**
@@ -37,7 +39,10 @@ public class UpdateController extends BaseRequiredAuthController {
 
         ProductDBContext pdb = new ProductDBContext();
         Product product = pdb.getPro(id);
-
+        
+        ArrayList<Group> groups = pdb.getGroups();
+        
+        request.setAttribute("groups", groups);
         request.setAttribute("product", product);
         request.setAttribute("err", request.getParameter("err"));
         request.getRequestDispatcher("../view/product/update.jsp").forward(request, response);
@@ -60,6 +65,7 @@ public class UpdateController extends BaseRequiredAuthController {
         int id = Integer.parseInt(request.getParameter("id"));
         int im = Integer.parseInt(request.getParameter("priceImport"));
         int ex = Integer.parseInt(request.getParameter("priceExport"));
+        int group = Integer.parseInt(request.getParameter("group"));
 
         if (im < ex) {
             ProductDBContext pdb = new ProductDBContext();
@@ -68,9 +74,15 @@ public class UpdateController extends BaseRequiredAuthController {
             pro.setQuantity(pro.getQuantity());
             pro.setPriceImport(im);
             pro.setPriceExport(ex);
+            
+            Group g = new Group();
+            g.setId(group);
+            pro.setGroup(g);
 
             pdb.update(pro);
-            response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+            String servletPath = request.getContextPath();
+            servletPath += "/product";
+            response.sendRedirect(servletPath);
         } else {
             response.sendRedirect("update?id=" + id + "&err=1");
         }

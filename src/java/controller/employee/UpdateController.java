@@ -117,7 +117,9 @@ public class UpdateController extends BaseRequiredAuthController {
             }
 
             edb.update(e);
-            response.sendRedirect("http://localhost:8080/ASSIGNMENT/employee");
+            String servletPath = request.getContextPath();
+            servletPath += "/employee";
+            response.sendRedirect(servletPath);
         } else {
             request.setAttribute("name", name);
             request.setAttribute("gender", request.getParameter("gender"));

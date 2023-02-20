@@ -70,7 +70,10 @@ public class InsertController extends BaseRequiredAuthController {
 
         CustomerDBContext cdb = new CustomerDBContext();
         cdb.insert(c);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/customer");
+
+        String servletPath = request.getContextPath();
+        servletPath += "/customer";
+        response.sendRedirect(servletPath);
     }
 
     /**

@@ -24,9 +24,9 @@ public abstract class BaseRequiredAuthController extends HttpServlet {
     private boolean isAuthenticated(HttpServletRequest request) {
         Account acc = (Account) request.getSession().getAttribute("account");
         boolean isAuthorized = false;
-        if (acc == null) return false;
-        
-        else {
+        if (acc == null) {
+            return false;
+        } else {
             AccountDBContext adb = new AccountDBContext();
             String url = request.getServletPath();
             for (Feature f : adb.getFeatures(acc.getRight())) {
@@ -62,7 +62,9 @@ public abstract class BaseRequiredAuthController extends HttpServlet {
             processGet(request, response);
         } else {
 //            response.getWriter().println("access denied!");
-            response.sendRedirect("login");
+            String servletPath = request.getContextPath();
+            servletPath += "/login";
+            response.sendRedirect(servletPath);
         }
     }
 

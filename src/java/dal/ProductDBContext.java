@@ -124,6 +124,7 @@ public class ProductDBContext extends DBContext {
                     + "      ,[quantity]\n"
                     + "      ,[priceImport]\n"
                     + "      ,[priceExport]\n"
+                    + "      ,[gid]\n"
                     + "  FROM [Product]"
                     + "  WHERE id = ?";
 
@@ -140,6 +141,11 @@ public class ProductDBContext extends DBContext {
                 p.setPriceImport(rs.getInt("priceImport"));
                 p.setPriceExport(rs.getInt("priceExport"));
 
+                Group g = new Group();
+                g.setId(rs.getInt("gid"));
+                
+                p.setGroup(g);
+                
                 return p;
             }
         } catch (SQLException ex) {
@@ -154,9 +160,11 @@ public class ProductDBContext extends DBContext {
                     + "           ([pname]\n"
                     + "           ,[quantity]\n"
                     + "           ,[priceImport]\n"
-                    + "           ,[priceExport])\n"
+                    + "           ,[priceExport]\n"
+                    + "           ,[gid])\n"
                     + "     VALUES\n"
                     + "           (?\n"
+                    + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?)";
@@ -166,6 +174,7 @@ public class ProductDBContext extends DBContext {
             stm.setInt(2, p.getQuantity());
             stm.setInt(3, p.getPriceImport());
             stm.setInt(4, p.getPriceExport());
+            stm.setInt(5, p.getGroup().getId());
 
             stm.executeUpdate();
 
@@ -181,6 +190,7 @@ public class ProductDBContext extends DBContext {
                     + "      ,[quantity] = ?\n"
                     + "      ,[priceImport] = ?\n"
                     + "      ,[priceExport] = ?\n"
+                    + "      ,[gid] = ?\n"
                     + " WHERE id = ?";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -188,7 +198,8 @@ public class ProductDBContext extends DBContext {
             stm.setInt(2, p.getQuantity());
             stm.setInt(3, p.getPriceImport());
             stm.setInt(4, p.getPriceExport());
-            stm.setInt(5, p.getId());
+            stm.setInt(5, p.getGroup().getId());
+            stm.setInt(6, p.getId());
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDBContext.class.getName()).log(Level.SEVERE, null, ex);

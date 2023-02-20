@@ -3,7 +3,8 @@
     Created on : Oct 2, 2021, 11:57:12 AM
     Author     : ASUS
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -77,9 +78,14 @@
                                                required/>
                                     </td>
                                     <td></td>
-                                    <td>Số lượng <span style="color: red;">*</span></td>
+                                    <td>Nhóm hàng <span style="color: red;">*</span></td>
                                     <td>
-                                        0
+                                        <select name="group" required>
+                                            <c:forEach items="${requestScope.groups}" var="g">
+                                                <option value="${g.id}"
+                                                        >${g.name} </option>
+                                            </c:forEach>
+                                        </select>
                                     </td>
                                 </tr>
 
@@ -87,8 +93,8 @@
                                     <td>Giá nhập <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="number" name="priceImport" 
-                                               value="${requestScope.priceImport}"
-                                               min="0" max="2000000" required/>
+                                               value="${requestScope.priceImport!=null?requestScope.priceImport:0}" 
+                                               min="0" max="2000000" />
                                     </td>
                                     <td></td>
                                     <td>Giá bán <span style="color: red;">*</span></td>

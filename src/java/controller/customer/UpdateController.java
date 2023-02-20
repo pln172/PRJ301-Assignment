@@ -77,7 +77,10 @@ public class UpdateController extends BaseRequiredAuthController {
 
         CustomerDBContext cdb = new CustomerDBContext();
         cdb.update(c);
-        response.sendRedirect("http://localhost:8080/ASSIGNMENT/customer");
+
+        String servletPath = request.getContextPath();
+        servletPath += "/customer";
+        response.sendRedirect(servletPath);
     }
 
     /**

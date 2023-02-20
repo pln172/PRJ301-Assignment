@@ -9,10 +9,12 @@ import controller.BaseRequiredAuthController;
 import dal.ProductDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Group;
 import model.Product;
 
 /**
@@ -33,6 +35,10 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ProductDBContext pdb = new ProductDBContext();
+        ArrayList<Group> groups = pdb.getGroups();
+
+        request.setAttribute("groups", groups);
         request.getRequestDispatcher("../view/product/insert.jsp").forward(request, response);
     }
 
@@ -52,6 +58,7 @@ public class InsertController extends BaseRequiredAuthController {
         String name = request.getParameter("name").replaceAll("\\s\\s+", " ").trim();
         int im = Integer.parseInt(request.getParameter("priceImport"));
         int ex = Integer.parseInt(request.getParameter("priceExport"));
+        int group = Integer.parseInt(request.getParameter("group"));
 
         if (im < ex) {
             Product p = new Product();
@@ -59,11 +66,22 @@ public class InsertController extends BaseRequiredAuthController {
             p.setQuantity(0);
             p.setPriceImport(im);
             p.setPriceExport(ex);
+            
+            Group g = new Group();
+            g.setId(group);
+            p.setGroup(g);
 
             ProductDBContext pdb = new ProductDBContext();
             pdb.insert(p);
-            response.sendRedirect("http://localhost:8080/ASSIGNMENT/product");
+            
+            String servletPath = request.getContextPath();
+            servletPath += "/product";
+            response.sendRedirect(servletPath);
         } else {
+            ProductDBContext pdb = new ProductDBContext();
+            ArrayList<Group> groups = pdb.getGroups();
+
+            request.setAttribute("groups", groups);
             request.setAttribute("name", name);
             request.setAttribute("priceImport", im);
             request.setAttribute("priceExport", ex);
