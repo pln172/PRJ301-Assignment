@@ -17,7 +17,7 @@
         <link href="../css/insert_style.css" rel="stylesheet" type="text/css"/>
         <script>
             function changeurl(url) {
-                var host = "http://localhost:8080/ASSIGNMENT/";
+                var host = "${pageContext.request.contextPath}/";
                 window.location.href = host + url;
             }
         </script>
@@ -28,14 +28,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
-                        <h3>Management</h3>
+                        <h3>Quản lý</h3>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <div class="hright">
-                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
-                        <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
+                        <input id="import" type="button" onclick="changeurl('import')" value="Nhập hàng"/>
+                        <input id="sell" type="button" onclick="changeurl('sell')" value="Bán hàng"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
                         <div class="dropdown">
@@ -43,8 +43,8 @@
                                 <i class="far fa-user-circle fa-2x" style="color: white;"></i>
                             </button>
                             <div class="dropdown-content">
-                                <h5 onclick="changeurl('account')">Account</h5>
-                                <h5 onclick="changeurl('logout')">Log out</h5>
+                                <!--<h5 onclick="changeurl('account')">Tài khoản</h5>-->
+                                <h5 onclick="changeurl('logout')">Đăng xuất</h5>
                             </div>
                         </div>
                     </div>
@@ -56,11 +56,12 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="left">
-                        <p onclick="changeurl('statistic')">Statistic</p>
-                        <p onclick="changeurl('employee')">Employee</p>
-                        <p onclick="changeurl('customer')">Customer</p>
-                        <p onclick="changeurl('product')" class="nav">Product</p>
-                        <p onclick="changeurl('report')">Report</p>
+                        <p onclick="changeurl('statistic')">Thống kê</p>
+                        <p onclick="changeurl('employee')">Nhân viên</p>
+                        <p onclick="changeurl('customer')">Khách hàng</p>
+                        <p onclick="changeurl('product')" class="nav">Sản phẩm</p>
+                        <p onclick="changeurl('report')">Báo cáo doanh thu</p>
+                        <p onclick="changeurl('history')">Lịch sử</p>
                     </div>
                 </div>
 
@@ -68,29 +69,29 @@
                     <div class="right">
                         <form action="insert" method="POST">
                             <table>
-                                <caption>Insert new product</caption>
+                                <caption>Thêm sản phẩm mới</caption>
                                 <tr>
-                                    <td>Name <span style="color: red;">*</span></td>
+                                    <td>Tên <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="text" name="name" value="${requestScope.name}"
-                                               pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
+                                               required/>
                                     </td>
                                     <td></td>
-                                    <td>Quantity <span style="color: red;">*</span></td>
+                                    <td>Số lượng <span style="color: red;">*</span></td>
                                     <td>
                                         0
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td>Price import <span style="color: red;">*</span></td>
+                                    <td>Giá nhập <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="number" name="priceImport" 
                                                value="${requestScope.priceImport}"
-                                               min="1" max="2000000" required/>
+                                               min="0" max="2000000" required/>
                                     </td>
                                     <td></td>
-                                    <td>Price export <span style="color: red;">*</span></td>
+                                    <td>Giá bán <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="number" name="priceExport" 
                                                value="${requestScope.priceExport}"
@@ -98,7 +99,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <input id="save" style="margin-left: 42%;" type="submit" value="Save"/>
+                            <input id="save" style="margin-left: 42%;" type="submit" value="Lưu"/>
                             <p style="color: red; margin-top: 15px; text-align: center; font-weight: bold;">
                                 ${requestScope.err}
                             </p>

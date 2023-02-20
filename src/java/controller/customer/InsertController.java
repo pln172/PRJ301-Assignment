@@ -39,9 +39,9 @@ public class InsertController extends BaseRequiredAuthController {
         int day = d.getDayOfMonth();
         int month = d.getMonth().getValue();
         int year = d.getYear();
-        
-        String dateMax = (year-5) + "-" + month + "-" + day;
-        String dateMin = (year-120) + "-" + month + "-" + day;
+
+        String dateMax = (year - 5) + "-" + month + "-" + day;
+        String dateMin = (year - 120) + "-" + month + "-" + day;
         request.setAttribute("dateMax", Date.valueOf(dateMax));
         request.setAttribute("dateMin", Date.valueOf(dateMin));
         request.getRequestDispatcher("../view/customer/insert.jsp").forward(request, response);
@@ -58,6 +58,8 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         Customer c = new Customer();
         c.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
         c.setGender(request.getParameter("gender").equals("male"));
@@ -65,7 +67,7 @@ public class InsertController extends BaseRequiredAuthController {
         c.setPhone(request.getParameter("phone"));
         c.setEmail(request.getParameter("email").trim());
         c.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
-        
+
         CustomerDBContext cdb = new CustomerDBContext();
         cdb.insert(c);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/customer");

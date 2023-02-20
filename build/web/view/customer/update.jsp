@@ -19,7 +19,7 @@
         <link href="../css/insert_style.css" rel="stylesheet" type="text/css"/>
         <script>
             function changeurl(url) {
-                var host = "http://localhost:8080/ASSIGNMENT/";
+                var host = "${pageContext.request.contextPath}/";
                 window.location.href = host + url;
             }
         </script>
@@ -31,14 +31,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
-                        <h3>Management</h3>
+                        <h3>Quản lý</h3>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <div class="hright">
-                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
-                        <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
+                        <input id="import" type="button" onclick="changeurl('import')" value="Nhập hàng"/>
+                        <input id="sell" type="button" onclick="changeurl('sell')" value="Bán hàng"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
                         <div class="dropdown">
@@ -46,8 +46,8 @@
                                 <i class="far fa-user-circle fa-2x" style="color: white;"></i>
                             </button>
                             <div class="dropdown-content">
-                                <h5 onclick="changeurl('account')">Account</h5>
-                                <h5 onclick="changeurl('logout')">Log out</h5>
+                                <!--<h5 onclick="changeurl('account')">Tài khoản</h5>-->
+                                <h5 onclick="changeurl('logout')">Đăng xuất</h5>
                             </div>
                         </div>
                     </div>
@@ -59,11 +59,12 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="left">
-                        <p onclick="changeurl('statistic')">Statistic</p>
-                        <p onclick="changeurl('employee')">Employee</p>
-                        <p onclick="changeurl('customer')" class="nav">Customer</p>
-                        <p onclick="changeurl('product')">Product</p>
-                        <p onclick="changeurl('report')">Report</p>
+                        <p onclick="changeurl('statistic')">Thống kê</p>
+                        <p onclick="changeurl('employee')">Nhân viên</p>
+                        <p onclick="changeurl('customer')" class="nav">Khách hàng</p>
+                        <p onclick="changeurl('product')">Sản phẩm</p>
+                        <p onclick="changeurl('report')">Báo cáo doanh thu</p>
+                        <p onclick="changeurl('history')">Lịch sử</p>
                     </div>
                 </div>
 
@@ -72,34 +73,34 @@
                         <form action="update" method="POST">
                             <table>
                                 <input type="hidden" name="id" value="${c.id}"/>
-                                <caption>Update customer</caption>
+                                <caption>Cập nhật thông tin khách hàng</caption>
                                 <tr>
-                                    <td>Name <span style="color: red;">*</span></td>
+                                    <td>Tên <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="name" value="${c.name}" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
+                                        <input type="text" name="name" value="${c.name}"  required/>
                                     </td>
                                     <td></td>
-                                    <td>Gender <span style="color: red;">*</span></td>
+                                    <td>Giới tính <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="radio" 
                                                ${c.gender ? "checked=\"checked\"" : ""}
-                                               name="gender" value="male"/> Male
+                                               name="gender" value="male"/> nam
                                         <input type="radio" 
                                                ${!c.gender ? "checked=\"checked\"" : ""}
-                                               name="gender" value="female"/> Female
+                                               name="gender" value="female"/> nữ
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td>Date of birth <span style="color: red;">*</span></td>
+                                    <td>Ngày sinh <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="date" name="dob" value="${c.dob}"
                                                min="${requestScope.dateMin}" max="${requestScope.dateMax}" required/>
                                     </td>
                                     <td></td>
-                                    <td>Phone <span style="color: red;">*</span></td>
+                                    <td>SĐT <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="tel" name="phone" value="${c.phone}" pattern="[0]{1}[0-9]{9}" required/>
+                                        <input type="tel" name="phone" value="${c.phone}" pattern="[0]{1}[0-9]{9}" maxlength="10" required/>
                                     </td>
                                 </tr>
 
@@ -109,13 +110,13 @@
                                         <input type="email" name="email" value="${c.email}"/>
                                     </td>
                                     <td></td>
-                                    <td>Address <span style="color: red;">*</span></td>
+                                    <td>Địa chỉ <span style="color: red;">*</span></td>
                                     <td>
-                                        <input type="text" name="address" length="100" value="${c.address}" pattern="[a-zA-Z0-9]+[ a-zA-Z0-9]*" required/>
+                                        <input type="text" name="address" length="100" value="${c.address}"/>
                                     </td>
                                 </tr>
                             </table>
-                            <input id="save" type="submit" style="margin-left: 42%;" value="Save"/>
+                            <input id="save" type="submit" style="margin-left: 42%;" value="Lưu"/>
                         </form>
                     </div>
                 </div>

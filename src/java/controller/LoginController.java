@@ -33,24 +33,25 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Cookie arr[] = request.getCookies();
-        for (Cookie c : arr) {
-            if (c.getName().equals("userC")) {
-                request.setAttribute("user", c.getValue());
-            }
-            if (c.getName().equals("passC")) {
-                request.setAttribute("pass", c.getValue());
-                request.setAttribute("remember", "yes");
-            }
-        }
-
-        Account acc = (Account) request.getSession().getAttribute("account");
-
-        if (acc == null) {
-            request.getRequestDispatcher("view/Login.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("statistic");
-        }
+//        Cookie arr[] = request.getCookies();
+//        for (Cookie c : arr) {
+//            if (c.getName().equals("userC")) {
+//                request.setAttribute("user", c.getValue());
+//            }
+//            if (c.getName().equals("passC")) {
+//                request.setAttribute("pass", c.getValue());
+//                request.setAttribute("remember", "yes");
+//            }
+//        }
+//
+//        Account acc = (Account) request.getSession().getAttribute("account");
+//
+//        if (acc == null) {
+//            request.getRequestDispatcher("view/Login.jsp").forward(request, response);
+//        } else {
+//            response.sendRedirect("statistic");
+//        }
+        request.getRequestDispatcher("view/Login.jsp").forward(request, response);
     }
 
     /**
@@ -64,10 +65,10 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String remember = request.getParameter("remember");
-        if (remember == null) {
-            remember = "no";
-        }
+//        String remember = request.getParameter("remember");
+//        if (remember == null) {
+//            remember = "no";
+//        }
 
         String user = request.getParameter("user");
         String pass = request.getParameter("pass");
@@ -78,32 +79,32 @@ public class LoginController extends HttpServlet {
         if (acc != null) {
             request.getSession().setAttribute("account", acc);
 
-            if (remember.equals("yes")) {
-                Cookie u = new Cookie("userC", user);
-                Cookie p = new Cookie("passC", pass);
-                u.setMaxAge(43200);
-                p.setMaxAge(43200);
-                response.addCookie(u);
-                response.addCookie(p);
-            } else {
-                Cookie arr[] = request.getCookies();
-                for (Cookie c : arr) {
-                    if (c.getName().equals("userC")) {
-                        c.setMaxAge(-1);
-                        response.addCookie(c);
-                    }
-                    if (c.getName().equals("passC")) {
-                        request.setAttribute("pass", c.getValue());
-                        c.setMaxAge(-1);
-                        response.addCookie(c);
-                    }
-                }
-            }
+//            if (remember.equals("yes")) {
+//                Cookie u = new Cookie("userC", user);
+//                Cookie p = new Cookie("passC", pass);
+//                u.setMaxAge(43200);
+//                p.setMaxAge(43200);
+//                response.addCookie(u);
+//                response.addCookie(p);
+//            } else {
+//                Cookie arr[] = request.getCookies();
+//                for (Cookie c : arr) {
+//                    if (c.getName().equals("userC")) {
+//                        c.setMaxAge(0);
+//                        response.addCookie(c);
+//                    }
+//                    if (c.getName().equals("passC")) {
+//                        request.setAttribute("pass", c.getValue());
+//                        c.setMaxAge(0);
+//                        response.addCookie(c);
+//                    }
+//                }
+//            }
 
-            if (acc.getUsername().equals("loandp")) {
+            if (acc.getRight().equals("admin")) {
                 response.sendRedirect("statistic");
             } else {
-                response.sendRedirect("sell");
+                response.sendRedirect("emp/sell");
             }
         } else {
             request.getSession().setAttribute("account", null);

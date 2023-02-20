@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -22,20 +23,21 @@ public abstract class BaseRequiredAuthController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request) {
         Account acc = (Account) request.getSession().getAttribute("account");
-//        boolean isAuthorized = false;
-//        if (acc == null) return false;
-//        
-//        else {
-//            String url = request.getServletPath();
-//            for (Feature f : acc.getFeatures()) {
-//                if (f.getUrl().equals(url)) {
-//                    isAuthorized = true;
-//                    break;
-//                }
-//            }
-//        }
-//        return isAuthorized;
-return true;
+        boolean isAuthorized = false;
+        if (acc == null) return false;
+        
+        else {
+            AccountDBContext adb = new AccountDBContext();
+            String url = request.getServletPath();
+            for (Feature f : adb.getFeatures(acc.getRight())) {
+                if (f.getUrl().equals(url)) {
+                    isAuthorized = true;
+                    break;
+                }
+            }
+        }
+        return isAuthorized;
+//return true;
     }
 
     protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
@@ -59,7 +61,8 @@ return true;
         if (isAuthenticated(request)) {
             processGet(request, response);
         } else {
-            response.getWriter().println("access denied!");
+//            response.getWriter().println("access denied!");
+            response.sendRedirect("login");
         }
     }
 

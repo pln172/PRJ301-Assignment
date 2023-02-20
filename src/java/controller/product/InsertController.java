@@ -47,6 +47,8 @@ public class InsertController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         String name = request.getParameter("name").replaceAll("\\s\\s+", " ").trim();
         int im = Integer.parseInt(request.getParameter("priceImport"));
         int ex = Integer.parseInt(request.getParameter("priceExport"));

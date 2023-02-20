@@ -37,7 +37,7 @@
                 </tr>
 
                 <tr>
-                    <td><h3>Date:</h3></td>
+                    <td><h3>Thời gian:</h3></td>
                     <td>
                         <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" 
                                         value = "${i.date}" />
@@ -46,15 +46,19 @@
             </table>
 
             <table border="1px;">
-                <caption><h3>Product</h3></caption>
+                <caption><h3>Sản phẩm</h3></caption>
                 <tr>
-                    <td>Name</td>
-                    <td>Quantity</td>
-                    <td>Price</td>
-                    <td>Total</td>
+                    <td>STT</td>
+                    <td>Tên</td>
+                    <td>Số lượng</td>
+                    <td>Giá đơn vị</td>
+                    <td>Tổng</td>
                 </tr>
+                <c:set var="a" value="0"/>
                 <c:forEach items="${requestScope.import.importDetails}" var="id">
+                    <c:set var="a" value="${a=a+1}"/>
                     <tr>
+                        <td>${a}</td>
                         <td>${id.pid.name}</td>
                         <td>${id.quantity}</td>
                         <td>
@@ -66,9 +70,10 @@
                                               value = "${id.total}"/>
                         </td>
                     </tr>
+                    
                 </c:forEach>
             </table>
-            <h3 style="margin-left: 800px;">Total: 
+            <h3 style="margin-left: 800px;">Tổng hoá đơn: 
                 <fmt:formatNumber type = "number" 
                                       value = "${i.total}"/>
             </h3>

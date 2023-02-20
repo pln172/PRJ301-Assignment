@@ -25,12 +25,12 @@
 
         <script>
             function changeurl(url) {
-                var host = "http://localhost:8080/ASSIGNMENT/";
+                var host = "${pageContext.request.contextPath}/";
                 window.location.href = host + url;
             }
 
             function insert(url) {
-                var host = "http://localhost:8080/ASSIGNMENT/";
+                var host = "${pageContext.request.contextPath}/";
                 window.location.href = host + url + "/insert";
             }
 
@@ -46,14 +46,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
-                        <h3>Management</h3>
+                        <h3>Quản lý</h3>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <div class="hright">
-                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
-                        <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
+                        <input id="import" type="button" onclick="changeurl('import')" value="Nhập hàng"/>
+                        <input id="sell" type="button" onclick="changeurl('sell')" value="Bán hàng"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
                         <div class="dropdown">
@@ -61,8 +61,8 @@
                                 <i class="far fa-user-circle fa-2x" style="color: white;"></i>
                             </button>
                             <div class="dropdown-content">
-                                <h5 onclick="changeurl('account')">Account</h5>
-                                <h5 onclick="changeurl('logout')">Log out</h5>
+                                <!--<h5 onclick="changeurl('account')">Tài khoản</h5>-->
+                                <h5 onclick="changeurl('logout')">Đăng xuất</h5>
                             </div>
                         </div>
                     </div>
@@ -74,11 +74,12 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="left">
-                        <p onclick="changeurl('statistic')">Statistic</p>
-                        <p onclick="changeurl('employee')">Employee</p>
-                        <p onclick="changeurl('customer')">Customer</p>
-                        <p onclick="changeurl('product')" class="nav">Product</p>
-                        <p onclick="changeurl('report')">Report</p>
+                        <p onclick="changeurl('statistic')">Thống kê</p>
+                        <p onclick="changeurl('employee')">Khách hàng</p>
+                        <p onclick="changeurl('customer')">Khách hàng</p>
+                        <p onclick="changeurl('product')" class="nav">Sản phẩm</p>
+                        <p onclick="changeurl('report')">Báo cáo doanh thu</p>
+                        <p onclick="changeurl('history')">Lịch sử</p>
                     </div>
                 </div>
 
@@ -86,29 +87,29 @@
                     <div class="right">
                         <form action="product" method="POST">
                             <input type="text" name="name" value="${requestScope.name}"/>
-                            <input type="submit" value="Search"/>
+                            <input type="submit" value="Tìm kiếm"/>
                         </form>
-                        <input id="insert" type="button" onclick="insert('product')" value="Insert"/>
+                        <input id="insert" type="button" onclick="insert('product')" value="Thêm sản phẩm"/>
                         <div class="wrapper">
                             <div class="table">
                                 <div class="r green">
                                     <div class="cell th">
-                                        Code
+                                        Mã SP
                                     </div>
                                     <div class="cell th">
-                                        Name
+                                        Tên
                                     </div>
                                     <div class="cell th">
-                                        Quantity
+                                        Số lượng
                                     </div>
                                     <div class="cell th">
-                                        Price Import
+                                        Giá nhập
                                     </div>
                                     <div class="cell th">
-                                        Price Export
+                                        Giá bán
                                     </div>
                                     <div class="cell th">
-                                        Action
+                                        Thao tác
                                     </div>
                                 </div>
 
@@ -126,7 +127,7 @@
                                                               value = "${p.priceExport}" />
                                         </div>
                                         <div class="cell">
-                                            <abbr title="update"><i class="far fa-edit" onclick="doUpdate(${p.id})"></i></abbr>
+                                            <a onclick="doUpdate(${p.id})" style="text-decoration: underline;cursor: pointer;">Sửa</a>
                                         </div>
 
                                     </div>

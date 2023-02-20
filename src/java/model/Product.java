@@ -17,6 +17,7 @@ public class Product {
     private int quantity;
     private int priceImport;
     private int priceExport;
+    private Group group;
 
     public Product() {
     }
@@ -67,6 +68,14 @@ public class Product {
 
     public void setPriceExport(int priceExport) {
         this.priceExport = priceExport;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
     
 

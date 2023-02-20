@@ -31,12 +31,12 @@
         <div>
             <table>
                 <tr>
-                    <td><h3>Order no:</h3></td>
+                    <td><h3>Mã HĐ:</h3></td>
                     <td>${o.orderNo}</td>
                 </tr>
 
                 <tr>
-                    <td><h3>Date:</h3></td>
+                    <td><h3>Thời gian:</h3></td>
                     <td>
                         <fmt:formatDate pattern = "yyyy-MM-dd HH:mm:ss" 
                                         value = "${o.date}" />
@@ -44,26 +44,30 @@
                 </tr>
 
                 <tr>
-                    <td><h3>Employee:</h3></td>
+                    <td><h3>Nhân viên:</h3></td>
                     <td>${o.eid.name} - ${o.eid.phone}</td>
                 </tr>
 
                 <tr>
-                    <td><h3>Customer:</h3></td>
+                    <td><h3>Khách hàng:</h3></td>
                     <td>${o.cid.name}</td>
                 </tr>
             </table>
 
             <table border="1px;">
-                <caption><h3>Product</h3></caption>
+                <caption><h3>Sản phẩm</h3></caption>
                 <tr>
-                    <td>Name</td>
-                    <td>Quantity</td>
-                    <td>Price</td>
-                    <td>Total</td>
+                    <td>STT</td>
+                    <td>Tên</td>
+                    <td>Số lượng</td>
+                    <td>Giá đơn vị</td>
+                    <td>Tổng</td>
                 </tr>
+                <c:set var="a" value="0"/>
                 <c:forEach items="${requestScope.order.orderDetails}" var="od">
+                    <c:set var="a" value="${a=a+1}"/>
                     <tr>
+                        <td>${a}</td>
                         <td>${od.pid.name}</td>
                         <td>${od.quantity}</td>
                         <td>
@@ -77,7 +81,7 @@
                     </tr>
                 </c:forEach>
             </table>
-            <h3 style="margin-left: 800px;">Total: 
+            <h3 style="margin-left: 800px;">Tổng hoá đơn: 
                 <fmt:formatNumber type = "number" 
                                   value = "${o.total}"/>
             </h3>

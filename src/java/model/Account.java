@@ -15,8 +15,8 @@ public class Account {
     private String username;
     private String password;
     private Employee employee;
-    
-    private ArrayList<Feature> features = new ArrayList<>();
+    private String right;
+//    private ArrayList<Feature> features = new ArrayList<>();
 
     public Account() {
     }
@@ -49,13 +49,22 @@ public class Account {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+    
 
-    public ArrayList<Feature> getFeatures() {
-        return features;
+//    public ArrayList<Feature> getFeatures() {
+//        return features;
+//    }
+//
+//    public void setFeatures(ArrayList<Feature> features) {
+//        this.features = features;
+//    }
+
+    public String getRight() {
+        return right;
     }
 
-    public void setFeatures(ArrayList<Feature> features) {
-        this.features = features;
+    public void setRight(String right) {
+        this.right = right;
     }
     
     

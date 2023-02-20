@@ -20,7 +20,7 @@
 
         <script>
             function changeurl(url) {
-                var host = "http://localhost:8080/ASSIGNMENT/";
+                var host = "${pageContext.request.contextPath}/";
                 window.location.href = host + url;
             }
 
@@ -44,14 +44,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
-                        <h3>Management</h3>
+                        <h3>Quản lý</h3>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <div class="hright">
-                        <input id="import" type="button" onclick="changeurl('import')" value="IMPORT"/>
-                        <input id="sell" type="button" onclick="changeurl('sell')" value="SELL"/>
+                        <input id="import" type="button" onclick="changeurl('import')" value="Nhập hàng"/>
+                        <input id="sell" type="button" onclick="changeurl('sell')" value="Bán hàng"/>
                         <i class="fas fa-history fa-2x" 
                            onclick="changeurl('history')" style="color: white;"></i>
                         <div class="dropdown">
@@ -59,8 +59,8 @@
                                 <i class="far fa-user-circle fa-2x" style="color: white;"></i>
                             </button>
                             <div class="dropdown-content">
-                                <h5 onclick="changeurl('account')">Account</h5>
-                                <h5 onclick="changeurl('logout')">Log out</h5>
+                                <!--<h5 onclick="changeurl('account')">Tài khoản</h5>-->
+                                <h5 onclick="changeurl('logout')">Đăng xuất</h5>
                             </div>
                         </div>
                     </div>
@@ -72,11 +72,12 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="left">
-                        <p onclick="changeurl('statistic')">Statistic</p>
-                        <p onclick="changeurl('employee')">Employee</p>
-                        <p onclick="changeurl('customer')">Customer</p>
-                        <p onclick="changeurl('product')">Product</p>
-                        <p onclick="changeurl('report')">Report</p>
+                        <p onclick="changeurl('statistic')">Thống kê</p>
+                        <p onclick="changeurl('employee')">Nhân viên</p>
+                        <p onclick="changeurl('customer')">Khách hàng</p>
+                        <p onclick="changeurl('product')">Sản phẩm</p>
+                        <p onclick="changeurl('report')">Báo cáo doanh thu</p>
+                        <p onclick="changeurl('history')">Lịch sử</p>
                     </div>
                 </div>
 
@@ -97,12 +98,12 @@
                                 </c:choose>
                             </p>
                             <table id="theTable">
-                                <caption>Import</caption>
+                                <caption>Nhập hàng</caption>
                                 <tr>
-                                    <td>Product <span style="color: red;">*</span></td>
+                                    <td>Sản phẩm <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro" required>
-                                            <option value="0" hidden>Product</option>
+                                            <option value="0" hidden>Sản phẩm</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} -
@@ -112,17 +113,17 @@
                                                 </c:forEach>
                                         </select>
                                     </td>
-                                    <td>Quantity <span style="color: red;">*</span></td>
+                                    <td>Số lượng <span style="color: red;">*</span></td>
                                     <td>
                                         <input id="quantity" type="number" name="quantity" min="1" required/>
                                     </td>
                                 </tr>
 
                                 <tr id="templateRow" style="display:none">
-                                    <td>Product <span style="color: red;">*</span></td>
+                                    <td>Sản phẩm <span style="color: red;">*</span></td>
                                     <td>
                                         <select name="pro">
-                                            <option value="0" hidden>Product</option>
+                                            <option value="0" hidden>Sản phẩm</option>
                                             <c:forEach items="${requestScope.products}" var="p">
                                                 <option value="${p.id}"
                                                         >${p.name} - 
@@ -132,7 +133,7 @@
                                                 </c:forEach>
                                         </select>
                                     </td>
-                                    <td>Quantity <span style="color: red;">*</span></td>
+                                    <td>Số lượng <span style="color: red;">*</span></td>
                                     <td>
                                         <input type="number" name="quantity" min="0" 
                                                value="0" required/>
@@ -140,9 +141,9 @@
                                 </tr>
                             </table>
                             <div>
-                                <input type="button" onclick="addRow();" value="Add" 
+                                <input type="button" onclick="addRow();" value="Thêm" 
                                        style="margin-right: 950px; padding: 7px 15px;"/>
-                                <input type="submit" value="Import"
+                                <input type="submit" value="Lưu"
                                        style="padding: 7px 15px;"/>
                             </div>
                         </form>

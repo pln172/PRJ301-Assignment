@@ -105,53 +105,55 @@ public class SellController extends BaseRequiredAuthController {
 
         ProductDBContext pdb = new ProductDBContext();
 
-        boolean check_quan = true;
-        for (int i = 0; i < pros.length; i++) {
-            if (Integer.parseInt(pros[i]) != 0) {
-                Product p = pdb.getPro(Integer.parseInt(pros[i]));
-                if (p.getQuantity() < Integer.parseInt(quantity[i])) {
-                    check_quan = false;
-                    break;
-                }
-            }
-        }
+//        boolean check_quan = true;
+//        for (int i = 0; i < pros.length; i++) {
+//            if (Integer.parseInt(pros[i]) != 0) {
+//                Product p = pdb.getPro(Integer.parseInt(pros[i]));
+//                if (p.getQuantity() < Integer.parseInt(quantity[i])) {
+//                    check_quan = false;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        boolean check_dup = true;
+//        for (int i = 0; i < pros.length - 1; i++) {
+//            for (int j = i + 1; j < pros.length; j++) {
+//                if (!pros[i].equals("0")) {
+//                    if (pros[i].equals(pros[j])) {
+//                        check_dup = false;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        boolean check_noquan = true;
+//        for (int i = 0; i < pros.length; i++) {
+//            if ((pros[i].equals("0") && !quantity[i].equals("0"))) {
+//                check_noquan = false;
+//            }
+//        }
 
-        boolean check_dup = true;
-        for (int i = 0; i < pros.length - 1; i++) {
-            for (int j = i + 1; j < pros.length; j++) {
-                if (!pros[i].equals("0")) {
-                    if (pros[i].equals(pros[j])) {
-                        check_dup = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        boolean check_noquan = true;
-        for (int i = 0; i < pros.length; i++) {
-            if ((pros[i].equals("0") && !quantity[i].equals("0"))) {
-                check_noquan = false;
-            }
-        }
-
-        if (check_dup && check_quan && check_noquan) {
-            if (pros != null) {
-                for (int i = 0; i < pros.length; i++) {
-                    if (Integer.parseInt(pros[i]) != 0 && Integer.parseInt(quantity[i]) != 0) {
-                        Product p = pdb.getPro(Integer.parseInt(pros[i]));
-                        OrderDetail od = new OrderDetail();
-                        od.setOid(o);
-                        od.setPid(p);
-                        od.setQuantity(Integer.parseInt(quantity[i]));
-                        od.setPrice(p);
-                        od.setTotal(od.getPrice().getPriceExport() * od.getQuantity());
-                        o.getOrderDetails().add(od);
+//        if (check_dup && check_quan && check_noquan) {
+        if (pros != null) {
+            for (int i = 0; i < pros.length; i++) {
+                if (Integer.parseInt(pros[i]) != 0 && Integer.parseInt(quantity[i]) != 0) {
+                    Product p = pdb.getPro(Integer.parseInt(pros[i]));
+                    OrderDetail od = new OrderDetail();
+                    od.setOid(o);
+                    od.setPid(p);
+                    od.setQuantity(Integer.parseInt(quantity[i]));
+                    od.setPrice(p);
+                    od.setTotal(od.getPrice().getPriceExport() * od.getQuantity());
+                    o.getOrderDetails().add(od);
+                    if (p.getQuantity() > 0) {
                         p.setQuantity(p.getQuantity() - od.getQuantity());
                         pdb.update(p);
                     }
                 }
             }
+//            }
 
             int total = 0;
             for (OrderDetail od : o.getOrderDetails()) {
@@ -181,18 +183,19 @@ public class SellController extends BaseRequiredAuthController {
             ArrayList<Product> products = pdb.getProducts();
             request.setAttribute("products", products);
 
-            request.setAttribute("err", request.getParameter("err"));
+//            request.setAttribute("err", request.getParameter("err"));
             request.setAttribute("mess", "Sell successfully!");
             request.getRequestDispatcher("view/sell/Sell.jsp").forward(request, response);
-        } else if (!check_dup && check_quan && check_noquan) {
-            response.sendRedirect("sell?err=1");
-        } else if (!check_quan && check_dup && check_noquan) {
-            response.sendRedirect("sell?err=2");
-        } else if (!check_noquan && check_dup && check_quan) {
-            response.sendRedirect("sell?err=3");
-        } else if (!check_quan && !check_noquan && !check_dup) {
-            response.sendRedirect("sell?err=4");
         }
+//            else if (!check_dup && check_quan && check_noquan) {
+//            response.sendRedirect("sell?err=1");
+//        } else if (!check_quan && check_dup && check_noquan) {
+//            response.sendRedirect("sell?err=2");
+//        } else if (!check_noquan && check_dup && check_quan) {
+//            response.sendRedirect("sell?err=3");
+//        } else if (!check_quan && !check_noquan && !check_dup) {
+//            response.sendRedirect("sell?err=4");
+//        }
 
     }
 

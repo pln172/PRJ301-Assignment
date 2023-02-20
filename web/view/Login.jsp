@@ -25,6 +25,35 @@
                 }
             }
         </script>
+
+        <style>
+            .dialog {
+                background-color: gray;
+                position: fixed;
+                top: 140px;
+                bottom: 180px;
+                right: 350px;
+                left: 350px;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity linear 0.2s;
+            }
+
+            .dialog:target {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .close-btn {
+                color: white;
+                text-decoration: none;
+                font-size: 40px;
+            }
+        </style>
     </head>
 
     <body>
@@ -53,10 +82,31 @@
                 <input type="checkbox" name="remember" value="yes"
                        ${requestScope.remember == "yes" ? "checked=\"checked\"" : ""}/>Remember me<br/>
                 <input id="login" type="submit" value="LOGIN"/><br/>
-                <p"><a href="forgetPass">Forgot password?</a></p>
+                <p><a href="#forgetPass">Forgot password?</a></p>
                 <p style="color: red; font-weight: bold;">
                     ${requestScope.err}
                 </p>
+            </div>
+
+            <div id="forgetPass" class="dialog">
+                <div>
+                    <a href="#" class="close-btn">&times;</a>
+                    <table>
+                        <tr>
+                            <td style="color: white;">Email:</td>
+                            <td>
+                                <input type="email" name="email" value="${requestScope.email}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <form action="forgetPass" method="POST">
+                    <div>
+                        <input style="padding: 10px 10px; border-radius: 5px; 
+                               font-weight: bold; font-size: 16px; cursor: pointer;" 
+                               type="submit" value="Send"/>
+                    </div>
+                </form>
             </div>
         </form>
     </body>

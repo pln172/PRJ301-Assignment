@@ -35,20 +35,20 @@
                     <td>
                         <input type="text" max="50" style="border: none; background-color: white;" disabled/>
                     </td>
-                    <td><h3>Name:</h3></td>
+                    <td><h3>Tên</h3></td>
                     <td>${e.name}</td>
                 </tr>
 
                 <tr>
-                    <td><h3>Gender:</h3></td>
-                    <td>${e.gender ? "Male" : "Female"}</td>
+                    <td><h3>Giới tính:</h3></td>
+                    <td>${e.gender ? "nam" : "nữ"}</td>
                     <td></td>
-                    <td><h3>Date of birth:</h3></td>
+                    <td><h3>Ngày sinh:</h3></td>
                     <td>${e.dob}</td>
                 </tr>
 
                 <tr>
-                    <td><h3>Phone:</h3></td>
+                    <td><h3>SĐT:</h3></td>
                     <td>${e.phone}</td>
                     <td></td>
                     <td><h3>Email:</h3></td>
@@ -56,19 +56,19 @@
                 </tr>
 
                 <tr>
-                    <td><h3>Address:</h3></td>
+                    <td><h3>Địa chỉ:</h3></td>
                     <td>${e.address}</td>
                     <td></td>
-                    <td><h3>Starting date:</h3></td>
+                    <td><h3>Ngày bắt đầu:</h3></td>
                     <td>${e.starting_date}</td>
                 </tr>
 
                 <tr>
-                    <td><h3>Leaving date:</h3></td>
+                    <td><h3>Ngày nghỉ:</h3></td>
                     <td>${e.leaving_date}</td>
                     <td></td>
-                    <td><h3>Active:</h3></td>
-                    <td>${e.active ? "YES" : "NO"}</td>
+                    <td><h3>Trạng thái:</h3></td>
+                    <td>${e.active ? "đang làm" : "đã nghỉ"}</td>
                 </tr>
             </table>
         </div>

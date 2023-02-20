@@ -67,6 +67,8 @@ public class UpdateController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name").replaceAll("\\s\\s+", " ").trim();
         Boolean gender = request.getParameter("gender").equals("male");
@@ -89,8 +91,11 @@ public class UpdateController extends BaseRequiredAuthController {
         boolean isExistE = false;
         EmployeeDBContext edb = new EmployeeDBContext();
         ArrayList<Employee> employees = edb.getEmployees();
+        Employee employee = edb.getEmployee(id);
+
         for (Employee emp : employees) {
-            if (emp.getEmail().equals(e.getEmail()) || e.getEmail().equals("phuongloan517@gmail.com")) {
+            if (!email.equals(employee.getEmail()) && !email.isEmpty()
+                    && (emp.getEmail().equals(e.getEmail()) || e.getEmail().equals("phuongloan517@gmail.com"))) {
                 isExistE = true;
                 break;
             }

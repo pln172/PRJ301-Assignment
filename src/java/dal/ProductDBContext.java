@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Group;
 import model.Product;
 
 /**
@@ -18,6 +19,30 @@ import model.Product;
  * @author ASUS
  */
 public class ProductDBContext extends DBContext {
+
+    public ArrayList<Group> getGroups() {
+        ArrayList<Group> groups = new ArrayList<>();
+        try {
+            String sql = "SELECT [id]\n"
+                    + "      ,[gname]\n"
+                    + "  FROM [Group]";
+            
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                Group g = new Group();
+                g.setId(rs.getInt("id"));
+                g.setName(rs.getString("gname"));
+                
+                groups.add(g);
+            }
+            
+            return groups;
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
     public ArrayList<Product> getProducts() {
         ArrayList<Product> products = new ArrayList<>();
@@ -28,6 +53,7 @@ public class ProductDBContext extends DBContext {
                     + "      ,[quantity]\n"
                     + "      ,[priceImport]\n"
                     + "      ,[priceExport]\n"
+                    + "      ,[gid]\n"
                     + "  FROM [Product]";
 
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -41,6 +67,11 @@ public class ProductDBContext extends DBContext {
                 p.setQuantity(rs.getInt("quantity"));
                 p.setPriceImport(rs.getInt("priceImport"));
                 p.setPriceExport(rs.getInt("priceExport"));
+
+                Group g = new Group();
+                g.setId(rs.getInt("gid"));
+                
+                p.setGroup(g);
 
                 products.add(p);
             }

@@ -121,7 +121,7 @@ public class ImportController extends BaseRequiredAuthController {
             idb.insert(im);
 
             Account acc = (Account) request.getSession().getAttribute("account");
-            if (acc.getUsername().equals("loandp")) {
+            if (acc.getRight().equals("admin")) {
                 response.sendRedirect("http://localhost:8080/ASSIGNMENT/history/import");
             }
         } else if (!check_dup && check_noquan) {

@@ -39,14 +39,14 @@ public class UpdateController extends BaseRequiredAuthController {
         int day = d.getDayOfMonth();
         int month = d.getMonth().getValue();
         int year = d.getYear();
-        String dateMax = (year-5) + "-" + month + "-" + day;
-        String dateMin = (year-120) + "-" + month + "-" + day;
+        String dateMax = (year - 5) + "-" + month + "-" + day;
+        String dateMin = (year - 120) + "-" + month + "-" + day;
 
         int id = Integer.parseInt(request.getParameter("id"));
-        
+
         CustomerDBContext cdb = new CustomerDBContext();
         Customer cus = cdb.getCus(id);
-        
+
         request.setAttribute("customer", cus);
         request.setAttribute("dateMax", Date.valueOf(dateMax));
         request.setAttribute("dateMin", Date.valueOf(dateMin));
@@ -64,6 +64,8 @@ public class UpdateController extends BaseRequiredAuthController {
     @Override
     protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
         Customer c = new Customer();
         c.setId(Integer.parseInt(request.getParameter("id")));
         c.setName(request.getParameter("name").replaceAll("\\s\\s+", " ").trim());
@@ -72,7 +74,7 @@ public class UpdateController extends BaseRequiredAuthController {
         c.setPhone(request.getParameter("phone"));
         c.setEmail(request.getParameter("email").trim());
         c.setAddress(request.getParameter("address").replaceAll("\\s\\s+", " ").trim());
-        
+
         CustomerDBContext cdb = new CustomerDBContext();
         cdb.update(c);
         response.sendRedirect("http://localhost:8080/ASSIGNMENT/customer");

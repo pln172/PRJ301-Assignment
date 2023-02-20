@@ -26,6 +26,7 @@ public class AccountDBContext extends DBContext {
         try {
             String sql = "SELECT [username]\n"
                     + "      ,[password]\n"
+                    + "      ,[right]\n"
                     + "  FROM [Account]";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -43,12 +44,37 @@ public class AccountDBContext extends DBContext {
         return accounts;
     }
 
+    public ArrayList<Feature> getFeatures(String right) {
+        ArrayList<Feature> features = new ArrayList<>();
+        try {
+            String sql = "SELECT af.[fid]\n"
+                    + "       ,f.url\n"
+                    + "  FROM [AccountFeature] af\n"
+                    + "  INNER JOIN Feature f\n"
+                    + "  ON f.fid = af.fid"
+                    + "  WHERE [right] like ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, right);
+            ResultSet rs = stm.executeQuery();
+            
+            while (rs.next()) {
+                Feature f = new Feature();
+                f.setUrl(rs.getString("url"));
+                features.add(f);
+            }
+            return features;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public Account getAccount(String user, String pass) {
         try {
-            String sql = "SELECT a.username, a.password, a.employeeid, f.fid, f.url\n"
-                    + "     FROM Account a LEFT JOIN AccountFeature af\n"
-                    + "     ON a.username = af.username\n"
-                    + "     LEFT JOIN [Feature] f ON f.fid = af.fid\n"
+            String sql = "SELECT a.username, a.password, a.employeeid, a.[right]\n"
+                    + "     FROM Account a\n"
                     + "  WHERE BINARY_CHECKSUM(a.username) = BINARY_CHECKSUM(?)\n"
                     + "      AND BINARY_CHECKSUM(a.password) = BINARY_CHECKSUM(?)";
 
@@ -63,20 +89,22 @@ public class AccountDBContext extends DBContext {
                     acc = new Account();
                     acc.setUsername(user);
                     acc.setPassword(pass);
+                    acc.setRight(rs.getString("right"));
                 }
 
                 Employee e = new Employee();
                 e.setId(rs.getInt("employeeid"));
                 acc.setEmployee(e);
 
-                int fid = rs.getInt("fid");
-                if (fid != 0) {
-                    Feature f = new Feature();
-                    f.setId(fid);
-                    f.setUrl(rs.getString("url"));
-                    acc.getFeatures().add(f);
-                }
+//                int fid = rs.getInt("fid");
+//                if (fid != 0) {
+//                    Feature f = new Feature();
+//                    f.setId(fid);
+//                    f.setUrl(rs.getString("url"));
+//                    acc.getFeatures().add(f);
+//                }
             }
+
             return acc;
 
         } catch (SQLException ex) {
@@ -102,6 +130,7 @@ public class AccountDBContext extends DBContext {
                     + "           ([username]\n"
                     + "           ,[password]\n"
                     + "           ,[employeeid])\n"
+                    + "           ,[right]\n"
                     + "     VALUES\n"
                     + "           (?\n"
                     + "           ,?\n"
@@ -111,20 +140,21 @@ public class AccountDBContext extends DBContext {
             stm.setString(1, a.getUsername());
             stm.setString(2, a.getPassword());
             stm.setInt(3, id);
+            stm.setString(4, "emp");
             stm.executeUpdate();
 
-            for (int i = 1; i <= 5; i++) {
-                String sql_feature = "INSERT INTO [AccountFeature]\n"
-                        + "           ([username]\n"
-                        + "           ,[fid])\n"
-                        + "     VALUES\n"
-                        + "           (?\n"
-                        + "           ,?)";
-                PreparedStatement stm_feature = connection.prepareStatement(sql_feature);
-                stm_feature.setString(1, a.getUsername());
-                stm_feature.setInt(2, i);
-                stm_feature.executeUpdate();
-            }
+//            for (int i = 1; i <= 5; i++) {
+//                String sql_feature = "INSERT INTO [AccountFeature]\n"
+//                        + "           ([username]\n"
+//                        + "           ,[fid])\n"
+//                        + "     VALUES\n"
+//                        + "           (?\n"
+//                        + "           ,?)";
+//                PreparedStatement stm_feature = connection.prepareStatement(sql_feature);
+//                stm_feature.setString(1, a.getUsername());
+//                stm_feature.setInt(2, i);
+//                stm_feature.executeUpdate();
+//            }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,11 +205,11 @@ public class AccountDBContext extends DBContext {
 
     public void delete(Account a) {
         try {
-            String sql_accfeture = "DELETE FROM [AccountFeature]\n"
-                    + "      WHERE username = ?";
-            PreparedStatement stm_accfeature = connection.prepareStatement(sql_accfeture);
-            stm_accfeature.setString(1, a.getUsername());
-            stm_accfeature.executeUpdate();
+//            String sql_accfeture = "DELETE FROM [AccountFeature]\n"
+//                    + "      WHERE username = ?";
+//            PreparedStatement stm_accfeature = connection.prepareStatement(sql_accfeture);
+//            stm_accfeature.setString(1, a.getUsername());
+//            stm_accfeature.executeUpdate();
 
             String sql_account = "DELETE FROM [Account]\n"
                     + "      WHERE username = ?";
