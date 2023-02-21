@@ -1,0 +1,15 @@
+
+.col-md-9 .right .row .col-md-3 {
+    border: 3px solid black;
+    border-radius: 25px;
+    padding: 10px 25px;
+    text-align: center;
+    margin: 35px 40px;
+    background-color: #E3E3E3;
+    color: #31708f;
+}
+
+.col-md-9 .right .row .col-md-3 h4 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}

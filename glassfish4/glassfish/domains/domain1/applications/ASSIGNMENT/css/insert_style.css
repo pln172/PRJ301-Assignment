@@ -1,0 +1,24 @@
+
+.col-md-9 .right table td {
+    padding-right: 100px;
+    padding-bottom: 50px;
+    font-size: 16px;
+}
+
+.col-md-9 .right table {
+    margin: 60px auto 0 auto;
+}
+
+.col-md-9 .right table caption {
+    margin-bottom: 50px;
+    font-size: 30px;
+}
+
+.col-md-9 .right #save {
+    padding: 15px 40px;
+    border-radius: 20px;
+    border: 2px solid black;
+    color: white;
+    font-size: 20px;
+    background-color: #54CC96;
+}
