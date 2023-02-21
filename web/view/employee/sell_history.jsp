@@ -79,58 +79,84 @@
             </div>
         </header>
 
-        <section style="background-color: #eee;">
-            
-</section>
+        <section>
+            <div class="container">
+                <h4>Đơn hàng bán trong ngày</h4>
+                <table class="table table-success table-striped mt-5 mb-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Thời gian</th>
+                            <th scope="col">Tổng</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:set var="i" value="0"/>
+                        <c:forEach items="${requestScope.orders}" var="o">
+                            <c:set var="i" value="${i+1}"/>
+                            <tr>
+                                <th scope="row">${i}</th>
+                                <td><fmt:formatDate pattern = "yyyy-MM-dd HH:mm" 
+                                                value = "${o.date}" /></td>
+                                <td><fmt:formatNumber type = "number" 
+                                                  value = "${o.total}"/> VND</td>
+                                <td><a style="text-decoration: underline;color: #0d6efd;cursor: pointer;">Chi tiết</a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+        </section>
 
-<footer>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="fleft">
-                <h5>&copy PRJ301</h5>
-                <h5>phuongloan517@gmail.com</h5>
+        <footer>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="fleft">
+                        <h5>&copy PRJ301</h5>
+                        <h5>phuongloan517@gmail.com</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="fright">
+                        <i class="fab fa-instagram fa-3x"></i>
+                        <i class="fab fa-twitter fa-3x"></i>
+                        <i class="fab fa-facebook fa-3x"></i>
+                    </div>
+                </div>
             </div>
         </div>
+    </footer>
+    <!-- MDB -->
+    <!--<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"
+    ></script>-->
+    <script>
+        function calMoney(id) {
+            document.getElementById("mess-sell").innerHTML = "";
+            var str = "p" + id;
+            var price = document.getElementById(str).getAttribute("data-price");
+            str = "q" + id;
+            var quantity = document.getElementById(str).value;
+            var money = price * quantity;
 
-        <div class="col-md-6">
-            <div class="fright">
-                <i class="fab fa-instagram fa-3x"></i>
-                <i class="fab fa-twitter fa-3x"></i>
-                <i class="fab fa-facebook fa-3x"></i>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- MDB -->
-<!--<script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"
-></script>-->
-<script>
-    function calMoney(id) {
-        document.getElementById("mess-sell").innerHTML = "";
-        var str = "p" + id;
-        var price = document.getElementById(str).getAttribute("data-price");
-        str = "q" + id;
-        var quantity = document.getElementById(str).value;
-        var money = price * quantity;
+            document.getElementById("money" + id).innerHTML = money.toLocaleString('vn-VN');
 
-        document.getElementById("money" + id).innerHTML = money.toLocaleString('vn-VN');
+            var moneys = document.getElementsByClassName("money");
+            var total = 0;
+            for (var x of moneys) {
+                total += Number(x.innerHTML);
+            }
 
-        var moneys = document.getElementsByClassName("money");
-        var total = 0;
-        for (var x of moneys) {
-            total += Number(x.innerHTML);
+            document.getElementById("btn-total").innerHTML = "Tổng tiền: " + (total * 1000).toLocaleString('vn-VN') + " VND";
         }
 
-        document.getElementById("btn-total").innerHTML = "Tổng tiền: " + (total * 1000).toLocaleString('vn-VN') + " VND";
-    }
-
-    function sell() {
-        if (confirm("Bạn chắc chắn với đơn hàng này?") == true) {
-            document.getElementById("myForm").submit();
+        function sell() {
+            if (confirm("Bạn chắc chắn với đơn hàng này?") == true) {
+                document.getElementById("myForm").submit();
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>

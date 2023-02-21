@@ -5,13 +5,18 @@
  */
 package dal;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Customer;
 import model.Employee;
+import model.Order;
+import model.OrderDetail;
+import model.Product;
 
 /**
  *
@@ -303,5 +308,61 @@ public class EmployeeDBContext extends DBContext {
             Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return employees;
+    }
+    
+    public ArrayList<Order> getOrderByDate(Date date) {
+        ArrayList<Order> orders = new ArrayList<>();
+        
+        try {
+            String sql = "select [Order].id, orderNo, [date], ototal, \n"
+                    + "		Employee.ename, Employee.phone, Customer.cname,\n"
+                    + "		Product.pname,\n"
+                    + "		OrderDetails.quantity, price, total\n"
+                    + "from [Order]\n"
+                    + "	left join Employee on [Order].eid = Employee.id\n"
+                    + "	inner join Customer on [Order].cid = Customer.id\n"
+                    + "	inner join OrderDetails on [Order].id = OrderDetails.oid\n"
+                    + "	inner join Product on OrderDetails.pid = Product.id\n"
+                    + "where CAST([Order].[date] AS date) = ?";
+
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setDate(1, date);
+            ResultSet rs = stm.executeQuery();
+            Order o = new Order();
+            while (rs.next()) {
+                o.setId(rs.getInt("id"));
+                o.setOrderNo(rs.getString("orderNo"));
+                o.setDate(rs.getTimestamp("date"));
+                o.setTotal(rs.getInt("ototal"));
+
+                Employee e = new Employee();
+                e.setName(rs.getString("ename"));
+                e.setPhone(rs.getString("phone"));
+                o.setEid(e);
+
+                Customer c = new Customer();
+                c.setName(rs.getString("cname"));
+                o.setCid(c);
+
+                Product p = new Product();
+                p.setName(rs.getString("pname"));
+                p.setPriceExport(rs.getInt("price"));
+
+                OrderDetail od = new OrderDetail();
+                od.setPid(p);
+                od.setQuantity(rs.getInt("quantity"));
+                od.setPrice(p);
+                od.setTotal(rs.getInt("total"));
+
+                o.getOrderDetails().add(od);
+                
+                orders.add(o);
+            }
+            return orders;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 }
