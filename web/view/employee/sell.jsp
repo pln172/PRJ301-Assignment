@@ -57,12 +57,14 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="hleft">
-                        <h3>Bán hàng</h3>
+                        <a href="${pageContext.request.contextPath}/emp/sell"><h3>Bán hàng</h3></a>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <div class="hright">
+                        <i class="fas fa-history fa-2x" 
+                           onclick="changeurl('emp/sell-history')" style="color: white;"></i>
                         <div class="dropdown">
                             <button class="dropbtn">
                                 <i class="far fa-user-circle fa-2x" style="color: white;"></i>

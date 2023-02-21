@@ -1,0 +1,1 @@
+1. copy DBContext.txt vào web-INF/classes
