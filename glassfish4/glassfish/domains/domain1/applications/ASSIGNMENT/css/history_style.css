@@ -1,0 +1,13 @@
+
+.col-md-9 .right .col-md-5 h4 {
+    border: 3px solid black;
+    border-radius: 25px;
+    padding: 30px 50px;
+    text-align: center;
+    margin: 50px 60px;
+    background-color: #E3E3E3;
+    color: #31708f;
+    font-weight: bold;
+    cursor: pointer;
+}
+
