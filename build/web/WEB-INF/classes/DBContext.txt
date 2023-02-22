@@ -1,1 +1,1 @@
-sa sa jdbc:sqlserver://PHOENIX\\SQLEXPRESS:1433;databaseName=CafeGocPho
+sa sa jdbc:sqlserver://AREA1110\\SQLEXPRESS:1433;databaseName=CafeGocPho
