@@ -129,10 +129,11 @@ public class AccountDBContext extends DBContext {
             String sql = "INSERT INTO [Account]\n"
                     + "           ([username]\n"
                     + "           ,[password]\n"
-                    + "           ,[employeeid])\n"
-                    + "           ,[right]\n"
+                    + "           ,[employeeid]\n"
+                    + "           ,[right])\n"
                     + "     VALUES\n"
                     + "           (?\n"
+                    + "           ,?\n"
                     + "           ,?\n"
                     + "           ,?)";
 

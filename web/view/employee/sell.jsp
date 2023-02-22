@@ -211,8 +211,9 @@
         var check = false;
         var arr = $('input[type=number]').length;
         for (var i = 1; i <= arr; i++) {
-            if ($('#q' + i).val().length != 0) {
+            if ($('#q' + i).val()) {
                 check = true;
+                break;
             }
         }
 
