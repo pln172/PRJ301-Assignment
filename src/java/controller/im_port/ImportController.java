@@ -43,7 +43,14 @@ public class ImportController extends BaseRequiredAuthController {
             throws ServletException, IOException {
         ProductDBContext pdb = new ProductDBContext();
         ArrayList<Product> products = pdb.getProducts();
-        request.setAttribute("products", products);
+        
+        ArrayList<Product> productsInOtherGroup = new ArrayList<>();
+        for (Product p : products) {
+            if (p.getGroup().getId() == 8) {
+                productsInOtherGroup.add(p);
+            }
+        }
+        request.setAttribute("products", productsInOtherGroup);
 
         request.setAttribute("err", request.getParameter("err"));
         request.getRequestDispatcher("view/import/Import.jsp").forward(request, response);

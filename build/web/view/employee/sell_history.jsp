@@ -152,8 +152,10 @@
                     id: id
                 },
                 success: function (result) {
+                    console.log(new Date(result.date))
                     var malId = "#modal" + id;
-                    var str = `<table class="table">
+                    var str = `<div class="mb-2">Thời gian: `+new Date(result.date).toLocaleString()+`</div>
+                    <table class="table">
                     <thead>
                       <tr>
                         <th scope="col">STT</th>
@@ -163,18 +165,20 @@
                            <th scope="col">Tổng</th>
                       </tr>
                     </thead>
-                    <tbody>`
-                        for (var order in result) {
-                            
-                        }
-                      `<tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                    </tbody>
-                  </table>`;
+                    <tbody>`;
+                    var i = 1;
+                    for (var order of result.orderDetails) {
+
+                        str += `<tr><td>`+(i++)+`</td>
+                        <td>` + order.pid.name + `</td>
+                        <td>` + order.quantity + `</td>
+                        <td>` + order.price.priceExport.toLocaleString('vn-VN') + `</td>
+                        <td>` + (order.price.priceExport * order.quantity).toLocaleString('vn-VN') + `</td></tr>`
+                    }
+
+                    str += ` </tbody>
+                  </table>
+                    <div style="text-align: right;font-weight: bold;" class="mt-3">Tổng đơn hàng: `+(result.total).toLocaleString('vn-VN')+` VND</div>`;
                     $(malId).html(str);
                 }
             });

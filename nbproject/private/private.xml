@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/employee/sell.jsp</file>
-            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/employee/EmployeeSellHistoryController.java</file>
-            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/dal/OrderDBContext.java</file>
-            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/employee/sell_history.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/StatisticController.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/import/Import.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/employee/EmployeeController.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/product/Product.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/market/MarketController.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/employee/Employee.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/dal/EmployeeDBContext.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/market/Market.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/dal/MarketDBContext.java</file>
         </group>
     </open-files>
 </project-private>

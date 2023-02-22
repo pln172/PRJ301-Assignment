@@ -75,7 +75,7 @@
                 <div class="col-md-3">
                     <div class="left">
                         <p onclick="changeurl('statistic')">Thống kê</p>
-                        <p onclick="changeurl('employee')">Khách hàng</p>
+                        <p onclick="changeurl('employee')">Nhân viên</p>
                         <p onclick="changeurl('customer')">Khách hàng</p>
                         <p onclick="changeurl('product')" class="nav">Sản phẩm</p>
                         <p onclick="changeurl('report')">Báo cáo doanh thu</p>
@@ -94,7 +94,7 @@
                             <div class="table">
                                 <div class="r green">
                                     <div class="cell th">
-                                        Mã SP
+                                        STT
                                     </div>
                                     <div class="cell th">
                                         Tên
@@ -112,10 +112,11 @@
                                         Thao tác
                                     </div>
                                 </div>
-
+                                <c:set var="i" value="0"/>
                                 <c:forEach items="${requestScope.products}" var="p">
+                                    <c:set var="i" value="${i+1}"/>
                                     <div class="r"> 
-                                        <div class="cell">${p.productNo}</div>
+                                        <div class="cell">${i}</div>
                                         <div class="cell">${p.name}</div>
                                         <div class="cell">${p.quantity}</div>
                                         <div class="cell">

@@ -26,36 +26,35 @@ public class DBContext {
 
     public DBContext() {
         try {
-            //            String user = "sa";
-//            String pass = "sa";
-//            String url = "jdbc:sqlserver://PHOENIX\\SQLEXPRESS:1433;databaseName=CafeGocPho";
+            String user = "sa";
+            String pass = "sa";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=CafeGocPho";
 
-            FileReader fr;
-            Scanner sc;
-            String line;
-            String[] info;
-            String user = "";
-            String pass = "";
-            String url = "";
-
-            
+//            FileReader fr;
+//            Scanner sc;
+//            String line;
+//            String[] info;
+//            String user = "";
+//            String pass = "";
+//            String url = "";
 //                fr = new FileReader("DBContext.txt");
-                InputStream rs = this.getClass().getClassLoader().getResourceAsStream("DBContext.txt");
-                sc = new Scanner(rs);
-
-                while (sc.hasNext()) {
-                    line = sc.nextLine().trim();
-
-                    if (!line.isEmpty()) {
-                        info = line.split(" ");
-                        user = info[0].trim();
-                        pass = info[1].trim();
-                        url = info[2].trim();
-                    }
-                }
+//                InputStream rs = this.getClass().getClassLoader().getResourceAsStream("DBContext.txt");
+//                sc = new Scanner(rs);
+//
+//                while (sc.hasNext()) {
+//                    line = sc.nextLine().trim();
+//
+//                    if (!line.isEmpty()) {
+//                        info = line.split(" ");
+//                        user = info[0].trim();
+//                        pass = info[1].trim();
+//                        url = info[2].trim();
+//                    }
+//                }
+//                 Logger.getLogger(user + pass + url);
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
-        
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

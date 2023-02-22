@@ -63,6 +63,7 @@
                         <p onclick="changeurl('product')">Sản phẩm</p>
                         <p onclick="changeurl('report')">Báo cáo doanh thu</p>
                         <p onclick="changeurl('history')">Lịch sử</p>
+                        <p onclick="changeurl('market')">Đi chợ</p>
                     </div>
                 </div>
 
