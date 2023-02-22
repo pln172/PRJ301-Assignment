@@ -4,7 +4,7 @@ REM set varible for program's name
 SET "pname=ASSIGNMENT"
 
 REM build .war file
-CD build/web
+CD ../build/web
 CALL jar -cvf %pname%.war * 
 
 REM copy that .war file to dist folder
