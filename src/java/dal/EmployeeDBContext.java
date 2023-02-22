@@ -309,53 +309,33 @@ public class EmployeeDBContext extends DBContext {
         }
         return employees;
     }
-    
-    public ArrayList<Order> getOrderByDate(Date date) {
+
+    public ArrayList<Order> getOrderByDate(Date date, int empId) {
         ArrayList<Order> orders = new ArrayList<>();
-        
+
         try {
-            String sql = "select [Order].id, orderNo, [date], ototal, \n"
-                    + "		Employee.ename, Employee.phone, Customer.cname,\n"
-                    + "		Product.pname,\n"
-                    + "		OrderDetails.quantity, price, total\n"
-                    + "from [Order]\n"
-                    + "	left join Employee on [Order].eid = Employee.id\n"
-                    + "	inner join Customer on [Order].cid = Customer.id\n"
-                    + "	inner join OrderDetails on [Order].id = OrderDetails.oid\n"
-                    + "	inner join Product on OrderDetails.pid = Product.id\n"
-                    + "where CAST([Order].[date] AS date) = ?";
+            String sql = "SELECT [Order].id, [date], ototal\n"
+                    + "FROM [Order]\n"
+                    + "INNER JOIN Employee on Employee.id = [Order].eid\n"
+                    + "where CAST([Order].[date] AS date) = ?\n"
+                    + "AND eid = ? ";
 
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setDate(1, date);
+            stm.setInt(2, empId);
             ResultSet rs = stm.executeQuery();
-            Order o = new Order();
+
+            Order o;
             while (rs.next()) {
+                o = new Order();
                 o.setId(rs.getInt("id"));
-                o.setOrderNo(rs.getString("orderNo"));
                 o.setDate(rs.getTimestamp("date"));
                 o.setTotal(rs.getInt("ototal"));
 
                 Employee e = new Employee();
-                e.setName(rs.getString("ename"));
-                e.setPhone(rs.getString("phone"));
+                e.setId(empId);
                 o.setEid(e);
 
-                Customer c = new Customer();
-                c.setName(rs.getString("cname"));
-                o.setCid(c);
-
-                Product p = new Product();
-                p.setName(rs.getString("pname"));
-                p.setPriceExport(rs.getInt("price"));
-
-                OrderDetail od = new OrderDetail();
-                od.setPid(p);
-                od.setQuantity(rs.getInt("quantity"));
-                od.setPrice(p);
-                od.setTotal(rs.getInt("total"));
-
-                o.getOrderDetails().add(od);
-                
                 orders.add(o);
             }
             return orders;
