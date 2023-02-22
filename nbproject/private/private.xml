@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/sell/SellController.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/employee/sell.jsp</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/controller/employee/EmployeeSellHistoryController.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/src/java/dal/OrderDBContext.java</file>
+            <file>file:/C:/Users/phuon/Documents/GitHub/PRJ301-Assignment/web/view/employee/sell_history.jsp</file>
         </group>
     </open-files>
 </project-private>
